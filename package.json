@@ -1,0 +1,10 @@
+{
+  "name": "comma-api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "config-request": "^0.5.1",
+    "querystringify": "^2.1.1"
+  }
+}
