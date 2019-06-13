@@ -1,8 +1,9 @@
 import ConfigRequestPromise from './config-request-promise';
+import { VIDEO_URL_ROOT } from './config';
 
 export default function videoApi(routeSigUrl, videoServerHost) {
   if (!videoServerHost) {
-    videoServerHost = 'https://video.comma.ai';
+    videoServerHost = VIDEO_URL_ROOT;
   }
   let [dongleId, routeSignature] = routeSigUrl.split().slice(5,7);
 
