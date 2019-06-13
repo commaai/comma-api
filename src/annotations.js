@@ -11,6 +11,10 @@ export function createAnnotation (data) {
   return request.post('v1/annotations/new', data);
 }
 
+export function getAnnotation (id) {
+  return request.get('v1/annotations/' + id);
+}
+
 export function updateAnnotation (id, data) {
   return request.patch('v1/annotations/' + id, { data });
 }
