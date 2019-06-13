@@ -9,7 +9,7 @@ export default function videoApi(routeSigUrl, videoServerHost) {
 
   const request = ConfigRequestPromise();
   request.configure({
-    baseUrl: videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/';
+    baseUrl: videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/',
     parse: null,
   })
 
