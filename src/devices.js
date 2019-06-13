@@ -5,13 +5,20 @@ import * as request from './request';
 
 const DEVICES_ENDPOINT = 'me/devices/';
 
-export async function fetchPaired() {
-  const apiDevices = await request.get(DEVICES_ENDPOINT);
-  if (apiDevices !== undefined) {
-    return apiDevices;
-  } else {
-    throw new Error('error fetching paired devices');
-  }
+export async function listDevices () {
+  return request.get('me/devices/');
+}
+
+export async function setDeviceAlias (dongle_id, alias) {
+  return request.patch('devices/' + dongle_id + '/', { alias });
+}
+
+export async function setDeviceVehicleId (dongle_id, vehicle_id) {
+  return request.patch('devices/' + dongle_id + '/', { vehicle_id });
+}
+
+export async function shareDevice (dongle_id, email) {
+  return request.post('devices/' + dongle_id + '/add_user', { email });
 }
 
 export async function fetchLocation(dongleId) {
@@ -48,17 +55,11 @@ export function pilotPair(imei,serial) {
   return request.postForm('pilotpair/', { imei, serial });
 }
 
-export function updateWithVehicle(dongleId, vehicleId) {
-  const deviceEndpoint = `devices/${ dongleId }/`;
-  return request.patch(deviceEndpoint, { vehicle_id: vehicleId })
-}
-
 export function fetchDeviceStats(dongleId) {
   const endpoint = `devices/${ dongleId }/stats`;
   return request.get(endpoint);
 }
 
 export function unpair(dongleId) {
-  const endpoint = `devices/${ dongleId }/unpair`;
-  return request.post(endpoint);
+  return request.post('devices/' + dongleId + '/unpair');
 }

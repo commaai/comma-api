@@ -5,7 +5,6 @@ const USER_ENDPOINT = 'me/';
 
 export async function refreshAccessToken(idToken) {
   const authResponseText = await request.postForm(AUTH_ENDPOINT, { id_token: idToken });
-  console.log({authResponseText})
   const resp = JSON.parse(authResponseText);
   if (resp !== undefined) {
     if (resp.access_token != null) {
@@ -26,4 +25,11 @@ export async function refreshCommaUser(accessToken) {
   } else {
     throw new Error('Failed to fetch comma user: ' + JSON.stringify(commaUser));
   }
+}
+
+export async function commaTokenExchange(accessToken, idToken) {
+  return request.postForm("auth/", {
+    access_token: accessToken,
+    id_token: idToken
+  });
 }
