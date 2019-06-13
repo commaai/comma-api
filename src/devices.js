@@ -17,12 +17,16 @@ export async function setDeviceVehicleId (dongle_id, vehicle_id) {
   return request.patch('devices/' + dongle_id + '/', { vehicle_id });
 }
 
-export async function shareDevice (dongle_id, email) {
+export async function grantDeviceReadPermission (dongle_id, email) {
   return request.post('devices/' + dongle_id + '/add_user', { email });
 }
 
+export async function removeDeviceReadPermission (dongle_id, email) {
+  return request.post('devices/' + dongle_id + '/del_user', { email });
+}
+
 export async function fetchLocation(dongleId) {
-  const locationEndpoint = `devices/${ dongleId }/location`;
+  const locationEndpoint = 'devices/' + dongleId + '/location';
   const location = await request.get(locationEndpoint);
   if (location !== undefined && location.error === undefined) {
     return location;
@@ -32,23 +36,13 @@ export async function fetchLocation(dongleId) {
 }
 
 export async function fetchVehicles(vehicleId) {
-  const vehicleEndpoint = `vehicles/${ vehicleId }`;
-  const vehicle = await request.get(vehicleEndpoint);
-  if (vehicle !== undefined) {
-    return vehicle;
-  } else {
-    throw new Error('failed to fetch vehicle ' + vehicleId);
-  }
+  const vehicleEndpoint = 'vehicles/' + vehicleId;
+  return request.get(vehicleEndpoint);
 }
 
 export async function fetchDevice(dongleId) {
-  const deviceEndpoint = `devices/${ dongleId }/`;
-  const device = await request.get(deviceEndpoint);
-  if (device !== undefined) {
-    return device;
-  } else {
-    throw new Error('error fetching device', dongleId);
-  }
+  const deviceEndpoint = 'devices/' + dongleId + '/';
+  return request.get(deviceEndpoint);
 }
 
 export function pilotPair(imei,serial) {
@@ -56,8 +50,7 @@ export function pilotPair(imei,serial) {
 }
 
 export function fetchDeviceStats(dongleId) {
-  const endpoint = `devices/${ dongleId }/stats`;
-  return request.get(endpoint);
+  return request.get('devices/' + dongleId + '/stats');
 }
 
 export function unpair(dongleId) {
