@@ -3,23 +3,14 @@
 
 import * as request from './request';
 
-const VEHICLE_MAKES_ENDPOINT = 'vehicles/makes/';
-
 export async function fetchMakes() {
-  const makes = await request.get(VEHICLE_MAKES_ENDPOINT);
-
-  if (makes !== undefined) {
-    return makes;
-  } else {
-    throw new Error('error fetching vehicles');
-  }
+  return request.get('vehicles/makes/');
 }
 
 export async function fetchModels(make) {
-  const models = await request.get(`${ VEHICLE_MAKES_ENDPOINT + make }`);
-  if (models !== undefined) {
-    return models;
-  } else {
-    throw new Error('error fetching vehicle models');
-  }
+  return request.get('vehicles/makes/' + make);
+}
+
+export async function fetchVehicle(vehicleId) {
+  return request.get('vehicles/' + vehicleId.toString());
 }
