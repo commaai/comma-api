@@ -20,6 +20,24 @@ export function updateAnnotation (id, data) {
 }
 
 export function listAnnotations (start, end, dongleId) {
+  let { start, end } = verifyAnnotationStartEnd(start, end);
+
+  return request.get('v1/devices/' + dongleId + '/annotations/', {
+    from: start,
+    to: end
+  });
+}
+
+export function listMyAnnotations (start, end) {
+  let { start, end } = verifyAnnotationStartEnd(start, end);
+
+  return request.get('v1/me/annotations/', {
+    from: start,
+    to: end
+  });
+}
+
+function verifyAnnotationStartEnd(start, end) {
   start = Number(start);
   end = Number(end);
 
@@ -32,8 +50,6 @@ export function listAnnotations (start, end, dongleId) {
   if (!Number.isFinite(end)) {
     throw new Error('Invalid end time');
   }
-  return request.get('v1/devices/' + dongleId + '/annotations/', {
-    from: start,
-    to: end
-  });
+
+  return { start, end };
 }
