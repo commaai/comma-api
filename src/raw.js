@@ -1,11 +1,11 @@
 import * as request from './request';
 
 const urlStore = {};
-export async function getRouteFiles (routeName) {
+export function getRouteFiles (routeName) {
   return getCached('files', routeName);
 }
 
-export async function getLogUrls (routeName) {
+export function getLogUrls (routeName) {
   return getCached('log_urls', routeName);
 }
 
@@ -15,7 +15,7 @@ async function getCached (endpoint, routeName) {
   if (urlStore[routeName]) {
     return urlStore[routeName];
   }
-  var data = await request.get('route/' + routeName + '/' + endpoint);
+  var data = await request.get('v1/route/' + routeName + '/' + endpoint);
 
   urlStore[routeName] = data;
 

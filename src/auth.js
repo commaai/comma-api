@@ -1,7 +1,7 @@
 import * as request from './request';
 
-const AUTH_ENDPOINT = 'auth/';
-const USER_ENDPOINT = 'me/';
+const AUTH_ENDPOINT = 'v1/auth/';
+const USER_ENDPOINT = 'v1/me/';
 
 export async function refreshAccessToken(idToken) {
   const authResponseText = await request.postForm(AUTH_ENDPOINT, { id_token: idToken });
@@ -27,7 +27,7 @@ export async function refreshCommaUser(accessToken) {
   }
 }
 
-export async function commaTokenExchange(accessToken, idToken) {
+export function commaTokenExchange(accessToken, idToken) {
   return request.postForm("auth/", {
     access_token: accessToken,
     id_token: idToken

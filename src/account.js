@@ -1,5 +1,7 @@
-export async function getProfile(dongle_id) {
+import * as request from './request';
+
+export function getProfile(dongle_id) {
   let profile = dongle_id || 'me';
 
-  return request.get(profile + '/');
+  return request.get('v1/' + profile + '/');
 }

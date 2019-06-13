@@ -1,5 +1,6 @@
 // Drives api
 // ~~~~~~~~~~
+import * as request from './request';
 
 const SEGMENT_LENGTH = 1000 * 60;
 
@@ -9,8 +10,8 @@ export async function fetchRoutes(dongleId, start, end) {
   return segmentsFromMetadata(segments).reverse();
 }
 
-export async function getSegmentMetadata (start, end, dongleId) {
-  return request.get('devices/' + dongleId + '/segments', {
+export function getSegmentMetadata (start, end, dongleId) {
+  return request.get('v1/devices/' + dongleId + '/segments', {
     from: start,
     to: end
   });

@@ -3,14 +3,14 @@
 
 import * as request from './request';
 
-export async function fetchMakes() {
-  return request.get('vehicles/makes/');
+export function fetchMakes() {
+  return request.get('v1/vehicles/makes/');
 }
 
-export async function fetchModels(make) {
-  return request.get('vehicles/makes/' + make);
+export function fetchModels(make) {
+  return request.get('v1/vehicles/makes/' + make);
 }
 
-export async function fetchVehicle(vehicleId) {
-  return request.get('vehicles/' + vehicleId.toString());
+export function fetchVehicle(vehicleId) {
+  return request.get('v1/vehicles/' + vehicleId.toString());
 }
