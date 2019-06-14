@@ -19,8 +19,8 @@ export function updateAnnotation (id, data) {
   return request.patch('v1/annotations/' + id, { data });
 }
 
-export function listAnnotations (start, end, dongleId) {
-  let { start, end } = verifyAnnotationStartEnd(start, end);
+export function listAnnotations (_start, _end, dongleId) {
+  let { start, end } = verifyAnnotationStartEnd(_start, _end);
 
   return request.get('v1/devices/' + dongleId + '/annotations/', {
     from: start,
@@ -28,8 +28,8 @@ export function listAnnotations (start, end, dongleId) {
   });
 }
 
-export function listMyAnnotations (start, end) {
-  let { start, end } = verifyAnnotationStartEnd(start, end);
+export function listMyAnnotations (_start, _end) {
+  let { start, end } = verifyAnnotationStartEnd(_start, _end);
 
   return request.get('v1/me/annotations/', {
     from: start,
