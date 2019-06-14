@@ -51,6 +51,7 @@ var fetchRoutes = exports.fetchRoutes = function () {
 }();
 
 exports.getSegmentMetadata = getSegmentMetadata;
+exports.getRouteInfo = getRouteInfo;
 
 var _request = require('./request');
 
@@ -67,6 +68,10 @@ function getSegmentMetadata(start, end, dongleId) {
     from: start,
     to: end
   });
+}
+
+function getRouteInfo(routeName) {
+  return request.get('v1/route/' + routeName + '/');
 }
 
 function parseSegmentMetadata(start, end, segments) {

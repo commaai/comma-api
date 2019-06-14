@@ -17,6 +17,10 @@ export function getSegmentMetadata (start, end, dongleId) {
   });
 }
 
+export function getRouteInfo(routeName) {
+  return request.get('v1/route/' + routeName + '/');
+}
+
 function parseSegmentMetadata (start, end, segments) {
   var lastSegmentTime = 0;
   var routeStartTimes = {};
