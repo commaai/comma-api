@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const Joi = require('joi-browser');
+var Joi = require('joi-browser');
 
-const AnnotationValidator = exports.AnnotationValidator = Joi.object().keys({
+var AnnotationValidator = exports.AnnotationValidator = Joi.object().keys({
   canonical_segment_name: Joi.string().required(),
   offset_nanos_part: Joi.number().required(),
   offset_millis: Joi.number().required(),

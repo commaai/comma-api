@@ -57,17 +57,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 module.exports = {
-  account,
-  annotations,
-  athena,
-  auth,
-  devices,
+  account: account,
+  annotations: annotations,
+  athena: athena,
+  auth: auth,
+  devices: devices,
   derived: _derived2.default,
-  drives,
+  drives: drives,
   errorHandler: _errorHandler2.default,
-  leaderboard,
-  raw,
-  request,
-  vehicles,
+  leaderboard: leaderboard,
+  raw: raw,
+  request: request,
+  vehicles: vehicles,
   video: _video2.default
 };

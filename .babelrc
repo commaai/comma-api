@@ -1,12 +1,15 @@
 {
   "presets": [
     [
-      "env",
+      "es2015",
       {
-        "targets": {
-          "browsers": ["last 2 Chrome versions"]
-        }
+        modules: false
       }
-    ]
+    ],
+    "stage-2"
+  ],
+  "plugins": [
+   "transform-es2015-modules-commonjs",
+   "transform-runtime"
   ]
 }

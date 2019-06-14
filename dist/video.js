@@ -3,6 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
 exports.default = videoApi;
 
 var _configRequestPromise = require('./config-request-promise');
@@ -17,19 +22,23 @@ function videoApi(routeSigUrl, videoServerHost) {
   if (!videoServerHost) {
     videoServerHost = _config.VIDEO_URL_ROOT;
   }
-  let [dongleId, routeSignature] = routeSigUrl.split().slice(5, 7);
 
-  const request = (0, _configRequestPromise2.default)();
+  var _routeSigUrl$split$sl = routeSigUrl.split().slice(5, 7),
+      _routeSigUrl$split$sl2 = (0, _slicedToArray3.default)(_routeSigUrl$split$sl, 2),
+      dongleId = _routeSigUrl$split$sl2[0],
+      routeSignature = _routeSigUrl$split$sl2[1];
+
+  var request = (0, _configRequestPromise2.default)();
   request.configure({
     baseUrl: videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/',
     parse: null
   });
 
   return {
-    getRearCameraStreamIndex: function () {
+    getRearCameraStreamIndex: function getRearCameraStreamIndex() {
       return request.get('index.m3u8');
     },
-    getFrontCameraStreamIndex: function () {
+    getFrontCameraStreamIndex: function getFrontCameraStreamIndex() {
       return request.get('dcamera/index.m3u8');
     }
   };
