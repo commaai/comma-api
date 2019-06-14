@@ -1,19 +1,27 @@
 import * as account from './account';
 import * as annotations from './annotations';
+import * as athena from './athena';
 import * as auth from './auth';
 import * as devices from './devices';
-import * as derived from './derived';
+import derived from './derived';
+import errorHandler from './errorHandler';
 import * as drives from './drives';
+import * as leaderboard from './leaderboard';
 import * as raw from './raw';
 import * as vehicles from './vehicles';
+import video from './video';
 
-export default {
+module.exports = {
   account,
   annotations,
+  athena,
   auth,
   devices,
   derived,
   drives,
+  errorHandler,
+  leaderboard,
   raw,
   vehicles,
+  video,
 };
