@@ -8,6 +8,7 @@ import errorHandler from './errorHandler';
 import * as drives from './drives';
 import * as leaderboard from './leaderboard';
 import * as raw from './raw';
+import * as request from './request';
 import * as vehicles from './vehicles';
 import video from './video';
 
@@ -22,6 +23,7 @@ module.exports = {
   errorHandler,
   leaderboard,
   raw,
+  request,
   vehicles,
   video,
 };
