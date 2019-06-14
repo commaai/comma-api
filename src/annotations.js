@@ -20,6 +20,10 @@ export function updateAnnotation (id, data) {
 }
 
 export function listAnnotations (_start, _end, dongleId) {
+  if (!dongleId.length) {
+    throw new Error('Invalid or empty dongleId');
+  }
+
   let { start, end } = verifyAnnotationStartEnd(_start, _end);
 
   return request.get('v1/devices/' + dongleId + '/annotations/', {
@@ -43,9 +47,6 @@ function verifyAnnotationStartEnd(start, end) {
 
   if (!Number.isFinite(start)) {
     throw new Error('Invalid start time');
-  }
-  if (!dongleId.length) {
-    throw new Error('Invalid or empty dongleId');
   }
   if (!Number.isFinite(end)) {
     throw new Error('Invalid end time');
