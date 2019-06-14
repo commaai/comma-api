@@ -1,8 +1,17 @@
 {
-  "name": "comma-api",
+  "name": "@commaai/comma-api",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "index.js",
+  "browser": "dist/index.js",
+  "scripts": {
+    "build": "babel --out-dir dist src"
+  },
+  "files": ["dist"],
   "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  },
   "dependencies": {
     "config-request": "^0.5.1",
     "querystringify": "^2.1.1"
