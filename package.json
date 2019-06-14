@@ -6,9 +6,6 @@
   "scripts": {
     "build": "babel --out-dir dist src"
   },
-  "files": [
-    "dist"
-  ],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
