@@ -1,12 +1,14 @@
 {
   "name": "@commaai/comma-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "browser": "dist/index.js",
   "scripts": {
     "build": "babel --out-dir dist src"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
