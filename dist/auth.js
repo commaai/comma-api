@@ -27,34 +27,29 @@ var refreshAccessToken = exports.refreshAccessToken = function () {
             authResponseText = _context.sent;
             resp = JSON.parse(authResponseText);
 
-            if (!(resp !== undefined)) {
-              _context.next = 13;
-              break;
-            }
-
             if (!(resp.access_token != null)) {
-              _context.next = 11;
+              _context.next = 10;
               break;
             }
 
-            _context.next = 8;
+            _context.next = 7;
             return request.configure(resp.access_token);
 
-          case 8:
+          case 7:
             return _context.abrupt('return', resp.access_token);
 
-          case 11:
+          case 10:
             if (!(resp.response !== undefined)) {
-              _context.next = 13;
+              _context.next = 14;
               break;
             }
 
-            throw new Error('Could not exchange idToken for access token: response ' + resp.response.status);
-
-          case 13:
-            throw new Error('Could not exchange idToken for access token: response undefined.');
+            throw new Error('Could not exchange oauth code for access token: response ' + resp.response.status);
 
           case 14:
+            throw new Error('Could not exchange oauth code for access token: response ' + authResponseText);
+
+          case 15:
           case 'end':
             return _context.stop();
         }
