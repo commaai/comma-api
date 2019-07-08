@@ -4,8 +4,8 @@ comma API client library
 
 ## Installation
 
-`npm i --save comma-api`
+`npm i --save @commaai/comma-api`
 
 or
 
-`yarn add comma-api`
+`yarn add @commaai/comma-api`
