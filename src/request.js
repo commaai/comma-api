@@ -1,10 +1,11 @@
 import ConfigRequest from 'config-request/instance';
 import qs from 'querystringify';
 
-import errorHandler from './errorHandler';
+import defaultErrorHandler from './errorHandler';
 import { COMMA_URL_ROOT } from './config';
 
 const request = ConfigRequest();
+let _errorHandlerFn = defaultErrorHandler;
 
 var initPromise;
 function ensureInit() {
@@ -14,7 +15,7 @@ function ensureInit() {
   return initPromise;
 }
 
-export async function configure(accessToken) {
+export function configure(accessToken, errorHandler) {
   const config = {
     baseUrl: COMMA_URL_ROOT,
     jwt: false,
@@ -25,7 +26,15 @@ export async function configure(accessToken) {
     config.token = `JWT ${accessToken}`;
   }
 
+  if (errorHandler) {
+    _errorHandlerFn = errorHandler;
+  } else {
+    _errorHandlerFn = defaultErrorHandler;
+  }
+
   request.configure(config);
+  initPromise = Promise.resolve();
+  return initPromise;
 }
 
 export async function get(endpoint, data) {
@@ -37,7 +46,7 @@ export async function get(endpoint, data) {
         query: data,
         json: true
       },
-      errorHandler(resolve, reject)
+      _errorHandlerFn(resolve, reject)
     );
   });
 }
@@ -51,7 +60,7 @@ export async function post(endpoint, data) {
         body: data,
         json: true
       },
-      errorHandler(resolve, reject)
+      _errorHandlerFn(resolve, reject)
     );
   });
 }
@@ -67,7 +76,7 @@ export async function postForm(endpoint, data) {
           "Content-Type": "application/x-www-form-urlencoded"
         },
       },
-      errorHandler(resolve, reject)
+      _errorHandlerFn(resolve, reject)
     )
   });
 }
@@ -81,7 +90,7 @@ export async function patch(endpoint, data) {
         body: data,
         json: true
       },
-      errorHandler(resolve, reject)
+      _errorHandlerFn(resolve, reject)
     );
   });
 }
