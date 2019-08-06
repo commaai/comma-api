@@ -43,8 +43,8 @@ export function fetchDevice(dongleId) {
   return request.get(deviceEndpoint);
 }
 
-export function pilotPair(imei,serial) {
-  return request.postForm('v1/pilotpair/', { imei, serial });
+export function pilotPair(imei, serial, pairToken) {
+  return request.postForm('v2/pilotpair/', { imei, serial, pair_token: pairToken });
 }
 
 export function fetchDeviceStats(dongleId) {
