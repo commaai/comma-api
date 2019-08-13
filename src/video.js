@@ -1,10 +1,10 @@
 import urlJoin from 'url-join';
 import ConfigRequestPromise from './config-request-promise';
-import { VIDEO_URL_ROOT } from './config';
+import { VIDEO_HOST } from './config';
 
 export default function videoApi(routeSigUrl, videoServerHost) {
   if (!videoServerHost) {
-    videoServerHost = VIDEO_URL_ROOT;
+    videoServerHost = VIDEO_HOST;
   }
   let [dongleId, routeSignature] = routeSigUrl.split('/').slice(5,7);
 

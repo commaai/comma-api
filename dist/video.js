@@ -24,7 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function videoApi(routeSigUrl, videoServerHost) {
   if (!videoServerHost) {
-    videoServerHost = _config.VIDEO_URL_ROOT;
+    videoServerHost = _config.VIDEO_HOST;
   }
 
   var _routeSigUrl$split$sl = routeSigUrl.split('/').slice(5, 7),
