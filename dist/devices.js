@@ -100,7 +100,7 @@ function fetchVehicles(vehicleId) {
 }
 
 function fetchDevice(dongleId) {
-  var deviceEndpoint = 'v1/devices/' + dongleId + '/';
+  var deviceEndpoint = 'v1.1/devices/' + dongleId + '/';
   return request.get(deviceEndpoint);
 }
 

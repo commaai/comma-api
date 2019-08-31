@@ -39,7 +39,7 @@ export function fetchVehicles(vehicleId) {
 }
 
 export function fetchDevice(dongleId) {
-  const deviceEndpoint = 'v1/devices/' + dongleId + '/';
+  const deviceEndpoint = 'v1.1/devices/' + dongleId + '/';
   return request.get(deviceEndpoint);
 }
 
