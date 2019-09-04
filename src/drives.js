@@ -21,6 +21,17 @@ export function getRouteInfo(routeName) {
   return request.get('v1/route/' + routeName + '/');
 }
 
+export function getRouteSegments(routeName) {
+  return request.get('v1/route/' + routeName + '/segments');
+}
+
+export function listRoutes(dongleId, limit, createdAfter) {
+  let params = { limit };
+  if (typeof createdAfter !== 'undefined') {
+    params.createdAfter = createdAfter;
+  }
+  return request.get('v1/devices/' + dongleId + '/routes', params);
+}
 function parseSegmentMetadata (start, end, segments) {
   var lastSegmentTime = 0;
   var routeStartTimes = {};

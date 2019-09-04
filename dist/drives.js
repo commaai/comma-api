@@ -52,6 +52,8 @@ var fetchRoutes = exports.fetchRoutes = function () {
 
 exports.getSegmentMetadata = getSegmentMetadata;
 exports.getRouteInfo = getRouteInfo;
+exports.getRouteSegments = getRouteSegments;
+exports.listRoutes = listRoutes;
 
 var _request = require('./request');
 
@@ -74,6 +76,17 @@ function getRouteInfo(routeName) {
   return request.get('v1/route/' + routeName + '/');
 }
 
+function getRouteSegments(routeName) {
+  return request.get('v1/route/' + routeName + '/segments');
+}
+
+function listRoutes(dongleId, limit, createdAfter) {
+  var params = { limit: limit };
+  if (typeof createdAfter !== 'undefined') {
+    params.createdAfter = createdAfter;
+  }
+  return request.get('v1/devices/' + dongleId + '/routes', params);
+}
 function parseSegmentMetadata(start, end, segments) {
   var lastSegmentTime = 0;
   var routeStartTimes = {};
