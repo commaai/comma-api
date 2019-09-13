@@ -52,6 +52,7 @@ var fetchRoutes = exports.fetchRoutes = function () {
 
 exports.getSegmentMetadata = getSegmentMetadata;
 exports.getRouteInfo = getRouteInfo;
+exports.getShareSignature = getShareSignature;
 exports.getRouteSegments = getRouteSegments;
 exports.listRoutes = listRoutes;
 
@@ -74,6 +75,10 @@ function getSegmentMetadata(start, end, dongleId) {
 
 function getRouteInfo(routeName) {
   return request.get('v1/route/' + routeName + '/');
+}
+
+function getShareSignature(routeName) {
+  return request.get('v1/route/' + routeName + '/share_signature');
 }
 
 function getRouteSegments(routeName) {
