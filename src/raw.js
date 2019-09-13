@@ -1,3 +1,4 @@
+import qs from 'querystringify';
 import * as request from './request';
 
 const urlStore = {};
@@ -5,17 +6,21 @@ export function getRouteFiles (routeName) {
   return getCached('files', routeName);
 }
 
-export function getLogUrls (routeName) {
-  return getCached('log_urls', routeName);
+export function getLogUrls (routeName, params) {
+  return getCached('log_urls', routeName, params);
 }
 
-async function getCached (endpoint, routeName) {
+async function getCached (endpoint, routeName, params) {
   // don't bother bouncing because the URLs themselves expire
   // our expiry time is from initial fetch time, not most recent access
   if (urlStore[routeName]) {
     return urlStore[routeName];
   }
-  var data = await request.get('v1/route/' + routeName + '/' + endpoint);
+  var path = 'v1/route/' + routeName + '/' + endpoint;
+  if (params !== undefined) {
+    path += '?' + qs.stringify(params);
+  }
+  var data = await request.get(path);
 
   urlStore[routeName] = data;
 

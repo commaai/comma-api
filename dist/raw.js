@@ -13,8 +13,8 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var getCached = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, routeName) {
-    var data;
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, routeName, params) {
+    var path, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -27,10 +27,15 @@ var getCached = function () {
             return _context.abrupt('return', urlStore[routeName]);
 
           case 2:
-            _context.next = 4;
-            return request.get('v1/route/' + routeName + '/' + endpoint);
+            path = 'v1/route/' + routeName + '/' + endpoint;
 
-          case 4:
+            if (params !== undefined) {
+              path += '?' + _querystringify2.default.stringify(params);
+            }
+            _context.next = 6;
+            return request.get(path);
+
+          case 6:
             data = _context.sent;
 
 
@@ -42,7 +47,7 @@ var getCached = function () {
 
             return _context.abrupt('return', urlStore[routeName]);
 
-          case 8:
+          case 10:
           case 'end':
             return _context.stop();
         }
@@ -50,13 +55,17 @@ var getCached = function () {
     }, _callee, this);
   }));
 
-  return function getCached(_x, _x2) {
+  return function getCached(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();
 
 exports.getRouteFiles = getRouteFiles;
 exports.getLogUrls = getLogUrls;
+
+var _querystringify = require('querystringify');
+
+var _querystringify2 = _interopRequireDefault(_querystringify);
 
 var _request = require('./request');
 
@@ -71,6 +80,6 @@ function getRouteFiles(routeName) {
   return getCached('files', routeName);
 }
 
-function getLogUrls(routeName) {
-  return getCached('log_urls', routeName);
+function getLogUrls(routeName, params) {
+  return getCached('log_urls', routeName, params);
 }
