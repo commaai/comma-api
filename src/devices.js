@@ -54,3 +54,7 @@ export function fetchDeviceStats(dongleId) {
 export function unpair(dongleId) {
   return request.post('v1/devices/' + dongleId + '/unpair');
 }
+
+export function fetchDeviceOwner(dongleId) {
+  return request.get('v1/devices/' + dongleId + '/owner');
+}

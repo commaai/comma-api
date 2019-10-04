@@ -64,6 +64,7 @@ exports.fetchDevice = fetchDevice;
 exports.pilotPair = pilotPair;
 exports.fetchDeviceStats = fetchDeviceStats;
 exports.unpair = unpair;
+exports.fetchDeviceOwner = fetchDeviceOwner;
 
 var _request = require('./request');
 
@@ -114,4 +115,8 @@ function fetchDeviceStats(dongleId) {
 
 function unpair(dongleId) {
   return request.post('v1/devices/' + dongleId + '/unpair');
+}
+
+function fetchDeviceOwner(dongleId) {
+  return request.get('v1/devices/' + dongleId + '/owner');
 }
