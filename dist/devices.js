@@ -109,7 +109,7 @@ function pilotPair(imei, serial, pairToken) {
 }
 
 function fetchDeviceStats(dongleId) {
-  return request.get('v1/devices/' + dongleId + '/stats');
+  return request.get('v1.1/devices/' + dongleId + '/stats');
 }
 
 function unpair(dongleId) {

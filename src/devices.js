@@ -48,7 +48,7 @@ export function pilotPair(imei, serial, pairToken) {
 }
 
 export function fetchDeviceStats(dongleId) {
-  return request.get('v1/devices/' + dongleId + '/stats');
+  return request.get('v1.1/devices/' + dongleId + '/stats');
 }
 
 export function unpair(dongleId) {
