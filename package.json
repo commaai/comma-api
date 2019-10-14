@@ -1,7 +1,7 @@
 {
   "name": "@commaai/comma-api",
   "version": "1.2.1",
-  "main": "index.js",
+  "main": "src/index.js",
   "browser": "dist/index.js",
   "scripts": {
     "build": "babel --out-dir dist src"
