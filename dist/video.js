@@ -32,10 +32,14 @@ function videoApi(routeSigUrl, videoServerHost) {
       dongleId = _routeSigUrl$split$sl2[0],
       routeSignature = _routeSigUrl$split$sl2[1];
 
-  var request = (0, _configRequestPromise2.default)();
-  var baseUrl = videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/';
-  request.configure({
-    baseUrl: baseUrl,
+  var videoserverRequest = (0, _configRequestPromise2.default)();
+  videoserverRequest.configure({
+    baseUrl: videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/',
+    parse: null
+  });
+  var storageRequest = (0, _configRequestPromise2.default)();
+  storageRequest.configure({
+    baseUrl: routeSigUrl + '/',
     parse: null
   });
 
@@ -46,11 +50,17 @@ function videoApi(routeSigUrl, videoServerHost) {
     getFrontCameraStreamIndexUrl: function getFrontCameraStreamIndexUrl() {
       return (0, _urlJoin2.default)(baseUrl, 'dcamera/index.m3u8');
     },
+    getQcameraStreamIndexUrl: function getQcameraStreamIndexUrl() {
+      return (0, _urlJoin2.default)(routeSigUrl, 'qcamera.m3u8?t=' + Date.now());
+    },
     getRearCameraStreamIndex: function getRearCameraStreamIndex() {
-      return request.get('index.m3u8');
+      return videoserverRequest.get('index.m3u8');
     },
     getFrontCameraStreamIndexPath: function getFrontCameraStreamIndexPath() {
-      return request.get('dcamera/index.m3u8');
+      return videoserverRequest.get('dcamera/index.m3u8');
+    },
+    getQcameraStreamIndex: function getQcameraStreamIndex(max) {
+      return storageRequest.get('qcamera.m3u8?t=' + Date.now());
     }
   };
 }
