@@ -9,8 +9,9 @@ export default function videoApi(routeSigUrl, videoServerHost) {
   let [dongleId, routeSignature] = routeSigUrl.split('/').slice(5,7);
 
   const videoserverRequest = ConfigRequestPromise();
+  const videoserverBaseUrl = videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/';
   videoserverRequest.configure({
-    baseUrl: videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/',
+    baseUrl: videoserverBaseUrl,
     parse: null,
   });
   const storageRequest = ConfigRequestPromise();
@@ -21,10 +22,10 @@ export default function videoApi(routeSigUrl, videoServerHost) {
 
   return {
     getRearCameraStreamIndexUrl: function() {
-      return urlJoin(baseUrl, 'index.m3u8');
+      return urlJoin(videoserverBaseUrl, 'index.m3u8');
     },
     getFrontCameraStreamIndexUrl: function() {
-      return urlJoin(baseUrl, 'dcamera/index.m3u8');
+      return urlJoin(videoserverBaseUrl, 'dcamera/index.m3u8');
     },
     getQcameraStreamIndexUrl: function() {
       return urlJoin(routeSigUrl, 'qcamera.m3u8?t=' + Date.now());
