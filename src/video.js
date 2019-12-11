@@ -28,7 +28,7 @@ export default function videoApi(routeSigUrl, videoServerHost) {
       return urlJoin(videoserverBaseUrl, 'dcamera/index.m3u8');
     },
     getQcameraStreamIndexUrl: function() {
-      return urlJoin(routeSigUrl, 'qcamera.m3u8?t=' + Date.now());
+      return urlJoin(routeSigUrl, 'qcamera.m3u8');
     },
     getRearCameraStreamIndex: function() {
       return videoserverRequest.get('index.m3u8');
@@ -37,7 +37,7 @@ export default function videoApi(routeSigUrl, videoServerHost) {
       return videoserverRequest.get('dcamera/index.m3u8');
     },
     getQcameraStreamIndex: function(max) {
-      return storageRequest.get('qcamera.m3u8?t=' + Date.now());
+      return storageRequest.get('qcamera.m3u8');
     },
   }
 }
