@@ -21,6 +21,10 @@ export function getRouteInfo(routeName) {
   return request.get('v1/route/' + routeName + '/');
 }
 
+export function setRouteRating(routeName, rating) {
+  return request.patch('v1/route/' + routeName + '/', { rating });
+}
+
 export function getShareSignature(routeName) {
   return request.get('v1/route/' + routeName + '/share_signature');
 }
