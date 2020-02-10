@@ -1,6 +1,6 @@
 {
   "name": "@commaai/comma-api",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "main": "src/index.js",
   "browser": "dist/index.js",
   "scripts": {
