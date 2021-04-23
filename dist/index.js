@@ -16,6 +16,10 @@ var _auth = require('./auth');
 
 var auth = _interopRequireWildcard(_auth);
 
+var _billing = require('./billing');
+
+var billing = _interopRequireWildcard(_billing);
+
 var _devices = require('./devices');
 
 var devices = _interopRequireWildcard(_devices);
@@ -61,6 +65,7 @@ module.exports = {
   annotations: annotations,
   athena: athena,
   auth: auth,
+  billing: billing,
   devices: devices,
   derived: _derived2.default,
   drives: drives,
