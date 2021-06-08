@@ -105,8 +105,8 @@ function fetchDevice(dongleId) {
   return request.get(deviceEndpoint);
 }
 
-function pilotPair(imei, serial, pairToken) {
-  return request.postForm('v2/pilotpair/', { imei: imei, serial: serial, pair_token: pairToken });
+function pilotPair(pair_token) {
+  return request.postForm('v2/pilotpair/', { pair_token: pair_token });
 }
 
 function fetchDeviceStats(dongleId) {
