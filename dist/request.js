@@ -201,7 +201,7 @@ var del = exports.del = function () {
 
 exports.configure = configure;
 
-var _instance = require('config-request/instance');
+var _instance = require('./instance');
 
 var _instance2 = _interopRequireDefault(_instance);
 

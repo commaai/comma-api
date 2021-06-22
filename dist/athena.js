@@ -82,7 +82,7 @@ var post = exports.post = function () {
 
 exports.postJsonRpcPayload = postJsonRpcPayload;
 
-var _instance = require('config-request/instance');
+var _instance = require('./instance');
 
 var _instance2 = _interopRequireDefault(_instance);
 

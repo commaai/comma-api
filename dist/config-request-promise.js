@@ -10,7 +10,7 @@ var _promise2 = _interopRequireDefault(_promise);
 
 exports.default = ConfigRequestPromise;
 
-var _instance = require('config-request/instance');
+var _instance = require('./instance');
 
 var _instance2 = _interopRequireDefault(_instance);
 

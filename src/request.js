@@ -1,4 +1,4 @@
-import ConfigRequest from 'config-request/instance';
+import ConfigRequest from './instance';
 import qs from 'querystringify';
 
 import defaultErrorHandler from './errorHandler';

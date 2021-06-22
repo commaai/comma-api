@@ -1,4 +1,4 @@
-import ConfigRequest from 'config-request/instance';
+import ConfigRequest from './instance';
 import errorHandler from './errorHandler';
 
 export default function ConfigRequestPromise() {

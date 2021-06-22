@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "config-request": "^0.5.1",
     "joi-browser": "^13.4.0",
     "querystringify": "^2.1.1"
   }

@@ -1,4 +1,4 @@
-import ConfigRequest from 'config-request/instance';
+import ConfigRequest from './instance';
 import errorHandler from './errorHandler';
 
 import { BILLING_URL_ROOT } from './config';
