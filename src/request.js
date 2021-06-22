@@ -94,3 +94,31 @@ export async function patch(endpoint, data) {
     );
   });
 }
+
+export async function put(endpoint, data) {
+  await ensureInit();
+  return new Promise((resolve, reject) => {
+    request.put(
+      endpoint,
+      {
+        body: data,
+        json: true
+      },
+      _errorHandlerFn(resolve, reject)
+    );
+  });
+}
+
+export async function del(endpoint, data) {
+  await ensureInit();
+  return new Promise((resolve, reject) => {
+    request.delete(
+      endpoint,
+      {
+        body: data,
+        json: true
+      },
+      _errorHandlerFn(resolve, reject)
+    );
+  });
+}

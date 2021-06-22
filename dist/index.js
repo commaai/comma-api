@@ -52,6 +52,10 @@ var _vehicles = require('./vehicles');
 
 var vehicles = _interopRequireWildcard(_vehicles);
 
+var _navigation = require('./navigation');
+
+var navigation = _interopRequireWildcard(_navigation);
+
 var _video = require('./video');
 
 var _video2 = _interopRequireDefault(_video);
@@ -74,5 +78,6 @@ module.exports = {
   raw: raw,
   request: request,
   vehicles: vehicles,
-  video: _video2.default
+  video: _video2.default,
+  navigation: navigation
 };

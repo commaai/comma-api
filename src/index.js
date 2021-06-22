@@ -11,6 +11,7 @@ import * as leaderboard from './leaderboard';
 import * as raw from './raw';
 import * as request from './request';
 import * as vehicles from './vehicles';
+import * as navigation from './navigation';
 import video from './video';
 
 module.exports = {
@@ -28,4 +29,5 @@ module.exports = {
   request,
   vehicles,
   video,
+  navigation,
 };

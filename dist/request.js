@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.patch = exports.postForm = exports.post = exports.get = undefined;
+exports.del = exports.put = exports.patch = exports.postForm = exports.post = exports.get = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -136,6 +136,66 @@ var patch = exports.patch = function () {
 
   return function patch(_x7, _x8) {
     return _ref4.apply(this, arguments);
+  };
+}();
+
+var put = exports.put = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(endpoint, data) {
+    return _regenerator2.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return ensureInit();
+
+          case 2:
+            return _context5.abrupt('return', new _promise2.default(function (resolve, reject) {
+              request.put(endpoint, {
+                body: data,
+                json: true
+              }, _errorHandlerFn(resolve, reject));
+            }));
+
+          case 3:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+
+  return function put(_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var del = exports.del = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(endpoint, data) {
+    return _regenerator2.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return ensureInit();
+
+          case 2:
+            return _context6.abrupt('return', new _promise2.default(function (resolve, reject) {
+              request.delete(endpoint, {
+                body: data,
+                json: true
+              }, _errorHandlerFn(resolve, reject));
+            }));
+
+          case 3:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this);
+  }));
+
+  return function del(_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
