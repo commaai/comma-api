@@ -1,15 +1,28 @@
 'use strict';
 
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _builtinStatusCodes = require('builtin-status-codes');
+
+var _builtinStatusCodes2 = _interopRequireDefault(_builtinStatusCodes);
+
+var _queryString = require('query-string');
+
+var _queryString2 = _interopRequireDefault(_queryString);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var request = require('xhr-request');
-var join = require('url-join');
-var extend = require('xtend');
-var assign = require('xtend/mutable');
-var isFunction = require('is-function');
-var httpError = require('http-status-error');
-var isError = require('is-error-code');
-var jsonParse = require('safe-json-parse');
-var isObject = require('is-obj');
-var Query = require('query-string-flatten');
 
 module.exports = Client;
 
@@ -23,8 +36,7 @@ var defaultConfig = {
 };
 
 function Client(config) {
-  config = config || {};
-  config = extend(defaultConfig, config);
+  config = (0, _extends3.default)({}, defaultConfig, config ? config : {});
 
   Request.configure = configure;
   Request.config = config;
@@ -33,14 +45,14 @@ function Client(config) {
 
   function Request(path, options, callback) {
     path = path || '';
-    if (isFunction(options)) {
+    if (typeof options === 'function') {
       callback = options;
       options = {};
     }
-    options = extend(config.options, options);
+    options = (0, _extends3.default)({}, config.options, options);
     setQuery(options);
     setToken(options);
-    var url = join(config.baseUrl, path);
+    var url = config.baseUrl + (!url.endsWith('/') && !path.startsWith('/')) ? '/' : '' + path;
 
     return request(url, options, responseHandler(callback, {
       url: url,
@@ -52,6 +64,7 @@ function Client(config) {
     if (!options.token && !config.token) {
       return;
     }
+
     options.headers = options.headers || {};
     var keyName = options.authorization || config.authorization || 'Authorization';
     var token = options.token || config.token;
@@ -65,57 +78,59 @@ function Client(config) {
   }
 
   function responseHandler(callback, options) {
-    // var start = new Date()
-
-    return function handleResponse(err, data, response) {
-      // var end = new Date()
-
+    return function (err, data, response) {
       if (err) {
         return callback(err, null, response);
       }
 
-      if (isError(response.statusCode)) {
+      if (response.statusCode < 200 || response.statusCode >= 400) {
         return createError(data, response, function (err) {
-          callback(err, null, response);
+          return callback(err, null, response);
         });
       }
 
       var parse = options.parse || config.parse;
-      data = isFunction(parse) ? parse(data, response) : data;
+      data = typeof parse === 'function' ? parse(data, response) : data;
       callback(null, data, response);
     };
   }
 
   function configure(_config) {
-    assign(config, _config);
+    (0, _assign2.default)(config, _config);
   }
 }
 
 function setQuery(options) {
   var query = options.query;
-  if (!query) return;
-  options.query = (typeof query === 'string' ? String : Query)(query);
+  if (query) {
+    options.query = typeof query === 'string' ? query : _queryString2.default.stringify(query);
+  };
 }
 
 function createError(data, response, callback) {
-  var error = httpError(response.statusCode);
-  if (!data) return callback(error);
-  if (data) {
-    if (Array.isArray(data)) {
-      data = data[0];
-    }
-    if (isObject(data)) {
-      return callback(assign(error, data));
-    }
-    jsonParse(data, function (err, json) {
-      if (err) return callback(err);
-      callback(assign(error, json));
-    });
+  var error = _builtinStatusCodes2.default[response.statusCode];
+  if (!data) {
+    return callback(error);
+  }
+
+  if (Array.isArray(data)) {
+    data = data[0];
+  }
+
+  if ((typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data)) === 'object') {
+    return callback((0, _assign2.default)(error, data));
+  }
+
+  try {
+    var json = JSON.parse(data);
+    return callback((0, _assign2.default)(error, json));
+  } catch (err) {
+    return callback(err.message);
   }
 }
 
 function httpMethods(request) {
-  methods.forEach(function createMethod(method) {
+  methods.forEach(function (method) {
     request[method] = function (path, options, callback) {
       if (typeof options === 'function') {
         callback = options;

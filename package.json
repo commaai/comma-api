@@ -16,7 +16,9 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "builtin-status-codes": "^3.0.0",
     "joi-browser": "^13.4.0",
+    "query-string": "^7.0.1",
     "querystringify": "^2.1.1"
   }
 }
