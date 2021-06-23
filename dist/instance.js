@@ -68,7 +68,7 @@ var ConfigRequest = function () {
                 headers = (0, _extends3.default)({}, this.defaultHeaders);
                 body = undefined;
 
-                if (method === 'get' && method === 'head') {
+                if (method === 'get' || method === 'head') {
                   requestUrl += '?' + _queryString2.default.stringify(params);
                 } else if (use_json) {
                   body = (0, _stringify2.default)(params);

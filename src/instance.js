@@ -22,7 +22,7 @@ export default class ConfigRequest {
     let requestUrl = this.baseUrl + path;
     let headers = { ...this.defaultHeaders };
     let body = undefined;
-    if (method === 'get' && method === 'head') {
+    if (method === 'get' || method === 'head') {
       requestUrl += '?' + qs.stringify(params);
     } else if (use_json) {
       body = JSON.stringify(params);
