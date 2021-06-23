@@ -81,7 +81,7 @@ var ConfigRequest = function () {
                 body = undefined;
 
                 if (params && (0, _keys2.default)(params).length !== 0) {
-                  if (method === 'get' || method === 'head') {
+                  if (method === 'GET' || method === 'HEAD') {
                     requestUrl += '?' + _queryString2.default.stringify(params);
                   } else if (data_json) {
                     body = (0, _stringify2.default)(params);
@@ -131,8 +131,9 @@ var ConfigRequest = function () {
 exports.default = ConfigRequest;
 
 
-['get', 'post', 'put', 'patch', 'head', 'delete'].forEach(function (method) {
-  ConfigRequest.prototype[method] = function () {
+['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'DELETE'].forEach(function (method) {
+  var methodName = method.toLowerCase();
+  ConfigRequest.prototype[methodName] = function () {
     var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(path, params, data_json, resp_json) {
       return _regenerator2.default.wrap(function _callee2$(_context2) {
         while (1) {

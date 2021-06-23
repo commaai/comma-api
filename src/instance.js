@@ -30,7 +30,7 @@ export default class ConfigRequest {
     let requestUrl = this.baseUrl + path;
     let body = undefined;
     if (params && Object.keys(params).length !== 0) {
-      if (method === 'get' || method === 'head') {
+      if (method === 'GET' || method === 'HEAD') {
         requestUrl += '?' + qs.stringify(params);
       } else if (data_json) {
         body = JSON.stringify(params);
@@ -47,8 +47,9 @@ export default class ConfigRequest {
   }
 }
 
-['get', 'post', 'put', 'patch', 'head', 'delete'].forEach((method) => {
-  ConfigRequest.prototype[method] = async function(path, params, data_json, resp_json) {
+['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'DELETE'].forEach((method) => {
+  const methodName = method.toLowerCase();
+  ConfigRequest.prototype[methodName] = async function(path, params, data_json, resp_json) {
     return await this.request(method, path, params, data_json, resp_json);
   };
 });
