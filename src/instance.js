@@ -1,5 +1,12 @@
 import qs from 'query-string';
 
+export class RequestError extends Error {
+  constructor(resp, ...params) {
+    super(...params);
+    this.resp = resp;
+  }
+}
+
 export default class ConfigRequest {
   constructor(baseUrl) {
     this.defaultHeaders = {
@@ -40,6 +47,10 @@ export default class ConfigRequest {
     }
 
     const resp = await fetch(requestUrl, { method, headers, body });
+    if (!resp.ok) {
+      const error = await resp.text();
+      throw new RequestError(resp, `${resp.status}: ${error}`);
+    }
     if (!resp_json) {
       return resp;
     }
