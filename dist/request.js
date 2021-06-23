@@ -13,10 +13,6 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
 var get = exports.get = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, data) {
     return _regenerator2.default.wrap(function _callee$(_context) {
@@ -24,15 +20,10 @@ var get = exports.get = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return ensureInit();
+            return request.get(endpoint, data);
 
           case 2:
-            return _context.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.get(endpoint, {
-                query: data,
-                json: true
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context.abrupt('return', _context.sent);
 
           case 3:
           case 'end':
@@ -54,15 +45,10 @@ var post = exports.post = function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return ensureInit();
+            return request.post(endpoint, data);
 
           case 2:
-            return _context2.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.post(endpoint, {
-                body: data,
-                json: true
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context2.abrupt('return', _context2.sent);
 
           case 3:
           case 'end':
@@ -84,17 +70,10 @@ var postForm = exports.postForm = function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return ensureInit();
+            return request.post(endpoint, data, false);
 
           case 2:
-            return _context3.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.post(endpoint, {
-                body: _querystringify2.default.stringify(data),
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-                }
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context3.abrupt('return', _context3.sent);
 
           case 3:
           case 'end':
@@ -116,15 +95,10 @@ var patch = exports.patch = function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return ensureInit();
+            return request.patch(endpoint, data);
 
           case 2:
-            return _context4.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.patch(endpoint, {
-                body: data,
-                json: true
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context4.abrupt('return', _context4.sent);
 
           case 3:
           case 'end':
@@ -146,15 +120,10 @@ var put = exports.put = function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return ensureInit();
+            return request.put(endpoint, data);
 
           case 2:
-            return _context5.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.put(endpoint, {
-                body: data,
-                json: true
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context5.abrupt('return', _context5.sent);
 
           case 3:
           case 'end':
@@ -176,15 +145,10 @@ var del = exports.del = function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return ensureInit();
+            return request.del(endpoint, data);
 
           case 2:
-            return _context6.abrupt('return', new _promise2.default(function (resolve, reject) {
-              request.delete(endpoint, {
-                body: data,
-                json: true
-              }, _errorHandlerFn(resolve, reject));
-            }));
+            return _context6.abrupt('return', _context6.sent);
 
           case 3:
           case 'end':
@@ -201,51 +165,15 @@ var del = exports.del = function () {
 
 exports.configure = configure;
 
-var _instance = require('./instance');
+var _requestConfig = require('./request-config');
 
-var _instance2 = _interopRequireDefault(_instance);
-
-var _querystringify = require('querystringify');
-
-var _querystringify2 = _interopRequireDefault(_querystringify);
-
-var _errorHandler = require('./errorHandler');
-
-var _errorHandler2 = _interopRequireDefault(_errorHandler);
+var _requestConfig2 = _interopRequireDefault(_requestConfig);
 
 var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var request = (0, _instance2.default)();
-var _errorHandlerFn = _errorHandler2.default;
-
-var initPromise;
-function ensureInit() {
-  if (!initPromise) {
-    initPromise = configure();
-  }
-  return initPromise;
-}
-
-function configure(accessToken, errorHandler) {
-  var config = {
-    baseUrl: _config.COMMA_URL_ROOT,
-    jwt: false,
-    parse: null
-  };
-
-  if (accessToken) {
-    config.token = 'JWT ' + accessToken;
-  }
-
-  if (errorHandler) {
-    _errorHandlerFn = errorHandler;
-  } else {
-    _errorHandlerFn = _errorHandler2.default;
-  }
-
-  request.configure(config);
-  initPromise = _promise2.default.resolve();
-  return initPromise;
+var request = new _requestConfig2.default(_config.COMMA_URL_ROOT);
+function configure(accessToken) {
+  request.configure(accessToken);
 }

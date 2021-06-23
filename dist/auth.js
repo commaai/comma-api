@@ -15,7 +15,7 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var refreshAccessToken = exports.refreshAccessToken = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(code, redirect_uri, provider) {
-    var authResponseText, resp;
+    var resp;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -24,32 +24,28 @@ var refreshAccessToken = exports.refreshAccessToken = function () {
             return request.postForm('v2/auth/', { code: code, redirect_uri: redirect_uri, provider: provider });
 
           case 2:
-            authResponseText = _context.sent;
-            resp = JSON.parse(authResponseText);
+            resp = _context.sent;
 
             if (!(resp.access_token != null)) {
-              _context.next = 10;
+              _context.next = 8;
               break;
             }
 
-            _context.next = 7;
-            return request.configure(resp.access_token);
-
-          case 7:
+            request.configure(resp.access_token);
             return _context.abrupt('return', resp.access_token);
 
-          case 10:
+          case 8:
             if (!(resp.response !== undefined)) {
-              _context.next = 14;
+              _context.next = 12;
               break;
             }
 
             throw new Error('Could not exchange oauth code for access token: response ' + resp.response.status);
 
-          case 14:
+          case 12:
             throw new Error('Could not exchange oauth code for access token: response ' + authResponseText);
 
-          case 15:
+          case 13:
           case 'end':
             return _context.stop();
         }
