@@ -30,7 +30,7 @@ var getCached = function () {
             path = 'v1/route/' + routeName + '/' + endpoint;
 
             if (params !== undefined) {
-              path += '?' + _querystringify2.default.stringify(params);
+              path += '?' + _queryString2.default.stringify(params);
             }
             _context.next = 6;
             return request.get(path);
@@ -63,9 +63,9 @@ var getCached = function () {
 exports.getRouteFiles = getRouteFiles;
 exports.getLogUrls = getLogUrls;
 
-var _querystringify = require('querystringify');
+var _queryString = require('query-string');
 
-var _querystringify2 = _interopRequireDefault(_querystringify);
+var _queryString2 = _interopRequireDefault(_queryString);
 
 var _request = require('./request');
 

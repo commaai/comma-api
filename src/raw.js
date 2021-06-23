@@ -1,4 +1,4 @@
-import qs from 'querystringify';
+import qs from 'query-string';
 import * as request from './request';
 
 const urlStore = {};
