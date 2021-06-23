@@ -60,7 +60,6 @@ var ConfigRequest = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log(this);
                 if (use_json !== false) {
                   use_json = true;
                 }
@@ -78,19 +77,18 @@ var ConfigRequest = function () {
                   body = _queryString2.default.stringify(params);
                 }
 
-                console.log(requestUrl, method, headers, body);
-                _context.next = 9;
+                _context.next = 7;
                 return fetch(requestUrl, { method: method, headers: headers, body: body });
 
-              case 9:
+              case 7:
                 resp = _context.sent;
-                _context.next = 12;
+                _context.next = 10;
                 return resp.json();
 
-              case 12:
+              case 10:
                 return _context.abrupt('return', _context.sent);
 
-              case 13:
+              case 11:
               case 'end':
                 return _context.stop();
             }

@@ -10,13 +10,9 @@ var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
 exports.default = videoApi;
 
-var _urlJoin = require('url-join');
+var _instance = require('./instance');
 
-var _urlJoin2 = _interopRequireDefault(_urlJoin);
-
-var _configRequestPromise = require('./config-request-promise');
-
-var _configRequestPromise2 = _interopRequireDefault(_configRequestPromise);
+var _instance2 = _interopRequireDefault(_instance);
 
 var _config = require('./config');
 
@@ -32,27 +28,19 @@ function videoApi(routeSigUrl, videoServerHost) {
       dongleId = _routeSigUrl$split$sl2[0],
       routeSignature = _routeSigUrl$split$sl2[1];
 
-  var videoserverRequest = (0, _configRequestPromise2.default)();
   var videoserverBaseUrl = videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/';
-  videoserverRequest.configure({
-    baseUrl: videoserverBaseUrl,
-    parse: null
-  });
-  var storageRequest = (0, _configRequestPromise2.default)();
-  storageRequest.configure({
-    baseUrl: routeSigUrl + '/',
-    parse: null
-  });
+  var videoserverRequest = (0, _instance2.default)(videoserverBaseUrl);
+  var storageRequest = (0, _instance2.default)(routeSigUrl);
 
   return {
     getRearCameraStreamIndexUrl: function getRearCameraStreamIndexUrl() {
-      return (0, _urlJoin2.default)(videoserverBaseUrl, 'index.m3u8');
+      return videoserverBaseUrl + '/index.m3u8';
     },
     getFrontCameraStreamIndexUrl: function getFrontCameraStreamIndexUrl() {
-      return (0, _urlJoin2.default)(videoserverBaseUrl, 'dcamera/index.m3u8');
+      return videoserverBaseUrl + '/dcamera/index.m3u8';
     },
     getQcameraStreamIndexUrl: function getQcameraStreamIndexUrl() {
-      return (0, _urlJoin2.default)(routeSigUrl, 'qcamera.m3u8');
+      return routeSigUrl + '/qcamera.m3u8';
     },
     getRearCameraStreamIndex: function getRearCameraStreamIndex() {
       return videoserverRequest.get('index.m3u8');
@@ -60,7 +48,7 @@ function videoApi(routeSigUrl, videoServerHost) {
     getFrontCameraStreamIndexPath: function getFrontCameraStreamIndexPath() {
       return videoserverRequest.get('dcamera/index.m3u8');
     },
-    getQcameraStreamIndex: function getQcameraStreamIndex(max) {
+    getQcameraStreamIndex: function getQcameraStreamIndex() {
       return storageRequest.get('qcamera.m3u8');
     }
   };

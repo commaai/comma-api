@@ -1,21 +1,10 @@
-import urlJoin from 'url-join';
-import ConfigRequestPromise from './config-request-promise';
+import ConfigRequest from './instance';
 
 export default function routeApi(routeSigUrl) {
-  const request = ConfigRequestPromise();
-  const baseUrl = routeSigUrl + '/';
-  request.configure({
-    baseUrl,
-    parse: null,
-  })
+  const request = new ConfigRequest(routeSigUrl);
 
   return {
-    getCoords: async function() {
-      const coords = await request.get('route.coords');
-      return JSON.parse(coords);
-    },
-    getJpegUrl: function(routeOffsetSeconds) {
-      return urlJoin(baseUrl, 'sec' + routeOffsetSeconds.toString() + '.jpg')
-    },
+    getCoords: async () => await request.get('route.coords'),
+    getJpegUrl: (routeOffsetSeconds) => routeSigUrl + '/sec/' + routeOffsetSeconds.toString() + '.jpg',
   }
 }

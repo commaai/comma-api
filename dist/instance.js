@@ -1,20 +1,32 @@
 'use strict';
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _typeof3 = _interopRequireDefault(_typeof2);
+var _regenerator = require('babel-runtime/regenerator');
 
-var _assign = require('babel-runtime/core-js/object/assign');
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _assign2 = _interopRequireDefault(_assign);
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _builtinStatusCodes = require('builtin-status-codes');
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
-var _builtinStatusCodes2 = _interopRequireDefault(_builtinStatusCodes);
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _queryString = require('query-string');
 
@@ -22,126 +34,104 @@ var _queryString2 = _interopRequireDefault(_queryString);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var request = require('xhr-request');
+var ConfigRequest = function () {
+  function ConfigRequest(baseUrl) {
+    (0, _classCallCheck3.default)(this, ConfigRequest);
 
-module.exports = Client;
+    this.defaultHeaders = {
+      'Content-Type': 'application/json'
+    };
+    this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
+  }
 
-var methods = ['get', 'post', 'put', 'patch', 'head', 'delete'];
-
-var defaultConfig = {
-  baseUrl: 'http://localhost:8000',
-  jwt: false,
-  token: null,
-  options: {}
-};
-
-function Client(config) {
-  config = (0, _extends3.default)({}, defaultConfig, config ? config : {});
-
-  Request.configure = configure;
-  Request.config = config;
-
-  return httpMethods(Request);
-
-  function Request(path, options, callback) {
-    path = path || '';
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
+  (0, _createClass3.default)(ConfigRequest, [{
+    key: 'configure',
+    value: function configure(accessToken) {
+      if (accessToken) {
+        this.defaultHeaders['Authorization'] = 'JWT ' + accessToken;
+      }
     }
-    options = (0, _extends3.default)({}, config.options, options);
-    setQuery(options);
-    setToken(options);
-    var url = config.baseUrl + (!url.endsWith('/') && !path.startsWith('/')) ? '/' : '' + path;
+  }, {
+    key: 'request',
+    value: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(method, path, params, use_json) {
+        var requestUrl, headers, body, resp;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (use_json !== false) {
+                  use_json = true;
+                }
 
-    return request(url, options, responseHandler(callback, {
-      url: url,
-      method: options.method
+                requestUrl = this.baseUrl + path;
+                headers = (0, _extends3.default)({}, this.defaultHeaders);
+                body = undefined;
+
+                if (method === 'get' && method === 'head') {
+                  requestUrl += '?' + _queryString2.default.stringify(params);
+                } else if (use_json) {
+                  body = (0, _stringify2.default)(params);
+                } else {
+                  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                  body = _queryString2.default.stringify(params);
+                }
+
+                _context.next = 7;
+                return fetch(requestUrl, { method: method, headers: headers, body: body });
+
+              case 7:
+                resp = _context.sent;
+                _context.next = 10;
+                return resp.json();
+
+              case 10:
+                return _context.abrupt('return', _context.sent);
+
+              case 11:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function request(_x, _x2, _x3, _x4) {
+        return _ref.apply(this, arguments);
+      }
+
+      return request;
+    }()
+  }]);
+  return ConfigRequest;
+}();
+
+exports.default = ConfigRequest;
+
+
+['get', 'post', 'put', 'patch', 'head', 'delete'].forEach(function (method) {
+  ConfigRequest.prototype[method] = function () {
+    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(path, params, use_json) {
+      return _regenerator2.default.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.request(method, path, params, use_json);
+
+            case 2:
+              return _context2.abrupt('return', _context2.sent);
+
+            case 3:
+            case 'end':
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
     }));
-  }
 
-  function setToken(options) {
-    if (!options.token && !config.token) {
-      return;
-    }
-
-    options.headers = options.headers || {};
-    var keyName = options.authorization || config.authorization || 'Authorization';
-    var token = options.token || config.token;
-
-    if (options.jwt || config.jwt) {
-      token = 'Bearer ' + token;
-    }
-
-    options.headers[keyName] = token;
-    delete options.token;
-  }
-
-  function responseHandler(callback, options) {
-    return function (err, data, response) {
-      if (err) {
-        return callback(err, null, response);
-      }
-
-      if (response.statusCode < 200 || response.statusCode >= 400) {
-        return createError(data, response, function (err) {
-          return callback(err, null, response);
-        });
-      }
-
-      var parse = options.parse || config.parse;
-      data = typeof parse === 'function' ? parse(data, response) : data;
-      callback(null, data, response);
+    return function (_x5, _x6, _x7) {
+      return _ref2.apply(this, arguments);
     };
-  }
-
-  function configure(_config) {
-    (0, _assign2.default)(config, _config);
-  }
-}
-
-function setQuery(options) {
-  var query = options.query;
-  if (query) {
-    options.query = typeof query === 'string' ? query : _queryString2.default.stringify(query);
-  };
-}
-
-function createError(data, response, callback) {
-  var error = _builtinStatusCodes2.default[response.statusCode];
-  if (!data) {
-    return callback(error);
-  }
-
-  if (Array.isArray(data)) {
-    data = data[0];
-  }
-
-  if ((typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data)) === 'object') {
-    return callback((0, _assign2.default)(error, data));
-  }
-
-  try {
-    var json = JSON.parse(data);
-    return callback((0, _assign2.default)(error, json));
-  } catch (err) {
-    return callback(err.message);
-  }
-}
-
-function httpMethods(request) {
-  methods.forEach(function (method) {
-    request[method] = function (path, options, callback) {
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      options.method = method;
-
-      return request(path, options, callback);
-    };
-  });
-
-  return request;
-}
+  }();
+});

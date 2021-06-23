@@ -1,4 +1,4 @@
-import ConfigRequest from './request-config';
+import ConfigRequest from './instance';
 import { COMMA_URL_ROOT } from './config';
 
 let request = new ConfigRequest(COMMA_URL_ROOT);

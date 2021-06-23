@@ -165,15 +165,15 @@ var del = exports.del = function () {
 
 exports.configure = configure;
 
-var _requestConfig = require('./request-config');
+var _instance = require('./instance');
 
-var _requestConfig2 = _interopRequireDefault(_requestConfig);
+var _instance2 = _interopRequireDefault(_instance);
 
 var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var request = new _requestConfig2.default(_config.COMMA_URL_ROOT);
+var request = new _instance2.default(_config.COMMA_URL_ROOT);
 function configure(accessToken) {
   request.configure(accessToken);
 }

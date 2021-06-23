@@ -12,4 +12,3 @@ export async function refreshAccessToken(code, redirect_uri, provider) {
     throw new Error('Could not exchange oauth code for access token: response ' + authResponseText);
   }
 }
-
