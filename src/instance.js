@@ -14,30 +14,41 @@ export default class ConfigRequest {
     }
   }
 
-  async request(method, path, params, use_json) {
-    if (use_json !== false) {
-      use_json = true;
+  async request(method, path, params, data_json, resp_json) {
+    if (data_json !== false) {
+      data_json = true;
+    }
+    if (resp_json !== false) {
+      resp_json = true;
+    }
+
+    let headers = { ...this.defaultHeaders };
+    if (!data_json) {
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
     let requestUrl = this.baseUrl + path;
-    let headers = { ...this.defaultHeaders };
     let body = undefined;
-    if (method === 'get' || method === 'head') {
-      requestUrl += '?' + qs.stringify(params);
-    } else if (use_json) {
-      body = JSON.stringify(params);
-    } else {
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
-      body = qs.stringify(params);
+    if (params && Object.keys(params).length !== 0) {
+      if (method === 'get' || method === 'head') {
+        requestUrl += '?' + qs.stringify(params);
+      } else if (data_json) {
+        body = JSON.stringify(params);
+      } else {
+        body = qs.stringify(params);
+      }
     }
 
     const resp = await fetch(requestUrl, { method, headers, body });
+    if (!resp_json) {
+      return resp;
+    }
     return await resp.json();
   }
 }
 
 ['get', 'post', 'put', 'patch', 'head', 'delete'].forEach((method) => {
-  ConfigRequest.prototype[method] = async function(path, params, use_json) {
-    return await this.request(method, path, params, use_json);
+  ConfigRequest.prototype[method] = async function(path, params, data_json, resp_json) {
+    return await this.request(method, path, params, data_json, resp_json);
   };
 });
