@@ -27,5 +27,5 @@ export async function put(endpoint, data) {
 }
 
 export async function del(endpoint, data) {
-  return await request.del(endpoint, data);
+  return await request.delete(endpoint, data);
 }

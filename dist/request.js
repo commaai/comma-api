@@ -145,7 +145,7 @@ var del = exports.del = function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return request.del(endpoint, data);
+            return request.delete(endpoint, data);
 
           case 2:
             return _context6.abrupt('return', _context6.sent);
