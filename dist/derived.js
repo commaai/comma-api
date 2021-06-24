@@ -14,28 +14,20 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 exports.default = routeApi;
 
-var _urlJoin = require('url-join');
+var _instance = require('./instance');
 
-var _urlJoin2 = _interopRequireDefault(_urlJoin);
-
-var _configRequestPromise = require('./config-request-promise');
-
-var _configRequestPromise2 = _interopRequireDefault(_configRequestPromise);
+var _instance2 = _interopRequireDefault(_instance);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function routeApi(routeSigUrl) {
-  var request = (0, _configRequestPromise2.default)();
-  var baseUrl = routeSigUrl + '/';
-  request.configure({
-    baseUrl: baseUrl,
-    parse: null
-  });
+  var _this = this;
+
+  var request = new _instance2.default(routeSigUrl);
 
   return {
     getCoords: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-        var coords;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -44,25 +36,22 @@ function routeApi(routeSigUrl) {
                 return request.get('route.coords');
 
               case 2:
-                coords = _context.sent;
-                return _context.abrupt('return', JSON.parse(coords));
+                return _context.abrupt('return', _context.sent);
 
-              case 4:
+              case 3:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, _this);
       }));
 
-      function getCoords() {
+      return function getCoords() {
         return _ref.apply(this, arguments);
-      }
-
-      return getCoords;
+      };
     }(),
     getJpegUrl: function getJpegUrl(routeOffsetSeconds) {
-      return (0, _urlJoin2.default)(baseUrl, 'sec' + routeOffsetSeconds.toString() + '.jpg');
+      return routeSigUrl + '/sec/' + routeOffsetSeconds.toString() + '.jpg';
     }
   };
 }

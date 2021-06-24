@@ -5,7 +5,6 @@ import * as auth from './auth';
 import * as billing from './billing';
 import * as devices from './devices';
 import derived from './derived';
-import errorHandler from './errorHandler';
 import * as drives from './drives';
 import * as leaderboard from './leaderboard';
 import * as raw from './raw';
@@ -23,7 +22,6 @@ module.exports = {
   devices,
   derived,
   drives,
-  errorHandler,
   leaderboard,
   raw,
   request,

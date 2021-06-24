@@ -1,5 +1,4 @@
-import urlJoin from 'url-join';
-import ConfigRequestPromise from './config-request-promise';
+import ConfigRequest from './instance';
 import { VIDEO_HOST } from './config';
 
 export default function videoApi(routeSigUrl, videoServerHost) {
@@ -8,36 +7,16 @@ export default function videoApi(routeSigUrl, videoServerHost) {
   }
   let [dongleId, routeSignature] = routeSigUrl.split('/').slice(5,7);
 
-  const videoserverRequest = ConfigRequestPromise();
-  const videoserverBaseUrl = videoServerHost + '/hls/' + dongleId + '/' + routeSignature + '/';
-  videoserverRequest.configure({
-    baseUrl: videoserverBaseUrl,
-    parse: null,
-  });
-  const storageRequest = ConfigRequestPromise();
-  storageRequest.configure({
-    baseUrl: routeSigUrl + '/',
-    parse: null,
-  });
+  const videoserverBaseUrl = videoServerHost + '/hls/' + dongleId + '/' + routeSignature;
+  const videoserverRequest = new ConfigRequest(videoserverBaseUrl);
+  const storageRequest = new ConfigRequest(routeSigUrl);
 
   return {
-    getRearCameraStreamIndexUrl: function() {
-      return urlJoin(videoserverBaseUrl, 'index.m3u8');
-    },
-    getFrontCameraStreamIndexUrl: function() {
-      return urlJoin(videoserverBaseUrl, 'dcamera/index.m3u8');
-    },
-    getQcameraStreamIndexUrl: function() {
-      return urlJoin(routeSigUrl, 'qcamera.m3u8');
-    },
-    getRearCameraStreamIndex: function() {
-      return videoserverRequest.get('index.m3u8');
-    },
-    getFrontCameraStreamIndexPath: function() {
-      return videoserverRequest.get('dcamera/index.m3u8');
-    },
-    getQcameraStreamIndex: function(max) {
-      return storageRequest.get('qcamera.m3u8');
-    },
+    getRearCameraStreamIndexUrl: () => videoserverBaseUrl + '/index.m3u8',
+    getFrontCameraStreamIndexUrl: () => videoserverBaseUrl + '/dcamera/index.m3u8',
+    getQcameraStreamIndexUrl: () => routeSigUrl + '/qcamera.m3u8',
+    getRearCameraStreamIndex: () => videoserverRequest.get('index.m3u8', null, false, false),
+    getFrontCameraStreamIndexPath: () => videoserverRequest.get('dcamera/index.m3u8', null, false, false),
+    getQcameraStreamIndex: () =>  storageRequest.get('qcamera.m3u8', null, false, false),
   }
 }

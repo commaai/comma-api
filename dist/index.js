@@ -28,10 +28,6 @@ var _derived = require('./derived');
 
 var _derived2 = _interopRequireDefault(_derived);
 
-var _errorHandler = require('./errorHandler');
-
-var _errorHandler2 = _interopRequireDefault(_errorHandler);
-
 var _drives = require('./drives');
 
 var drives = _interopRequireWildcard(_drives);
@@ -73,7 +69,6 @@ module.exports = {
   devices: devices,
   derived: _derived2.default,
   drives: drives,
-  errorHandler: _errorHandler2.default,
   leaderboard: leaderboard,
   raw: raw,
   request: request,
