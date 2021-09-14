@@ -1,7 +1,7 @@
 import * as request from './request';
 
-export async function refreshAccessToken(code, redirect_uri, provider) {
-  const resp = await request.postForm('v2/auth/', { code, redirect_uri, provider });
+export async function refreshAccessToken(code, provider) {
+  const resp = await request.postForm('v2/auth/', { code, provider });
 
   if (resp.access_token != null) {
     request.configure(resp.access_token);
