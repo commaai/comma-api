@@ -25,3 +25,7 @@ export async function updatePaymentMethod(stripe_token) {
 export async function cancelPrime(dongleId) {
   return await request.post('v1/prime/cancel', { dongle_id: dongleId });
 }
+
+export async function getSimValid(dongleId, simId) {
+  return await request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
+}

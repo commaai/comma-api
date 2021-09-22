@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cancelPrime = exports.updatePaymentMethod = exports.getPaymentMethod = exports.payForPrime = exports.getSubscription = undefined;
+exports.getSimValid = exports.cancelPrime = exports.updatePaymentMethod = exports.getPaymentMethod = exports.payForPrime = exports.getSubscription = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -135,6 +135,31 @@ var cancelPrime = exports.cancelPrime = function () {
 
   return function cancelPrime(_x6) {
     return _ref5.apply(this, arguments);
+  };
+}();
+
+var getSimValid = exports.getSimValid = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(dongleId, simId) {
+    return _regenerator2.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
+
+          case 2:
+            return _context6.abrupt('return', _context6.sent);
+
+          case 3:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this);
+  }));
+
+  return function getSimValid(_x7, _x8) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
