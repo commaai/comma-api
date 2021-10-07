@@ -7,8 +7,11 @@ export async function refreshAccessToken(code, provider) {
     request.configure(resp.access_token);
     return resp.access_token;
   } else if (resp.response !== undefined) {
-    throw new Error('Could not exchange oauth code for access token: response ' + resp.response.status);
+    throw new Error('Could not exchange oauth code for access token: response ' + resp.response);
+  } else if (resp.error !== undefined) {
+    throw new Error('Could not exchange oauth code for access token: error ' + resp.error);
   } else {
-    throw new Error('Could not exchange oauth code for access token: response ' + authResponseText);
+    console.log(resp);
+    throw new Error(`Could not exchange oauth code for access token`);
   }
 }

@@ -40,12 +40,21 @@ var refreshAccessToken = exports.refreshAccessToken = function () {
               break;
             }
 
-            throw new Error('Could not exchange oauth code for access token: response ' + resp.response.status);
+            throw new Error('Could not exchange oauth code for access token: response ' + resp.response);
 
           case 12:
-            throw new Error('Could not exchange oauth code for access token: response ' + authResponseText);
+            if (!(resp.error !== undefined)) {
+              _context.next = 16;
+              break;
+            }
 
-          case 13:
+            throw new Error('Could not exchange oauth code for access token: error ' + resp.error);
+
+          case 16:
+            console.log(resp);
+            throw new Error('Could not exchange oauth code for access token');
+
+          case 18:
           case 'end':
             return _context.stop();
         }

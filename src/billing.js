@@ -10,22 +10,22 @@ export async function getSubscription(dongleId) {
   return await request.get('v1/prime/subscription', { dongle_id: dongleId });
 }
 
-export async function payForPrime(dongleId, simId, stripeToken) {
-  return await request.post('v1/prime/pay', { dongle_id: dongleId, sim_id: simId, stripe_token: stripeToken });
-}
-
-export async function getPaymentMethod() {
-  return await request.get('v1/prime/payment_source');
-}
-
-export async function updatePaymentMethod(stripe_token) {
-  return await request.post('v1/prime/payment_source', { stripe_token });
-}
-
 export async function cancelPrime(dongleId) {
   return await request.post('v1/prime/cancel', { dongle_id: dongleId });
 }
 
 export async function getSimValid(dongleId, simId) {
   return await request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
+}
+
+export async function getStripeCheckout(dongleId, simId) {
+  return await request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId });
+}
+
+export async function getStripePortal(dongleId) {
+  return await request.get('v1/prime/stripe_portal', { dongle_id: dongleId });
+}
+
+export async function getStripeSession(dongleId, sessionId) {
+  return await request.get('v1/prime/stripe_session', { dongle_id: dongleId, session_id: sessionId });
 }
