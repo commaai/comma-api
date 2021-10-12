@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getStripeSession = exports.getStripePortal = exports.getStripeCheckout = exports.getSimValid = exports.cancelPrime = exports.getSubscription = undefined;
+exports.getStripeSession = exports.getStripePortal = exports.getStripeCheckout = exports.getSimValid = exports.cancelPrime = exports.getSubscribeInfo = exports.getSubscription = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -38,14 +38,14 @@ var getSubscription = exports.getSubscription = function () {
   };
 }();
 
-var cancelPrime = exports.cancelPrime = function () {
+var getSubscribeInfo = exports.getSubscribeInfo = function () {
   var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(dongleId) {
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return request.post('v1/prime/cancel', { dongle_id: dongleId });
+            return request.get('v1/prime/subscribe_info', { dongle_id: dongleId });
 
           case 2:
             return _context2.abrupt('return', _context2.sent);
@@ -58,19 +58,19 @@ var cancelPrime = exports.cancelPrime = function () {
     }, _callee2, this);
   }));
 
-  return function cancelPrime(_x2) {
+  return function getSubscribeInfo(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var getSimValid = exports.getSimValid = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(dongleId, simId) {
+var cancelPrime = exports.cancelPrime = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(dongleId) {
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
+            return request.post('v1/prime/cancel', { dongle_id: dongleId });
 
           case 2:
             return _context3.abrupt('return', _context3.sent);
@@ -83,19 +83,19 @@ var getSimValid = exports.getSimValid = function () {
     }, _callee3, this);
   }));
 
-  return function getSimValid(_x3, _x4) {
+  return function cancelPrime(_x3) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-var getStripeCheckout = exports.getStripeCheckout = function () {
+var getSimValid = exports.getSimValid = function () {
   var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(dongleId, simId) {
     return _regenerator2.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId });
+            return request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
 
           case 2:
             return _context4.abrupt('return', _context4.sent);
@@ -108,19 +108,19 @@ var getStripeCheckout = exports.getStripeCheckout = function () {
     }, _callee4, this);
   }));
 
-  return function getStripeCheckout(_x5, _x6) {
+  return function getSimValid(_x4, _x5) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-var getStripePortal = exports.getStripePortal = function () {
-  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(dongleId) {
+var getStripeCheckout = exports.getStripeCheckout = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(dongleId, simId) {
     return _regenerator2.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return request.get('v1/prime/stripe_portal', { dongle_id: dongleId });
+            return request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId });
 
           case 2:
             return _context5.abrupt('return', _context5.sent);
@@ -133,19 +133,19 @@ var getStripePortal = exports.getStripePortal = function () {
     }, _callee5, this);
   }));
 
-  return function getStripePortal(_x7) {
+  return function getStripeCheckout(_x6, _x7) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-var getStripeSession = exports.getStripeSession = function () {
-  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(dongleId, sessionId) {
+var getStripePortal = exports.getStripePortal = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(dongleId) {
     return _regenerator2.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return request.get('v1/prime/stripe_session', { dongle_id: dongleId, session_id: sessionId });
+            return request.get('v1/prime/stripe_portal', { dongle_id: dongleId });
 
           case 2:
             return _context6.abrupt('return', _context6.sent);
@@ -158,8 +158,33 @@ var getStripeSession = exports.getStripeSession = function () {
     }, _callee6, this);
   }));
 
-  return function getStripeSession(_x8, _x9) {
+  return function getStripePortal(_x8) {
     return _ref6.apply(this, arguments);
+  };
+}();
+
+var getStripeSession = exports.getStripeSession = function () {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(dongleId, sessionId) {
+    return _regenerator2.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return request.get('v1/prime/stripe_session', { dongle_id: dongleId, session_id: sessionId });
+
+          case 2:
+            return _context7.abrupt('return', _context7.sent);
+
+          case 3:
+          case 'end':
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this);
+  }));
+
+  return function getStripeSession(_x9, _x10) {
+    return _ref7.apply(this, arguments);
   };
 }();
 

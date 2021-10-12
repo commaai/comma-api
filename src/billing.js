@@ -10,6 +10,10 @@ export async function getSubscription(dongleId) {
   return await request.get('v1/prime/subscription', { dongle_id: dongleId });
 }
 
+export async function getSubscribeInfo(dongleId) {
+  return await request.get('v1/prime/subscribe_info', { dongle_id: dongleId });
+}
+
 export async function cancelPrime(dongleId) {
   return await request.post('v1/prime/cancel', { dongle_id: dongleId });
 }
