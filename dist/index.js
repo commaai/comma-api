@@ -4,10 +4,6 @@ var _account = require('./account');
 
 var account = _interopRequireWildcard(_account);
 
-var _annotations = require('./annotations');
-
-var annotations = _interopRequireWildcard(_annotations);
-
 var _athena = require('./athena');
 
 var athena = _interopRequireWildcard(_athena);
@@ -44,10 +40,6 @@ var _request = require('./request');
 
 var request = _interopRequireWildcard(_request);
 
-var _vehicles = require('./vehicles');
-
-var vehicles = _interopRequireWildcard(_vehicles);
-
 var _navigation = require('./navigation');
 
 var navigation = _interopRequireWildcard(_navigation);
@@ -62,7 +54,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 module.exports = {
   account: account,
-  annotations: annotations,
   athena: athena,
   auth: auth,
   billing: billing,
@@ -72,7 +63,6 @@ module.exports = {
   leaderboard: leaderboard,
   raw: raw,
   request: request,
-  vehicles: vehicles,
   video: _video2.default,
   navigation: navigation
 };

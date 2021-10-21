@@ -17,8 +17,3 @@ var BILLING_URL_ROOT = exports.BILLING_URL_ROOT = 'https://billing.comma.ai/';
 if (typeof window !== 'undefined' && window.BILLING_URL_ROOT) {
   exports.BILLING_URL_ROOT = BILLING_URL_ROOT = window.BILLING_URL_ROOT;
 }
-
-var VIDEO_HOST = exports.VIDEO_HOST = 'https://my-comma-video.azureedge.net';
-if (typeof window !== 'undefined' && window.VIDEO_HOST) {
-  exports.VIDEO_HOST = VIDEO_HOST = window.VIDEO_HOST;
-}
