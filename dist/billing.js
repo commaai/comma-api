@@ -114,13 +114,13 @@ var getSimValid = exports.getSimValid = function () {
 }();
 
 var getStripeCheckout = exports.getStripeCheckout = function () {
-  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(dongleId, simId) {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(dongleId, simId, plan) {
     return _regenerator2.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId });
+            return request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId, plan: plan });
 
           case 2:
             return _context5.abrupt('return', _context5.sent);
@@ -133,7 +133,7 @@ var getStripeCheckout = exports.getStripeCheckout = function () {
     }, _callee5, this);
   }));
 
-  return function getStripeCheckout(_x6, _x7) {
+  return function getStripeCheckout(_x6, _x7, _x8) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -158,7 +158,7 @@ var getStripePortal = exports.getStripePortal = function () {
     }, _callee6, this);
   }));
 
-  return function getStripePortal(_x8) {
+  return function getStripePortal(_x9) {
     return _ref6.apply(this, arguments);
   };
 }();
@@ -183,7 +183,7 @@ var getStripeSession = exports.getStripeSession = function () {
     }, _callee7, this);
   }));
 
-  return function getStripeSession(_x9, _x10) {
+  return function getStripeSession(_x10, _x11) {
     return _ref7.apply(this, arguments);
   };
 }();

@@ -22,8 +22,8 @@ export async function getSimValid(dongleId, simId) {
   return await request.get('v1/prime/sim_valid', { dongle_id: dongleId, sim_id: simId });
 }
 
-export async function getStripeCheckout(dongleId, simId) {
-  return await request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId });
+export async function getStripeCheckout(dongleId, simId, plan) {
+  return await request.post('v1/prime/stripe_checkout', { dongle_id: dongleId, sim_id: simId, plan: plan });
 }
 
 export async function getStripePortal(dongleId) {
