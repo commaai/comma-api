@@ -2,31 +2,37 @@ import qs from 'query-string';
 import * as request from './request';
 
 const urlStore = {};
-export function getRouteFiles (routeName) {
-  return getCached('files', routeName);
+export function getRouteFiles(routeName, nocache=false) {
+  return getCached(`v1/route/${routeName}/files`, undefined, nocache);
 }
 
-export function getLogUrls (routeName, params) {
-  return getCached('log_urls', routeName, params);
+export function getLogUrls(routeName, params) {
+  return getCached(`v1/route/${routeName}/log_urls`, params);
 }
 
-async function getCached (endpoint, routeName, params) {
+export function getUploadUrl(dongleId, path, expiry) {
+  return getCached(`v1.4/${dongleId}/upload_url/`, {
+    path: path,
+    expiry_days: expiry,
+  });
+}
+
+async function getCached(endpoint, params, nocache) {
   // don't bother bouncing because the URLs themselves expire
   // our expiry time is from initial fetch time, not most recent access
-  if (urlStore[routeName]) {
-    return urlStore[routeName];
-  }
-  var path = 'v1/route/' + routeName + '/' + endpoint;
   if (params !== undefined) {
-    path += '?' + qs.stringify(params);
+    endpoint += '?' + qs.stringify(params);
   }
-  var data = await request.get(path);
 
-  urlStore[routeName] = data;
+  if (urlStore[endpoint] && !nocache) {
+    return urlStore[endpoint];
+  }
+
+  urlStore[endpoint] = await request.get(endpoint);
 
   setTimeout(function() {
-    delete urlStore[routeName];
+    delete urlStore[endpoint];
   }, 1000 * 60 * 45); // expires in 1h, lets reset in 45m
 
-  return urlStore[routeName];
+  return urlStore[endpoint];
 }

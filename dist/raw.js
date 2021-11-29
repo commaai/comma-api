@@ -13,41 +13,39 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var getCached = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, routeName, params) {
-    var path, data;
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, params, nocache) {
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (!urlStore[routeName]) {
-              _context.next = 2;
+            // don't bother bouncing because the URLs themselves expire
+            // our expiry time is from initial fetch time, not most recent access
+            if (params !== undefined) {
+              endpoint += '?' + _queryString2.default.stringify(params);
+            }
+
+            if (!(urlStore[endpoint] && !nocache)) {
+              _context.next = 3;
               break;
             }
 
-            return _context.abrupt('return', urlStore[routeName]);
+            return _context.abrupt('return', urlStore[endpoint]);
 
-          case 2:
-            path = 'v1/route/' + routeName + '/' + endpoint;
+          case 3:
+            _context.next = 5;
+            return request.get(endpoint);
 
-            if (params !== undefined) {
-              path += '?' + _queryString2.default.stringify(params);
-            }
-            _context.next = 6;
-            return request.get(path);
+          case 5:
+            urlStore[endpoint] = _context.sent;
 
-          case 6:
-            data = _context.sent;
-
-
-            urlStore[routeName] = data;
 
             setTimeout(function () {
-              delete urlStore[routeName];
+              delete urlStore[endpoint];
             }, 1000 * 60 * 45); // expires in 1h, lets reset in 45m
 
-            return _context.abrupt('return', urlStore[routeName]);
+            return _context.abrupt('return', urlStore[endpoint]);
 
-          case 10:
+          case 8:
           case 'end':
             return _context.stop();
         }
@@ -55,13 +53,14 @@ var getCached = function () {
     }, _callee, this);
   }));
 
-  return function getCached(_x, _x2, _x3) {
+  return function getCached(_x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
 
 exports.getRouteFiles = getRouteFiles;
 exports.getLogUrls = getLogUrls;
+exports.getUploadUrl = getUploadUrl;
 
 var _queryString = require('query-string');
 
@@ -77,9 +76,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var urlStore = {};
 function getRouteFiles(routeName) {
-  return getCached('files', routeName);
+  var nocache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  return getCached('v1/route/' + routeName + '/files', undefined, nocache);
 }
 
 function getLogUrls(routeName, params) {
-  return getCached('log_urls', routeName, params);
+  return getCached('v1/route/' + routeName + '/log_urls', params);
+}
+
+function getUploadUrl(dongleId, path, expiry) {
+  return getCached('v1.4/' + dongleId + '/upload_url/', {
+    path: path,
+    expiry_days: expiry
+  });
 }
