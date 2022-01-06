@@ -65,6 +65,7 @@ exports.pilotPair = pilotPair;
 exports.fetchDeviceStats = fetchDeviceStats;
 exports.unpair = unpair;
 exports.fetchDeviceOwner = fetchDeviceOwner;
+exports.getAthenaQueue = getAthenaQueue;
 
 var _request = require('./request');
 
@@ -119,4 +120,8 @@ function unpair(dongleId) {
 
 function fetchDeviceOwner(dongleId) {
   return request.get('v1/devices/' + dongleId + '/owner');
+}
+
+function getAthenaQueue(dongleId) {
+  return request.get('v1/devices/' + dongleId + '/athena_offline_queue');
 }

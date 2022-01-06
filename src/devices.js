@@ -58,3 +58,7 @@ export function unpair(dongleId) {
 export function fetchDeviceOwner(dongleId) {
   return request.get('v1/devices/' + dongleId + '/owner');
 }
+
+export function getAthenaQueue(dongleId) {
+  return request.get(`v1/devices/${dongleId}/athena_offline_queue`);
+}
