@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getUploadUrls = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -12,11 +13,39 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var getCached = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(endpoint, params, nocache) {
+var getUploadUrls = exports.getUploadUrls = function () {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(dongleId, paths, expiry) {
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return request.post('v1/' + dongleId + '/upload_urls/', {
+              paths: paths,
+              expiry_days: expiry
+            });
+
+          case 2:
+            return _context.abrupt('return', _context.sent);
+
+          case 3:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function getUploadUrls(_x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var getCached = function () {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(endpoint, params, nocache) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             // don't bother bouncing because the URLs themselves expire
             // our expiry time is from initial fetch time, not most recent access
@@ -25,36 +54,36 @@ var getCached = function () {
             }
 
             if (!(urlStore[endpoint] && !nocache)) {
-              _context.next = 3;
+              _context2.next = 3;
               break;
             }
 
-            return _context.abrupt('return', urlStore[endpoint]);
+            return _context2.abrupt('return', urlStore[endpoint]);
 
           case 3:
-            _context.next = 5;
+            _context2.next = 5;
             return request.get(endpoint);
 
           case 5:
-            urlStore[endpoint] = _context.sent;
+            urlStore[endpoint] = _context2.sent;
 
 
             setTimeout(function () {
               delete urlStore[endpoint];
             }, 1000 * 60 * 45); // expires in 1h, lets reset in 45m
 
-            return _context.abrupt('return', urlStore[endpoint]);
+            return _context2.abrupt('return', urlStore[endpoint]);
 
           case 8:
           case 'end':
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, this);
+    }, _callee2, this);
   }));
 
-  return function getCached(_x2, _x3, _x4) {
-    return _ref.apply(this, arguments);
+  return function getCached(_x5, _x6, _x7) {
+    return _ref2.apply(this, arguments);
   };
 }();
 

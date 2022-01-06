@@ -17,6 +17,13 @@ export function getUploadUrl(dongleId, path, expiry) {
   });
 }
 
+export async function getUploadUrls(dongleId, paths, expiry) {
+  return await request.post(`v1/${dongleId}/upload_urls/`, {
+    paths: paths,
+    expiry_days: expiry,
+  });
+}
+
 async function getCached(endpoint, params, nocache) {
   // don't bother bouncing because the URLs themselves expire
   // our expiry time is from initial fetch time, not most recent access

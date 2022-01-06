@@ -28,12 +28,13 @@ function routeApi(routeSigUrl) {
   return {
     getCoords: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        var cache_key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return request.get('route.coords');
+                return request.get('route.coords?s=' + cache_key);
 
               case 2:
                 return _context.abrupt('return', _context.sent);
