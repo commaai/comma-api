@@ -9,6 +9,7 @@ import * as leaderboard from './leaderboard';
 import * as raw from './raw';
 import * as request from './request';
 import * as navigation from './navigation';
+import * as clips from './clips';
 import video from './video';
 
 module.exports = {
@@ -24,4 +25,5 @@ module.exports = {
   request,
   video,
   navigation,
+  clips,
 };

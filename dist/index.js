@@ -44,6 +44,10 @@ var _navigation = require('./navigation');
 
 var navigation = _interopRequireWildcard(_navigation);
 
+var _clips = require('./clips');
+
+var clips = _interopRequireWildcard(_clips);
+
 var _video = require('./video');
 
 var _video2 = _interopRequireDefault(_video);
@@ -64,5 +68,6 @@ module.exports = {
   raw: raw,
   request: request,
   video: _video2.default,
-  navigation: navigation
+  navigation: navigation,
+  clips: clips
 };
