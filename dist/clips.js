@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.clipsDetails = exports.clipsList = exports.clipsCreate = undefined;
+exports.clipsDelete = exports.clipsUpdate = exports.clipsDetails = exports.clipsList = exports.clipsCreate = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -92,6 +92,56 @@ var clipsDetails = exports.clipsDetails = function () {
 
   return function clipsDetails(_x8, _x9) {
     return _ref3.apply(this, arguments);
+  };
+}();
+
+var clipsUpdate = exports.clipsUpdate = function () {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(dongle_id, clip_id, is_public) {
+    return _regenerator2.default.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return request.patch('v1/clips/update', { dongle_id: dongle_id, clip_id: clip_id, is_public: is_public });
+
+          case 2:
+            return _context4.abrupt('return', _context4.sent);
+
+          case 3:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+
+  return function clipsUpdate(_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var clipsDelete = exports.clipsDelete = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(dongle_id, clip_id) {
+    return _regenerator2.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return request.del('v1/clips/update', { dongle_id: dongle_id, clip_id: clip_id });
+
+          case 2:
+            return _context5.abrupt('return', _context5.sent);
+
+          case 3:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+
+  return function clipsDelete(_x13, _x14) {
+    return _ref5.apply(this, arguments);
   };
 }();
 

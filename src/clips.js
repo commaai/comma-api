@@ -18,3 +18,11 @@ export async function clipsList(dongle_id) {
 export async function clipsDetails(dongle_id, clip_id) {
   return await request.get('v1/clips/details', { dongle_id, clip_id });
 }
+
+export async function clipsUpdate(dongle_id, clip_id, is_public) {
+  return await request.patch('v1/clips/update', { dongle_id, clip_id, is_public });
+}
+
+export async function clipsDelete(dongle_id, clip_id) {
+  return await request.del('v1/clips/update', { dongle_id, clip_id });
+}
