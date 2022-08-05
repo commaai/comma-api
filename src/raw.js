@@ -2,8 +2,8 @@ import qs from 'query-string';
 import * as request from './request';
 
 const urlStore = {};
-export function getRouteFiles(routeName, nocache=false) {
-  return getCached(`v1/route/${routeName}/files`, undefined, nocache);
+export function getRouteFiles(routeName, nocache=false, params=undefined) {
+  return getCached(`v1/route/${routeName}/files`, params, nocache);
 }
 
 export function getLogUrls(routeName, params) {

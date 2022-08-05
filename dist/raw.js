@@ -36,7 +36,7 @@ var getUploadUrls = exports.getUploadUrls = function () {
     }, _callee, this);
   }));
 
-  return function getUploadUrls(_x2, _x3, _x4) {
+  return function getUploadUrls(_x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -82,7 +82,7 @@ var getCached = function () {
     }, _callee2, this);
   }));
 
-  return function getCached(_x5, _x6, _x7) {
+  return function getCached(_x6, _x7, _x8) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -106,8 +106,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var urlStore = {};
 function getRouteFiles(routeName) {
   var nocache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
 
-  return getCached('v1/route/' + routeName + '/files', undefined, nocache);
+  return getCached('v1/route/' + routeName + '/files', params, nocache);
 }
 
 function getLogUrls(routeName, params) {
