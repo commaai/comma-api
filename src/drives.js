@@ -17,6 +17,13 @@ export function getSegmentMetadata (start, end, dongleId) {
   });
 }
 
+export function getRoutesSegments(dongleId, start, end) {
+  return request.get('v1/devices/' + dongleId + '/routes_segments', {
+    start: start,
+    end: end,
+  });
+}
+
 export function getRouteInfo(routeName) {
   return request.get('v1/route/' + routeName + '/');
 }

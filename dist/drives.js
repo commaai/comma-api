@@ -51,6 +51,7 @@ var fetchRoutes = exports.fetchRoutes = function () {
 }();
 
 exports.getSegmentMetadata = getSegmentMetadata;
+exports.getRoutesSegments = getRoutesSegments;
 exports.getRouteInfo = getRouteInfo;
 exports.setRouteRating = setRouteRating;
 exports.getShareSignature = getShareSignature;
@@ -71,6 +72,13 @@ function getSegmentMetadata(start, end, dongleId) {
   return request.get('v1/devices/' + dongleId + '/segments', {
     from: start,
     to: end
+  });
+}
+
+function getRoutesSegments(dongleId, start, end) {
+  return request.get('v1/devices/' + dongleId + '/routes_segments', {
+    start: start,
+    end: end
   });
 }
 
