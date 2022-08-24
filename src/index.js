@@ -10,7 +10,7 @@ import * as raw from './raw';
 import * as request from './request';
 import * as navigation from './navigation';
 import * as clips from './clips';
-import video from './video';
+import * as video from './video';
 
 module.exports = {
   account,

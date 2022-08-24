@@ -1,10 +1,10 @@
+import qs from 'query-string';
+
+import { COMMA_URL_ROOT } from './config';
 import ConfigRequest from './instance';
 
-export default function videoApi(routeSigUrl) {
-  const storageRequest = new ConfigRequest(routeSigUrl);
+let request = new ConfigRequest(COMMA_URL_ROOT);
 
-  return {
-    getQcameraStreamIndexUrl: () => routeSigUrl + '/qcamera.m3u8',
-    getQcameraStreamIndex: () =>  storageRequest.get('qcamera.m3u8', null, false, false),
-  }
+export function getQcameraStreamUrl(route_str, exp, sig) {
+  return `${request.baseUrl}v1/route/${route_str}/qcamera.m3u8?${qs.stringify({ exp, sig })}`;
 }

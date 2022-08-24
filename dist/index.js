@@ -50,7 +50,7 @@ var clips = _interopRequireWildcard(_clips);
 
 var _video = require('./video');
 
-var _video2 = _interopRequireDefault(_video);
+var video = _interopRequireWildcard(_video);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -67,7 +67,7 @@ module.exports = {
   leaderboard: leaderboard,
   raw: raw,
   request: request,
-  video: _video2.default,
+  video: video,
   navigation: navigation,
   clips: clips
 };
