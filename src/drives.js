@@ -32,6 +32,22 @@ export function setRouteRating(routeName, rating) {
   return request.patch('v1/route/' + routeName + '/', { rating });
 }
 
+export function setRoutePublic(routeName, is_public) {
+  return request.patch('v1/route/' + routeName + '/', { is_public });
+}
+
+export function setRoutePreserved(routeName, preserved) {
+  if (preserved) {
+    return request.post('v1/route/' + routeName + '/preserve');
+  } else {
+    return request.del('v1/route/' + routeName + '/preserve');
+  }
+}
+
+export function getPreservedRoutes(dongleId) {
+  return request.get('v1/devices/' + dongleId + '/routes/preserved');
+}
+
 export function getShareSignature(routeName) {
   return request.get('v1/route/' + routeName + '/share_signature');
 }

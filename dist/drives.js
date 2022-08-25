@@ -54,6 +54,9 @@ exports.getSegmentMetadata = getSegmentMetadata;
 exports.getRoutesSegments = getRoutesSegments;
 exports.getRouteInfo = getRouteInfo;
 exports.setRouteRating = setRouteRating;
+exports.setRoutePublic = setRoutePublic;
+exports.setRoutePreserved = setRoutePreserved;
+exports.getPreservedRoutes = getPreservedRoutes;
 exports.getShareSignature = getShareSignature;
 exports.getRouteSegments = getRouteSegments;
 exports.listRoutes = listRoutes;
@@ -88,6 +91,22 @@ function getRouteInfo(routeName) {
 
 function setRouteRating(routeName, rating) {
   return request.patch('v1/route/' + routeName + '/', { rating: rating });
+}
+
+function setRoutePublic(routeName, is_public) {
+  return request.patch('v1/route/' + routeName + '/', { is_public: is_public });
+}
+
+function setRoutePreserved(routeName, preserved) {
+  if (preserved) {
+    return request.post('v1/route/' + routeName + '/preserve');
+  } else {
+    return request.del('v1/route/' + routeName + '/preserve');
+  }
+}
+
+function getPreservedRoutes(dongleId) {
+  return request.get('v1/devices/' + dongleId + '/routes/preserved');
 }
 
 function getShareSignature(routeName) {
