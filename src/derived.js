@@ -4,7 +4,7 @@ export default function routeApi(routeSigUrl) {
   const request = new ConfigRequest(routeSigUrl);
 
   return {
-    getCoords: async (cache_key=0) => await request.get(`route.coords?s=${cache_key}`),
-    getJpegUrl: (routeOffsetSeconds) => routeSigUrl + '/sec/' + routeOffsetSeconds.toString() + '.jpg',
-  }
+    getCoords: async (cacheKey = 0) => request.get(`route.coords?s=${cacheKey}`),
+    getJpegUrl: (routeOffsetSeconds) => `${routeSigUrl}/sec/${routeOffsetSeconds.toString()}.jpg`,
+  };
 }

@@ -3,43 +3,42 @@
 
 import * as request from './request';
 
-export function listDevices () {
+export function listDevices() {
   return request.get('v1/me/devices/');
 }
 
-export function setDeviceAlias (dongle_id, alias) {
-  return request.patch('v1/devices/' + dongle_id + '/', { alias });
+export function setDeviceAlias(dongleId, alias) {
+  return request.patch(`v1/devices/${dongleId}/`, { alias });
 }
 
-export function setDeviceVehicleId (dongle_id, vehicle_id) {
-  return request.patch('v1/devices/' + dongle_id + '/', { vehicle_id });
+export function setDeviceVehicleId(dongleId, vehicle_id) {
+  return request.patch(`v1/devices/${dongleId}/`, { vehicle_id });
 }
 
-export function grantDeviceReadPermission (dongle_id, email) {
-  return request.post('v1/devices/' + dongle_id + '/add_user', { email });
+export function grantDeviceReadPermission(dongleId, email) {
+  return request.post(`v1/devices/${dongleId}/add_user`, { email });
 }
 
-export function removeDeviceReadPermission (dongle_id, email) {
-  return request.post('v1/devices/' + dongle_id + '/del_user', { email });
+export function removeDeviceReadPermission(dongleId, email) {
+  return request.post(`v1/devices/${dongleId}/del_user`, { email });
 }
 
 export async function fetchLocation(dongleId) {
-  const locationEndpoint = 'v1/devices/' + dongleId + '/location';
+  const locationEndpoint = `v1/devices/${dongleId}/location`;
   const location = await request.get(locationEndpoint);
   if (location !== undefined && location.error === undefined) {
     return location;
-  } else {
-    throw Error("Could not fetch device location: " + JSON.stringify(location));
   }
+  throw Error(`Could not fetch device location: ${JSON.stringify(location)}`);
 }
 
 export function fetchVehicles(vehicleId) {
-  const vehicleEndpoint = 'v1/vehicles/' + vehicleId;
+  const vehicleEndpoint = `v1/vehicles/${vehicleId}`;
   return request.get(vehicleEndpoint);
 }
 
 export function fetchDevice(dongleId) {
-  const deviceEndpoint = 'v1.1/devices/' + dongleId + '/';
+  const deviceEndpoint = `v1.1/devices/${dongleId}/`;
   return request.get(deviceEndpoint);
 }
 
@@ -48,15 +47,15 @@ export function pilotPair(pair_token) {
 }
 
 export function fetchDeviceStats(dongleId) {
-  return request.get('v1.1/devices/' + dongleId + '/stats');
+  return request.get(`v1.1/devices/${dongleId}/stats`);
 }
 
 export function unpair(dongleId) {
-  return request.post('v1/devices/' + dongleId + '/unpair');
+  return request.post(`v1/devices/${dongleId}/unpair`);
 }
 
 export function fetchDeviceOwner(dongleId) {
-  return request.get('v1/devices/' + dongleId + '/owner');
+  return request.get(`v1/devices/${dongleId}/owner`);
 }
 
 export function getAthenaQueue(dongleId) {

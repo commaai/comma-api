@@ -5,7 +5,6 @@ import * as billing from './billing';
 import * as devices from './devices';
 import derived from './derived';
 import * as drives from './drives';
-import * as leaderboard from './leaderboard';
 import * as raw from './raw';
 import * as request from './request';
 import * as navigation from './navigation';
@@ -20,7 +19,6 @@ module.exports = {
   devices,
   derived,
   drives,
-  leaderboard,
   raw,
   request,
   video,
