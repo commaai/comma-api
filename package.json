@@ -2,6 +2,8 @@
   "name": "@commaai/comma-api",
   "version": "3.0.0",
   "main": "src/index.js",
+  "repository": "https://github.com/commaai/comma-api.git",
+  "homepage": "https://api.comma.ai",
   "license": "MIT",
   "dependencies": {
     "query-string": "^7.0.1"
