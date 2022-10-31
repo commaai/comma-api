@@ -4,7 +4,6 @@
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
-    "joi-browser": "^13.4.0",
     "query-string": "^7.0.1"
   }
 }
