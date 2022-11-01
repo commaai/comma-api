@@ -6,6 +6,7 @@ const request = new ConfigRequest(Config.ATHENA_URL_ROOT);
 
 export function configure(accessToken) {
   request.configure(accessToken);
+  console.log('ping!');
 }
 
 export async function postJsonRpcPayload(dongleId, payload) {
