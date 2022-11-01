@@ -1,5 +1,6 @@
 import qs from 'query-string';
 
+
 export class RequestError extends Error {
   constructor(resp, ...params) {
     super(...params);
@@ -17,29 +18,22 @@ export default class ConfigRequest {
 
   configure(accessToken) {
     if (accessToken) {
-      this.defaultHeaders['Authorization'] = `JWT ${accessToken}`;
+      this.defaultHeaders.Authorization = `JWT ${accessToken}`;
     }
   }
 
-  async request(method, path, params, data_json, resp_json) {
-    if (data_json !== false) {
-      data_json = true;
-    }
-    if (resp_json !== false) {
-      resp_json = true;
-    }
-
-    let headers = { ...this.defaultHeaders };
-    if (!data_json) {
+  async request(method, endpoint, params, dataJson = true, respJson = true) {
+    const headers = { ...this.defaultHeaders };
+    if (!dataJson) {
       headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
-    let requestUrl = this.baseUrl + path;
-    let body = undefined;
+    let requestUrl = this.baseUrl + endpoint;
+    let body;
     if (params && Object.keys(params).length !== 0) {
       if (method === 'GET' || method === 'HEAD') {
-        requestUrl += '?' + qs.stringify(params);
-      } else if (data_json) {
+        requestUrl += `?${qs.stringify(params)}`;
+      } else if (dataJson) {
         body = JSON.stringify(params);
       } else {
         body = qs.stringify(params);
@@ -51,16 +45,37 @@ export default class ConfigRequest {
       const error = await resp.text();
       throw new RequestError(resp, `${resp.status}: ${error}`);
     }
-    if (!resp_json) {
+    if (!respJson) {
       return resp;
     }
-    return await resp.json();
+    return resp.json();
+  }
+
+  async get(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('GET', endpoint, params, dataJson, respJson);
+  }
+
+  async head(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('HEAD', endpoint, params, dataJson, respJson);
+  }
+
+  async post(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('POST', endpoint, params, dataJson, respJson);
+  }
+
+  async postForm(endpoint, params) {
+    return this.post(endpoint, params, false);
+  }
+
+  async put(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('PUT', endpoint, params, dataJson, respJson);
+  }
+
+  async delete(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('DELETE', endpoint, params, dataJson, respJson);
+  }
+
+  async patch(endpoint, params, dataJson = true, respJson = true) {
+    return this.request('PATCH', endpoint, params, dataJson, respJson);
   }
 }
-
-['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'DELETE'].forEach((method) => {
-  const methodName = method.toLowerCase();
-  ConfigRequest.prototype[methodName] = async function(path, params, data_json, resp_json) {
-    return await this.request(method, path, params, data_json, resp_json);
-  };
-});

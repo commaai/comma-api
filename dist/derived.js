@@ -1,58 +1,40 @@
-'use strict';
+"use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
 exports.default = routeApi;
-
-var _instance = require('./instance');
-
-var _instance2 = _interopRequireDefault(_instance);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+var _instance = _interopRequireDefault(require("./instance"));
 function routeApi(routeSigUrl) {
-  var _this = this;
-
-  var request = new _instance2.default(routeSigUrl);
-
+  var request = new _instance.default(routeSigUrl);
   return {
     getCoords: function () {
-      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-        var cache_key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        return _regenerator2.default.wrap(function _callee$(_context) {
+      var _getCoords = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var cacheKey,
+          _args = arguments;
+        return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return request.get('route.coords?s=' + cache_key);
-
+                cacheKey = _args.length > 0 && _args[0] !== undefined ? _args[0] : 0;
+                return _context.abrupt("return", request.get("route.coords?s=".concat(cacheKey)));
               case 2:
-                return _context.abrupt('return', _context.sent);
-
-              case 3:
-              case 'end':
+              case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this);
+        }, _callee);
       }));
-
-      return function getCoords() {
-        return _ref.apply(this, arguments);
-      };
+      function getCoords() {
+        return _getCoords.apply(this, arguments);
+      }
+      return getCoords;
     }(),
     getJpegUrl: function getJpegUrl(routeOffsetSeconds) {
-      return routeSigUrl + '/sec/' + routeOffsetSeconds.toString() + '.jpg';
+      return "".concat(routeSigUrl, "/sec/").concat(routeOffsetSeconds.toString(), ".jpg");
     }
   };
 }

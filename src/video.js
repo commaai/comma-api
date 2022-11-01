@@ -1,10 +1,12 @@
 import qs from 'query-string';
 
-import { COMMA_URL_ROOT } from './config';
+import Config from './config';
 import ConfigRequest from './instance';
 
-let request = new ConfigRequest(COMMA_URL_ROOT);
 
-export function getQcameraStreamUrl(route_str, exp, sig) {
-  return `${request.baseUrl}v1/route/${route_str}/qcamera.m3u8?${qs.stringify({ exp, sig })}`;
+const request = new ConfigRequest(Config.COMMA_URL_ROOT);
+
+export function getQcameraStreamUrl(routeStr, exp, sig) {
+  const query = qs.stringify({ exp, sig });
+  return `${request.baseUrl}v1/route/${routeStr}/qcamera.m3u8?${query}`;
 }

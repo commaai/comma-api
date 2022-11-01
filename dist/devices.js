@@ -1,127 +1,101 @@
-'use strict';
+"use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchLocation = undefined;
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var fetchLocation = exports.fetchLocation = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(dongleId) {
+exports.fetchDevice = fetchDevice;
+exports.fetchDeviceOwner = fetchDeviceOwner;
+exports.fetchDeviceStats = fetchDeviceStats;
+exports.fetchLocation = fetchLocation;
+exports.fetchVehicles = fetchVehicles;
+exports.getAthenaQueue = getAthenaQueue;
+exports.grantDeviceReadPermission = grantDeviceReadPermission;
+exports.listDevices = listDevices;
+exports.pilotPair = pilotPair;
+exports.removeDeviceReadPermission = removeDeviceReadPermission;
+exports.setDeviceAlias = setDeviceAlias;
+exports.setDeviceVehicleId = setDeviceVehicleId;
+exports.unpair = unpair;
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+var _request = _interopRequireDefault(require("./request"));
+function listDevices() {
+  return _request.default.get('v1/me/devices/');
+}
+function setDeviceAlias(dongleId, alias) {
+  return _request.default.patch("v1/devices/".concat(dongleId, "/"), {
+    alias: alias
+  });
+}
+function setDeviceVehicleId(dongleId, vehicle_id) {
+  return _request.default.patch("v1/devices/".concat(dongleId, "/"), {
+    vehicle_id: vehicle_id
+  });
+}
+function grantDeviceReadPermission(dongleId, email) {
+  return _request.default.post("v1/devices/".concat(dongleId, "/add_user"), {
+    email: email
+  });
+}
+function removeDeviceReadPermission(dongleId, email) {
+  return _request.default.post("v1/devices/".concat(dongleId, "/del_user"), {
+    email: email
+  });
+}
+function fetchLocation(_x) {
+  return _fetchLocation.apply(this, arguments);
+}
+function _fetchLocation() {
+  _fetchLocation = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(dongleId) {
     var locationEndpoint, location;
-    return _regenerator2.default.wrap(function _callee$(_context) {
+    return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            locationEndpoint = 'v1/devices/' + dongleId + '/location';
+            locationEndpoint = "v1/devices/".concat(dongleId, "/location");
             _context.next = 3;
-            return request.get(locationEndpoint);
-
+            return _request.default.get(locationEndpoint);
           case 3:
             location = _context.sent;
-
             if (!(location !== undefined && location.error === undefined)) {
-              _context.next = 8;
+              _context.next = 6;
               break;
             }
-
-            return _context.abrupt('return', location);
-
-          case 8:
-            throw Error("Could not fetch device location: " + (0, _stringify2.default)(location));
-
-          case 9:
-          case 'end':
+            return _context.abrupt("return", location);
+          case 6:
+            throw Error("Could not fetch device location: ".concat(JSON.stringify(location)));
+          case 7:
+          case "end":
             return _context.stop();
         }
       }
-    }, _callee, this);
+    }, _callee);
   }));
-
-  return function fetchLocation(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-exports.listDevices = listDevices;
-exports.setDeviceAlias = setDeviceAlias;
-exports.setDeviceVehicleId = setDeviceVehicleId;
-exports.grantDeviceReadPermission = grantDeviceReadPermission;
-exports.removeDeviceReadPermission = removeDeviceReadPermission;
-exports.fetchVehicles = fetchVehicles;
-exports.fetchDevice = fetchDevice;
-exports.pilotPair = pilotPair;
-exports.fetchDeviceStats = fetchDeviceStats;
-exports.unpair = unpair;
-exports.fetchDeviceOwner = fetchDeviceOwner;
-exports.getAthenaQueue = getAthenaQueue;
-
-var _request = require('./request');
-
-var request = _interopRequireWildcard(_request);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function listDevices() {
-  return request.get('v1/me/devices/');
-} // Devices API
-// ~~~~~~~~~~~
-
-function setDeviceAlias(dongle_id, alias) {
-  return request.patch('v1/devices/' + dongle_id + '/', { alias: alias });
+  return _fetchLocation.apply(this, arguments);
 }
-
-function setDeviceVehicleId(dongle_id, vehicle_id) {
-  return request.patch('v1/devices/' + dongle_id + '/', { vehicle_id: vehicle_id });
-}
-
-function grantDeviceReadPermission(dongle_id, email) {
-  return request.post('v1/devices/' + dongle_id + '/add_user', { email: email });
-}
-
-function removeDeviceReadPermission(dongle_id, email) {
-  return request.post('v1/devices/' + dongle_id + '/del_user', { email: email });
-}
-
 function fetchVehicles(vehicleId) {
-  var vehicleEndpoint = 'v1/vehicles/' + vehicleId;
-  return request.get(vehicleEndpoint);
+  var vehicleEndpoint = "v1/vehicles/".concat(vehicleId);
+  return _request.default.get(vehicleEndpoint);
 }
-
 function fetchDevice(dongleId) {
-  var deviceEndpoint = 'v1.1/devices/' + dongleId + '/';
-  return request.get(deviceEndpoint);
+  var deviceEndpoint = "v1.1/devices/".concat(dongleId, "/");
+  return _request.default.get(deviceEndpoint);
 }
-
 function pilotPair(pair_token) {
-  return request.postForm('v2/pilotpair/', { pair_token: pair_token });
+  return _request.default.postForm('v2/pilotpair/', {
+    pair_token: pair_token
+  });
 }
-
 function fetchDeviceStats(dongleId) {
-  return request.get('v1.1/devices/' + dongleId + '/stats');
+  return _request.default.get("v1.1/devices/".concat(dongleId, "/stats"));
 }
-
 function unpair(dongleId) {
-  return request.post('v1/devices/' + dongleId + '/unpair');
+  return _request.default.post("v1/devices/".concat(dongleId, "/unpair"));
 }
-
 function fetchDeviceOwner(dongleId) {
-  return request.get('v1/devices/' + dongleId + '/owner');
+  return _request.default.get("v1/devices/".concat(dongleId, "/owner"));
 }
-
 function getAthenaQueue(dongleId) {
-  return request.get('v1/devices/' + dongleId + '/athena_offline_queue');
+  return _request.default.get("v1/devices/".concat(dongleId, "/athena_offline_queue"));
 }

@@ -1,73 +1,46 @@
-'use strict';
+"use strict";
 
-var _account = require('./account');
-
-var account = _interopRequireWildcard(_account);
-
-var _athena = require('./athena');
-
-var athena = _interopRequireWildcard(_athena);
-
-var _auth = require('./auth');
-
-var auth = _interopRequireWildcard(_auth);
-
-var _billing = require('./billing');
-
-var billing = _interopRequireWildcard(_billing);
-
-var _devices = require('./devices');
-
-var devices = _interopRequireWildcard(_devices);
-
-var _derived = require('./derived');
-
-var _derived2 = _interopRequireDefault(_derived);
-
-var _drives = require('./drives');
-
-var drives = _interopRequireWildcard(_drives);
-
-var _leaderboard = require('./leaderboard');
-
-var leaderboard = _interopRequireWildcard(_leaderboard);
-
-var _raw = require('./raw');
-
-var raw = _interopRequireWildcard(_raw);
-
-var _request = require('./request');
-
-var request = _interopRequireWildcard(_request);
-
-var _navigation = require('./navigation');
-
-var navigation = _interopRequireWildcard(_navigation);
-
-var _clips = require('./clips');
-
-var clips = _interopRequireWildcard(_clips);
-
-var _video = require('./video');
-
-var video = _interopRequireWildcard(_video);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-module.exports = {
-  account: account,
-  athena: athena,
-  auth: auth,
-  billing: billing,
-  devices: devices,
-  derived: _derived2.default,
-  drives: drives,
-  leaderboard: leaderboard,
-  raw: raw,
-  request: request,
-  video: video,
-  navigation: navigation,
-  clips: clips
-};
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _typeof = require("@babel/runtime/helpers/typeof");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.clips = exports.billing = exports.auth = exports.athena = exports.account = void 0;
+Object.defineProperty(exports, "derived", {
+  enumerable: true,
+  get: function get() {
+    return _derived.default;
+  }
+});
+exports.raw = exports.navigation = exports.drives = exports.devices = void 0;
+Object.defineProperty(exports, "request", {
+  enumerable: true,
+  get: function get() {
+    return _request.default;
+  }
+});
+exports.video = void 0;
+var account = _interopRequireWildcard(require("./account"));
+exports.account = account;
+var athena = _interopRequireWildcard(require("./athena"));
+exports.athena = athena;
+var auth = _interopRequireWildcard(require("./auth"));
+exports.auth = auth;
+var billing = _interopRequireWildcard(require("./billing"));
+exports.billing = billing;
+var clips = _interopRequireWildcard(require("./clips"));
+exports.clips = clips;
+var devices = _interopRequireWildcard(require("./devices"));
+exports.devices = devices;
+var _derived = _interopRequireDefault(require("./derived"));
+var drives = _interopRequireWildcard(require("./drives"));
+exports.drives = drives;
+var raw = _interopRequireWildcard(require("./raw"));
+exports.raw = raw;
+var _request = _interopRequireDefault(require("./request"));
+var navigation = _interopRequireWildcard(require("./navigation"));
+exports.navigation = navigation;
+var video = _interopRequireWildcard(require("./video"));
+exports.video = video;
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
