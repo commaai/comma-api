@@ -3,8 +3,8 @@
 
 import * as request from './request';
 
-export function setDestination(dongle_id, latitude, longitude, place_name, place_details) {
-  return request.post('v1/navigation/' + dongle_id + '/set_destination', {
+export function setDestination(dongleId, latitude, longitude, place_name, place_details) {
+  return request.post(`v1/navigation/${dongleId}/set_destination`, {
     latitude,
     longitude,
     place_name,
@@ -12,12 +12,20 @@ export function setDestination(dongle_id, latitude, longitude, place_name, place
   });
 }
 
-export function getLocationsData(dongle_id) {
-  return request.get('v1/navigation/' + dongle_id + '/locations');
+export function getLocationsData(dongleId) {
+  return request.get(`v1/navigation/${dongleId}/locations`);
 }
 
-export function putLocationSave(dongle_id, latitude, longitude, place_name, place_details, save_type, label) {
-  return request.put('v1/navigation/' + dongle_id + '/locations', {
+export function putLocationSave(
+  dongleId,
+  latitude,
+  longitude,
+  place_name,
+  place_details,
+  save_type,
+  label,
+) {
+  return request.put(`v1/navigation/${dongleId}/locations`, {
     latitude,
     longitude,
     place_name,
@@ -27,20 +35,18 @@ export function putLocationSave(dongle_id, latitude, longitude, place_name, plac
   });
 }
 
-export function patchLocationSave(dongle_id, nav_location_id, save_type, label) {
-  return request.patch('v1/navigation/' + dongle_id + '/locations', {
-    id: nav_location_id,
-    save_type,
+export function patchLocationSave(dongleId, navLocationId, saveType, label) {
+  return request.patch(`v1/navigation/${dongleId}/locations`, {
+    id: navLocationId,
+    save_type: saveType,
     label,
   });
 }
 
-export function deleteLocationSave(dongle_id, nav_location_id) {
-  return request.del('v1/navigation/' + dongle_id + '/locations', {
-    id: nav_location_id,
-  });
+export function deleteLocationSave(dongleId, navLocationId) {
+  return request.del(`v1/navigation/${dongleId}/locations`, { id: navLocationId });
 }
 
-export function getLocationsNext(dongle_id) {
-  return request.get('v1/navigation/' + dongle_id + '/next');
+export function getLocationsNext(dongleId) {
+  return request.get(`v1/navigation/${dongleId}/next`);
 }

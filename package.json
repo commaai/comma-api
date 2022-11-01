@@ -5,7 +5,16 @@
   "repository": "https://github.com/commaai/comma-api.git",
   "homepage": "https://api.comma.ai",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
   "dependencies": {
     "query-string": "^7.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
   }
 }
