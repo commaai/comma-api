@@ -63,6 +63,10 @@ export default class ConfigRequest {
     return this.request('POST', endpoint, params, dataJson, respJson);
   }
 
+  async postForm(endpoint, params) {
+    return this.post(endpoint, params, false);
+  }
+
   async put(endpoint, params, dataJson = true, respJson = true) {
     return this.request('PUT', endpoint, params, dataJson, respJson);
   }

@@ -189,35 +189,30 @@ var ConfigRequest = /*#__PURE__*/function () {
       return post;
     }()
   }, {
-    key: "put",
+    key: "postForm",
     value: function () {
-      var _put = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(endpoint, params) {
-        var dataJson,
-          respJson,
-          _args5 = arguments;
+      var _postForm = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(endpoint, params) {
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                dataJson = _args5.length > 2 && _args5[2] !== undefined ? _args5[2] : true;
-                respJson = _args5.length > 3 && _args5[3] !== undefined ? _args5[3] : true;
-                return _context5.abrupt("return", this.request('PUT', endpoint, params, dataJson, respJson));
-              case 3:
+                return _context5.abrupt("return", this.post(endpoint, params, false));
+              case 1:
               case "end":
                 return _context5.stop();
             }
           }
         }, _callee5, this);
       }));
-      function put(_x12, _x13) {
-        return _put.apply(this, arguments);
+      function postForm(_x12, _x13) {
+        return _postForm.apply(this, arguments);
       }
-      return put;
+      return postForm;
     }()
   }, {
-    key: "delete",
+    key: "put",
     value: function () {
-      var _delete2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(endpoint, params) {
+      var _put = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(endpoint, params) {
         var dataJson,
           respJson,
           _args6 = arguments;
@@ -227,7 +222,7 @@ var ConfigRequest = /*#__PURE__*/function () {
               case 0:
                 dataJson = _args6.length > 2 && _args6[2] !== undefined ? _args6[2] : true;
                 respJson = _args6.length > 3 && _args6[3] !== undefined ? _args6[3] : true;
-                return _context6.abrupt("return", this.request('DELETE', endpoint, params, dataJson, respJson));
+                return _context6.abrupt("return", this.request('PUT', endpoint, params, dataJson, respJson));
               case 3:
               case "end":
                 return _context6.stop();
@@ -235,15 +230,15 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee6, this);
       }));
-      function _delete(_x14, _x15) {
-        return _delete2.apply(this, arguments);
+      function put(_x14, _x15) {
+        return _put.apply(this, arguments);
       }
-      return _delete;
+      return put;
     }()
   }, {
-    key: "patch",
+    key: "delete",
     value: function () {
-      var _patch = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(endpoint, params) {
+      var _delete2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(endpoint, params) {
         var dataJson,
           respJson,
           _args7 = arguments;
@@ -253,7 +248,7 @@ var ConfigRequest = /*#__PURE__*/function () {
               case 0:
                 dataJson = _args7.length > 2 && _args7[2] !== undefined ? _args7[2] : true;
                 respJson = _args7.length > 3 && _args7[3] !== undefined ? _args7[3] : true;
-                return _context7.abrupt("return", this.request('PATCH', endpoint, params, dataJson, respJson));
+                return _context7.abrupt("return", this.request('DELETE', endpoint, params, dataJson, respJson));
               case 3:
               case "end":
                 return _context7.stop();
@@ -261,7 +256,33 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee7, this);
       }));
-      function patch(_x16, _x17) {
+      function _delete(_x16, _x17) {
+        return _delete2.apply(this, arguments);
+      }
+      return _delete;
+    }()
+  }, {
+    key: "patch",
+    value: function () {
+      var _patch = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(endpoint, params) {
+        var dataJson,
+          respJson,
+          _args8 = arguments;
+        return _regenerator.default.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                dataJson = _args8.length > 2 && _args8[2] !== undefined ? _args8[2] : true;
+                respJson = _args8.length > 3 && _args8[3] !== undefined ? _args8[3] : true;
+                return _context8.abrupt("return", this.request('PATCH', endpoint, params, dataJson, respJson));
+              case 3:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this);
+      }));
+      function patch(_x18, _x19) {
         return _patch.apply(this, arguments);
       }
       return patch;
