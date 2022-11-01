@@ -1,11 +1,13 @@
-# comma-api
+# @commaai/api
 
-comma API client library
+[comma API](https://api.comma.ai) client library
 
 ## Installation
 
-`npm i --save @commaai/comma-api`
+You can install the package using the GitHub URL. It is recommended to use a specific version tag.
 
-or
+```
+# add to your package.json dependencies
 
-`yarn add @commaai/comma-api`
+"@commaai/api": "commaai/comma-api#3.0.0",
+```

@@ -1,5 +1,5 @@
 {
-  "name": "@commaai/comma-api",
+  "name": "@commaai/api",
   "version": "3.0.0",
   "main": "src/index.js",
   "repository": "https://github.com/commaai/comma-api.git",
