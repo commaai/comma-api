@@ -13,5 +13,6 @@ module.exports = {
     camelcase: 'off',
     'import/prefer-default-export': 'off',
     'max-classes-per-file': 'off',
+    'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
   },
 };
