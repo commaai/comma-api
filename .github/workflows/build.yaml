@@ -1,0 +1,33 @@
+name: build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --immutable --immutable-cache --check-cache
+
+    - name: Run linter checks
+      run: yarn lint
+
+    - name: Rebuild the dist/ directory
+      run: yarn build
+
+    - name: Compare the expected and actual dist/ directories
+      run: |
+        if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+          echo "The dist/ directory is out of date. Please run 'yarn build' and commit the changes."
+          echo "See status below:"
+          git diff
+          exit 1
+        fi
