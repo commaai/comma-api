@@ -53,12 +53,21 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "request",
     value: function () {
-      var _request = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(method, endpoint, params, dataJson, respJson) {
-        var headers, requestUrl, body, resp, error;
+      var _request = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(method, endpoint, params) {
+        var dataJson,
+          respJson,
+          headers,
+          requestUrl,
+          body,
+          resp,
+          error,
+          _args = arguments;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                dataJson = _args.length > 3 && _args[3] !== undefined ? _args[3] : true;
+                respJson = _args.length > 4 && _args[4] !== undefined ? _args[4] : true;
                 headers = _objectSpread({}, this.defaultHeaders);
                 if (!dataJson) {
                   headers['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -73,39 +82,39 @@ var ConfigRequest = /*#__PURE__*/function () {
                     body = _queryString.default.stringify(params);
                   }
                 }
-                _context.next = 6;
+                _context.next = 8;
                 return fetch(requestUrl, {
                   method: method,
                   headers: headers,
                   body: body
                 });
-              case 6:
+              case 8:
                 resp = _context.sent;
                 if (resp.ok) {
-                  _context.next = 12;
-                  break;
-                }
-                _context.next = 10;
-                return resp.text();
-              case 10:
-                error = _context.sent;
-                throw new RequestError(resp, "".concat(resp.status, ": ").concat(error));
-              case 12:
-                if (respJson) {
                   _context.next = 14;
                   break;
                 }
-                return _context.abrupt("return", resp);
+                _context.next = 12;
+                return resp.text();
+              case 12:
+                error = _context.sent;
+                throw new RequestError(resp, "".concat(resp.status, ": ").concat(error));
               case 14:
+                if (respJson) {
+                  _context.next = 16;
+                  break;
+                }
+                return _context.abrupt("return", resp);
+              case 16:
                 return _context.abrupt("return", resp.json());
-              case 15:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee, this);
       }));
-      function request(_x, _x2, _x3, _x4, _x5) {
+      function request(_x, _x2, _x3) {
         return _request.apply(this, arguments);
       }
       return request;
@@ -131,7 +140,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee2, this);
       }));
-      function get(_x6, _x7) {
+      function get(_x4, _x5) {
         return _get.apply(this, arguments);
       }
       return get;
@@ -157,7 +166,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee3, this);
       }));
-      function head(_x8, _x9) {
+      function head(_x6, _x7) {
         return _head.apply(this, arguments);
       }
       return head;
@@ -183,7 +192,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee4, this);
       }));
-      function post(_x10, _x11) {
+      function post(_x8, _x9) {
         return _post.apply(this, arguments);
       }
       return post;
@@ -204,7 +213,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee5, this);
       }));
-      function postForm(_x12, _x13) {
+      function postForm(_x10, _x11) {
         return _postForm.apply(this, arguments);
       }
       return postForm;
@@ -230,7 +239,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee6, this);
       }));
-      function put(_x14, _x15) {
+      function put(_x12, _x13) {
         return _put.apply(this, arguments);
       }
       return put;
@@ -256,7 +265,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee7, this);
       }));
-      function _delete(_x16, _x17) {
+      function _delete(_x14, _x15) {
         return _delete2.apply(this, arguments);
       }
       return _delete;
@@ -282,7 +291,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           }
         }, _callee8, this);
       }));
-      function patch(_x18, _x19) {
+      function patch(_x16, _x17) {
         return _patch.apply(this, arguments);
       }
       return patch;

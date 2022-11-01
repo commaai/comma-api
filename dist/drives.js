@@ -49,10 +49,7 @@ function setRoutePublic(routeName, is_public) {
   });
 }
 function setRoutePreserved(routeName, preserved) {
-  if (preserved) {
-    return _request.default.post("v1/route/".concat(routeName, "/preserve"));
-  }
-  return _request.default.del("v1/route/".concat(routeName, "/preserve"));
+  return _request.default.request(preserved ? 'POST' : 'DELETE', "v1/route/".concat(routeName, "/preserve"));
 }
 function getPreservedRoutes(dongleId) {
   return _request.default.get("v1/devices/".concat(dongleId, "/routes/preserved"));

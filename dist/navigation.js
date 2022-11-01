@@ -40,7 +40,7 @@ function patchLocationSave(dongleId, navLocationId, saveType, label) {
   });
 }
 function deleteLocationSave(dongleId, navLocationId) {
-  return _request.default.del("v1/navigation/".concat(dongleId, "/locations"), {
+  return _request.default.delete("v1/navigation/".concat(dongleId, "/locations"), {
     id: navLocationId
   });
 }

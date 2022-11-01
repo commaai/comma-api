@@ -113,7 +113,7 @@ function _clipsDelete() {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            return _context5.abrupt("return", _request.default.del('v1/clips/update', {
+            return _context5.abrupt("return", _request.default.delete('v1/clips/update', {
               dongle_id: dongle_id,
               clip_id: clip_id
             }));
