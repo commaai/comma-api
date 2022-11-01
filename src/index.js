@@ -7,11 +7,12 @@ import * as devices from './devices';
 import derived from './derived';
 import * as drives from './drives';
 import * as raw from './raw';
-import * as request from './request';
+import request from './request';
 import * as navigation from './navigation';
 import * as video from './video';
 
-module.exports = {
+
+export {
   account,
   athena,
   auth,
@@ -22,6 +23,6 @@ module.exports = {
   drives,
   raw,
   request,
-  video,
   navigation,
+  video,
 };

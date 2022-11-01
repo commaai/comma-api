@@ -1,4 +1,5 @@
-import * as request from './request';
+import request from './request';
+
 
 export async function clipsCreate(route, title, start_time, end_time, video_type, is_public) {
   return request.post('v1/clips/create', {

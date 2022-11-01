@@ -1,5 +1,6 @@
 import qs from 'query-string';
-import * as request from './request';
+import request from './request';
+
 
 // TODO: investigate whether to use IndexedDB or localStorage
 const urlStore = {};

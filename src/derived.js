@@ -1,5 +1,6 @@
 import ConfigRequest from './instance';
 
+
 export default function routeApi(routeSigUrl) {
   const request = new ConfigRequest(routeSigUrl);
 

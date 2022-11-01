@@ -1,7 +1,5 @@
-// Navigation API
-// ~~~~~~~~~~~
+import request from './request';
 
-import * as request from './request';
 
 export function setDestination(dongleId, latitude, longitude, place_name, place_details) {
   return request.post(`v1/navigation/${dongleId}/set_destination`, {

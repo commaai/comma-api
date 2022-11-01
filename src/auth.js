@@ -1,4 +1,5 @@
-import * as request from './request';
+import request from './request';
+
 
 export async function refreshAccessToken(code, provider) {
   const resp = await request.postForm('v2/auth/', { code, provider });

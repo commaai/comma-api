@@ -1,5 +1,6 @@
 import qs from 'query-string';
 
+
 export class RequestError extends Error {
   constructor(resp, ...params) {
     super(...params);

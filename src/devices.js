@@ -1,7 +1,5 @@
-// Devices API
-// ~~~~~~~~~~~
+import request from './request';
 
-import * as request from './request';
 
 export function listDevices() {
   return request.get('v1/me/devices/');

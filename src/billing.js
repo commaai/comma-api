@@ -1,6 +1,7 @@
 import Config from './config';
 import ConfigRequest from './instance';
 
+
 const request = new ConfigRequest(Config.BILLING_URL_ROOT);
 
 export function configure(accessToken) {

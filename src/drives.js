@@ -1,6 +1,5 @@
-// Drives api
-// ~~~~~~~~~~
-import * as request from './request';
+import request from './request';
+
 
 const SEGMENT_LENGTH = 1000 * 60;
 
@@ -12,10 +11,7 @@ export function getSegmentMetadata(start, end, dongleId) {
 }
 
 export function getRoutesSegments(dongleId, start, end) {
-  return request.get(`v1/devices/${dongleId}/routes_segments`, {
-    start,
-    end,
-  });
+  return request.get(`v1/devices/${dongleId}/routes_segments`, { start, end });
 }
 
 export function getRouteInfo(routeName) {
