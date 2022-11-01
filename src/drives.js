@@ -27,10 +27,7 @@ export function setRoutePublic(routeName, is_public) {
 }
 
 export function setRoutePreserved(routeName, preserved) {
-  if (preserved) {
-    return request.post(`v1/route/${routeName}/preserve`);
-  }
-  return request.del(`v1/route/${routeName}/preserve`);
+  return request.request(preserved ? 'POST' : 'DELETE', `v1/route/${routeName}/preserve`);
 }
 
 export function getPreservedRoutes(dongleId) {

@@ -42,7 +42,7 @@ export function patchLocationSave(dongleId, navLocationId, saveType, label) {
 }
 
 export function deleteLocationSave(dongleId, navLocationId) {
-  return request.del(`v1/navigation/${dongleId}/locations`, { id: navLocationId });
+  return request.delete(`v1/navigation/${dongleId}/locations`, { id: navLocationId });
 }
 
 export function getLocationsNext(dongleId) {

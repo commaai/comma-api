@@ -20,5 +20,5 @@ export async function clipsUpdate(dongle_id, clip_id, is_public) {
 }
 
 export async function clipsDelete(dongle_id, clip_id) {
-  return request.del('v1/clips/update', { dongle_id, clip_id });
+  return request.delete('v1/clips/update', { dongle_id, clip_id });
 }

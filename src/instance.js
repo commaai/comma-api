@@ -22,7 +22,7 @@ export default class ConfigRequest {
     }
   }
 
-  async request(method, endpoint, params, dataJson, respJson) {
+  async request(method, endpoint, params, dataJson = true, respJson = true) {
     const headers = { ...this.defaultHeaders };
     if (!dataJson) {
       headers['Content-Type'] = 'application/x-www-form-urlencoded';
