@@ -1,3 +1,9 @@
+Version 3.0.1
+=============
+* fix: disable transformation of ES module syntax
+  * see https://babeljs.io/docs/en/babel-preset-env#modules
+* ci: check that dist folder is correct
+
 Version 3.0.0
 =============
 * breaking: rename package to @commaai/api and deprecate from npm
