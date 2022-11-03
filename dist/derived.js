@@ -1,21 +1,14 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = routeApi;
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _instance = _interopRequireDefault(require("./instance"));
-function routeApi(routeSigUrl) {
-  var request = new _instance.default(routeSigUrl);
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import ConfigRequest from './instance';
+export default function routeApi(routeSigUrl) {
+  var request = new ConfigRequest(routeSigUrl);
   return {
     getCoords: function () {
-      var _getCoords = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var _getCoords = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
         var cacheKey,
           _args = arguments;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:

@@ -1,73 +1,56 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.fetchRoutes = fetchRoutes;
-exports.getPreservedRoutes = getPreservedRoutes;
-exports.getRouteInfo = getRouteInfo;
-exports.getRouteSegments = getRouteSegments;
-exports.getRoutesSegments = getRoutesSegments;
-exports.getSegmentMetadata = getSegmentMetadata;
-exports.getShareSignature = getShareSignature;
-exports.listRoutes = listRoutes;
-exports.setRoutePreserved = setRoutePreserved;
-exports.setRoutePublic = setRoutePublic;
-exports.setRouteRating = setRouteRating;
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-var _request = _interopRequireDefault(require("./request"));
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _toConsumableArray from "@babel/runtime/helpers/toConsumableArray";
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+import request from './request';
 var SEGMENT_LENGTH = 1000 * 60;
-function getSegmentMetadata(start, end, dongleId) {
-  return _request.default.get("v1/devices/".concat(dongleId, "/segments"), {
+export function getSegmentMetadata(start, end, dongleId) {
+  return request.get("v1/devices/".concat(dongleId, "/segments"), {
     from: start,
     to: end
   });
 }
-function getRoutesSegments(dongleId, start, end) {
-  return _request.default.get("v1/devices/".concat(dongleId, "/routes_segments"), {
+export function getRoutesSegments(dongleId, start, end) {
+  return request.get("v1/devices/".concat(dongleId, "/routes_segments"), {
     start: start,
     end: end
   });
 }
-function getRouteInfo(routeName) {
-  return _request.default.get("v1/route/".concat(routeName, "/"));
+export function getRouteInfo(routeName) {
+  return request.get("v1/route/".concat(routeName, "/"));
 }
-function setRouteRating(routeName, rating) {
-  return _request.default.patch("v1/route/".concat(routeName, "/"), {
+export function setRouteRating(routeName, rating) {
+  return request.patch("v1/route/".concat(routeName, "/"), {
     rating: rating
   });
 }
-function setRoutePublic(routeName, is_public) {
-  return _request.default.patch("v1/route/".concat(routeName, "/"), {
+export function setRoutePublic(routeName, is_public) {
+  return request.patch("v1/route/".concat(routeName, "/"), {
     is_public: is_public
   });
 }
-function setRoutePreserved(routeName, preserved) {
-  return _request.default.request(preserved ? 'POST' : 'DELETE', "v1/route/".concat(routeName, "/preserve"));
+export function setRoutePreserved(routeName, preserved) {
+  return request.request(preserved ? 'POST' : 'DELETE', "v1/route/".concat(routeName, "/preserve"));
 }
-function getPreservedRoutes(dongleId) {
-  return _request.default.get("v1/devices/".concat(dongleId, "/routes/preserved"));
+export function getPreservedRoutes(dongleId) {
+  return request.get("v1/devices/".concat(dongleId, "/routes/preserved"));
 }
-function getShareSignature(routeName) {
-  return _request.default.get("v1/route/".concat(routeName, "/share_signature"));
+export function getShareSignature(routeName) {
+  return request.get("v1/route/".concat(routeName, "/share_signature"));
 }
-function getRouteSegments(routeName) {
-  return _request.default.get("v1/route/".concat(routeName, "/segments"));
+export function getRouteSegments(routeName) {
+  return request.get("v1/route/".concat(routeName, "/segments"));
 }
-function listRoutes(dongleId, limit, createdAfter) {
+export function listRoutes(dongleId, limit, createdAfter) {
   var params = {
     limit: limit
   };
   if (typeof createdAfter !== 'undefined') {
     params.createdAfter = createdAfter;
   }
-  return _request.default.get("v1/devices/".concat(dongleId, "/routes"), params);
+  return request.get("v1/devices/".concat(dongleId, "/routes"), params);
 }
 function parseSegmentMetadata(start, end, segments) {
   var routeStartTimes = {};
@@ -99,7 +82,7 @@ function segmentsFromMetadata(segmentsData) {
 
     // TODO: refactor
     // eslint-disable-next-line no-param-reassign
-    segment.videoAvailableBetweenOffsets = [].concat((0, _toConsumableArray2.default)(videoAvailableBetweenOffsets.slice(0, videoAvailableBetweenOffsets.length - 1)), [[lastVideoRange[0], segment.offset + segment.duration]]);
+    segment.videoAvailableBetweenOffsets = [].concat(_toConsumableArray(videoAvailableBetweenOffsets.slice(0, videoAvailableBetweenOffsets.length - 1)), [[lastVideoRange[0], segment.offset + segment.duration]]);
   }
   var segment = null;
   var videoStartOffset = null;
@@ -172,13 +155,13 @@ function segmentsFromMetadata(segmentsData) {
   }
   return segments;
 }
-function fetchRoutes(_x, _x2, _x3) {
+export function fetchRoutes(_x, _x2, _x3) {
   return _fetchRoutes.apply(this, arguments);
 }
 function _fetchRoutes() {
-  _fetchRoutes = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(dongleId, start, end) {
+  _fetchRoutes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(dongleId, start, end) {
     var segments;
-    return _regenerator.default.wrap(function _callee$(_context) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:

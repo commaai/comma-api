@@ -1,61 +1,42 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.fetchDevice = fetchDevice;
-exports.fetchDeviceOwner = fetchDeviceOwner;
-exports.fetchDeviceStats = fetchDeviceStats;
-exports.fetchLocation = fetchLocation;
-exports.fetchVehicles = fetchVehicles;
-exports.getAthenaQueue = getAthenaQueue;
-exports.grantDeviceReadPermission = grantDeviceReadPermission;
-exports.listDevices = listDevices;
-exports.pilotPair = pilotPair;
-exports.removeDeviceReadPermission = removeDeviceReadPermission;
-exports.setDeviceAlias = setDeviceAlias;
-exports.setDeviceVehicleId = setDeviceVehicleId;
-exports.unpair = unpair;
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _request = _interopRequireDefault(require("./request"));
-function listDevices() {
-  return _request.default.get('v1/me/devices/');
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import request from './request';
+export function listDevices() {
+  return request.get('v1/me/devices/');
 }
-function setDeviceAlias(dongleId, alias) {
-  return _request.default.patch("v1/devices/".concat(dongleId, "/"), {
+export function setDeviceAlias(dongleId, alias) {
+  return request.patch("v1/devices/".concat(dongleId, "/"), {
     alias: alias
   });
 }
-function setDeviceVehicleId(dongleId, vehicle_id) {
-  return _request.default.patch("v1/devices/".concat(dongleId, "/"), {
+export function setDeviceVehicleId(dongleId, vehicle_id) {
+  return request.patch("v1/devices/".concat(dongleId, "/"), {
     vehicle_id: vehicle_id
   });
 }
-function grantDeviceReadPermission(dongleId, email) {
-  return _request.default.post("v1/devices/".concat(dongleId, "/add_user"), {
+export function grantDeviceReadPermission(dongleId, email) {
+  return request.post("v1/devices/".concat(dongleId, "/add_user"), {
     email: email
   });
 }
-function removeDeviceReadPermission(dongleId, email) {
-  return _request.default.post("v1/devices/".concat(dongleId, "/del_user"), {
+export function removeDeviceReadPermission(dongleId, email) {
+  return request.post("v1/devices/".concat(dongleId, "/del_user"), {
     email: email
   });
 }
-function fetchLocation(_x) {
+export function fetchLocation(_x) {
   return _fetchLocation.apply(this, arguments);
 }
 function _fetchLocation() {
-  _fetchLocation = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(dongleId) {
+  _fetchLocation = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(dongleId) {
     var locationEndpoint, location;
-    return _regenerator.default.wrap(function _callee$(_context) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             locationEndpoint = "v1/devices/".concat(dongleId, "/location");
             _context.next = 3;
-            return _request.default.get(locationEndpoint);
+            return request.get(locationEndpoint);
           case 3:
             location = _context.sent;
             if (!(location !== undefined && location.error === undefined)) {
@@ -74,28 +55,28 @@ function _fetchLocation() {
   }));
   return _fetchLocation.apply(this, arguments);
 }
-function fetchVehicles(vehicleId) {
+export function fetchVehicles(vehicleId) {
   var vehicleEndpoint = "v1/vehicles/".concat(vehicleId);
-  return _request.default.get(vehicleEndpoint);
+  return request.get(vehicleEndpoint);
 }
-function fetchDevice(dongleId) {
+export function fetchDevice(dongleId) {
   var deviceEndpoint = "v1.1/devices/".concat(dongleId, "/");
-  return _request.default.get(deviceEndpoint);
+  return request.get(deviceEndpoint);
 }
-function pilotPair(pair_token) {
-  return _request.default.postForm('v2/pilotpair/', {
+export function pilotPair(pair_token) {
+  return request.postForm('v2/pilotpair/', {
     pair_token: pair_token
   });
 }
-function fetchDeviceStats(dongleId) {
-  return _request.default.get("v1.1/devices/".concat(dongleId, "/stats"));
+export function fetchDeviceStats(dongleId) {
+  return request.get("v1.1/devices/".concat(dongleId, "/stats"));
 }
-function unpair(dongleId) {
-  return _request.default.post("v1/devices/".concat(dongleId, "/unpair"));
+export function unpair(dongleId) {
+  return request.post("v1/devices/".concat(dongleId, "/unpair"));
 }
-function fetchDeviceOwner(dongleId) {
-  return _request.default.get("v1/devices/".concat(dongleId, "/owner"));
+export function fetchDeviceOwner(dongleId) {
+  return request.get("v1/devices/".concat(dongleId, "/owner"));
 }
-function getAthenaQueue(dongleId) {
-  return _request.default.get("v1/devices/".concat(dongleId, "/athena_offline_queue"));
+export function getAthenaQueue(dongleId) {
+  return request.get("v1/devices/".concat(dongleId, "/athena_offline_queue"));
 }

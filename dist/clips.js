@@ -1,27 +1,16 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.clipsCreate = clipsCreate;
-exports.clipsDelete = clipsDelete;
-exports.clipsDetails = clipsDetails;
-exports.clipsList = clipsList;
-exports.clipsUpdate = clipsUpdate;
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _request = _interopRequireDefault(require("./request"));
-function clipsCreate(_x, _x2, _x3, _x4, _x5, _x6) {
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import request from './request';
+export function clipsCreate(_x, _x2, _x3, _x4, _x5, _x6) {
   return _clipsCreate.apply(this, arguments);
 }
 function _clipsCreate() {
-  _clipsCreate = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(route, title, start_time, end_time, video_type, is_public) {
-    return _regenerator.default.wrap(function _callee$(_context) {
+  _clipsCreate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(route, title, start_time, end_time, video_type, is_public) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", _request.default.post('v1/clips/create', {
+            return _context.abrupt("return", request.post('v1/clips/create', {
               route: route,
               title: title,
               start_time: start_time,
@@ -38,16 +27,16 @@ function _clipsCreate() {
   }));
   return _clipsCreate.apply(this, arguments);
 }
-function clipsList(_x7) {
+export function clipsList(_x7) {
   return _clipsList.apply(this, arguments);
 }
 function _clipsList() {
-  _clipsList = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(dongle_id) {
-    return _regenerator.default.wrap(function _callee2$(_context2) {
+  _clipsList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(dongle_id) {
+    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            return _context2.abrupt("return", _request.default.get('v1/clips/list', {
+            return _context2.abrupt("return", request.get('v1/clips/list', {
               dongle_id: dongle_id
             }));
           case 1:
@@ -59,16 +48,16 @@ function _clipsList() {
   }));
   return _clipsList.apply(this, arguments);
 }
-function clipsDetails(_x8, _x9) {
+export function clipsDetails(_x8, _x9) {
   return _clipsDetails.apply(this, arguments);
 }
 function _clipsDetails() {
-  _clipsDetails = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(dongle_id, clip_id) {
-    return _regenerator.default.wrap(function _callee3$(_context3) {
+  _clipsDetails = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(dongle_id, clip_id) {
+    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            return _context3.abrupt("return", _request.default.get('v1/clips/details', {
+            return _context3.abrupt("return", request.get('v1/clips/details', {
               dongle_id: dongle_id,
               clip_id: clip_id
             }));
@@ -81,16 +70,16 @@ function _clipsDetails() {
   }));
   return _clipsDetails.apply(this, arguments);
 }
-function clipsUpdate(_x10, _x11, _x12) {
+export function clipsUpdate(_x10, _x11, _x12) {
   return _clipsUpdate.apply(this, arguments);
 }
 function _clipsUpdate() {
-  _clipsUpdate = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(dongle_id, clip_id, is_public) {
-    return _regenerator.default.wrap(function _callee4$(_context4) {
+  _clipsUpdate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(dongle_id, clip_id, is_public) {
+    return _regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            return _context4.abrupt("return", _request.default.patch('v1/clips/update', {
+            return _context4.abrupt("return", request.patch('v1/clips/update', {
               dongle_id: dongle_id,
               clip_id: clip_id,
               is_public: is_public
@@ -104,16 +93,16 @@ function _clipsUpdate() {
   }));
   return _clipsUpdate.apply(this, arguments);
 }
-function clipsDelete(_x13, _x14) {
+export function clipsDelete(_x13, _x14) {
   return _clipsDelete.apply(this, arguments);
 }
 function _clipsDelete() {
-  _clipsDelete = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(dongle_id, clip_id) {
-    return _regenerator.default.wrap(function _callee5$(_context5) {
+  _clipsDelete = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(dongle_id, clip_id) {
+    return _regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            return _context5.abrupt("return", _request.default.delete('v1/clips/update', {
+            return _context5.abrupt("return", request.delete('v1/clips/update', {
               dongle_id: dongle_id,
               clip_id: clip_id
             }));

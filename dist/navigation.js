@@ -1,29 +1,17 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.deleteLocationSave = deleteLocationSave;
-exports.getLocationsData = getLocationsData;
-exports.getLocationsNext = getLocationsNext;
-exports.patchLocationSave = patchLocationSave;
-exports.putLocationSave = putLocationSave;
-exports.setDestination = setDestination;
-var _request = _interopRequireDefault(require("./request"));
-function setDestination(dongleId, latitude, longitude, place_name, place_details) {
-  return _request.default.post("v1/navigation/".concat(dongleId, "/set_destination"), {
+import request from './request';
+export function setDestination(dongleId, latitude, longitude, place_name, place_details) {
+  return request.post("v1/navigation/".concat(dongleId, "/set_destination"), {
     latitude: latitude,
     longitude: longitude,
     place_name: place_name,
     place_details: place_details
   });
 }
-function getLocationsData(dongleId) {
-  return _request.default.get("v1/navigation/".concat(dongleId, "/locations"));
+export function getLocationsData(dongleId) {
+  return request.get("v1/navigation/".concat(dongleId, "/locations"));
 }
-function putLocationSave(dongleId, latitude, longitude, place_name, place_details, save_type, label) {
-  return _request.default.put("v1/navigation/".concat(dongleId, "/locations"), {
+export function putLocationSave(dongleId, latitude, longitude, place_name, place_details, save_type, label) {
+  return request.put("v1/navigation/".concat(dongleId, "/locations"), {
     latitude: latitude,
     longitude: longitude,
     place_name: place_name,
@@ -32,18 +20,18 @@ function putLocationSave(dongleId, latitude, longitude, place_name, place_detail
     label: label
   });
 }
-function patchLocationSave(dongleId, navLocationId, saveType, label) {
-  return _request.default.patch("v1/navigation/".concat(dongleId, "/locations"), {
+export function patchLocationSave(dongleId, navLocationId, saveType, label) {
+  return request.patch("v1/navigation/".concat(dongleId, "/locations"), {
     id: navLocationId,
     save_type: saveType,
     label: label
   });
 }
-function deleteLocationSave(dongleId, navLocationId) {
-  return _request.default.delete("v1/navigation/".concat(dongleId, "/locations"), {
+export function deleteLocationSave(dongleId, navLocationId) {
+  return request.delete("v1/navigation/".concat(dongleId, "/locations"), {
     id: navLocationId
   });
 }
-function getLocationsNext(dongleId) {
-  return _request.default.get("v1/navigation/".concat(dongleId, "/next"));
+export function getLocationsNext(dongleId) {
+  return request.get("v1/navigation/".concat(dongleId, "/next"));
 }
