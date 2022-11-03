@@ -1,30 +1,23 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.RequestError = void 0;
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-var _wrapNativeSuper2 = _interopRequireDefault(require("@babel/runtime/helpers/wrapNativeSuper"));
-var _queryString = _interopRequireDefault(require("query-string"));
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _createClass from "@babel/runtime/helpers/createClass";
+import _classCallCheck from "@babel/runtime/helpers/classCallCheck";
+import _inherits from "@babel/runtime/helpers/inherits";
+import _possibleConstructorReturn from "@babel/runtime/helpers/possibleConstructorReturn";
+import _getPrototypeOf from "@babel/runtime/helpers/getPrototypeOf";
+import _wrapNativeSuper from "@babel/runtime/helpers/wrapNativeSuper";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var RequestError = /*#__PURE__*/function (_Error) {
-  (0, _inherits2.default)(RequestError, _Error);
+import qs from 'query-string';
+export var RequestError = /*#__PURE__*/function (_Error) {
+  _inherits(RequestError, _Error);
   var _super = _createSuper(RequestError);
   function RequestError(resp) {
     var _this;
-    (0, _classCallCheck2.default)(this, RequestError);
+    _classCallCheck(this, RequestError);
     for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       params[_key - 1] = arguments[_key];
     }
@@ -32,18 +25,17 @@ var RequestError = /*#__PURE__*/function (_Error) {
     _this.resp = resp;
     return _this;
   }
-  return (0, _createClass2.default)(RequestError);
-}( /*#__PURE__*/(0, _wrapNativeSuper2.default)(Error));
-exports.RequestError = RequestError;
+  return _createClass(RequestError);
+}( /*#__PURE__*/_wrapNativeSuper(Error));
 var ConfigRequest = /*#__PURE__*/function () {
   function ConfigRequest(baseUrl) {
-    (0, _classCallCheck2.default)(this, ConfigRequest);
+    _classCallCheck(this, ConfigRequest);
     this.defaultHeaders = {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
   }
-  (0, _createClass2.default)(ConfigRequest, [{
+  _createClass(ConfigRequest, [{
     key: "configure",
     value: function configure(accessToken) {
       if (accessToken) {
@@ -53,7 +45,7 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "request",
     value: function () {
-      var _request = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(method, endpoint, params) {
+      var _request = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(method, endpoint, params) {
         var dataJson,
           respJson,
           headers,
@@ -62,7 +54,7 @@ var ConfigRequest = /*#__PURE__*/function () {
           resp,
           error,
           _args = arguments;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -75,11 +67,11 @@ var ConfigRequest = /*#__PURE__*/function () {
                 requestUrl = this.baseUrl + endpoint;
                 if (params && Object.keys(params).length !== 0) {
                   if (method === 'GET' || method === 'HEAD') {
-                    requestUrl += "?".concat(_queryString.default.stringify(params));
+                    requestUrl += "?".concat(qs.stringify(params));
                   } else if (dataJson) {
                     body = JSON.stringify(params);
                   } else {
-                    body = _queryString.default.stringify(params);
+                    body = qs.stringify(params);
                   }
                 }
                 _context.next = 8;
@@ -122,11 +114,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "get",
     value: function () {
-      var _get = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(endpoint, params) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(endpoint, params) {
         var dataJson,
           respJson,
           _args2 = arguments;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
+        return _regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -148,11 +140,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "head",
     value: function () {
-      var _head = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(endpoint, params) {
+      var _head = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(endpoint, params) {
         var dataJson,
           respJson,
           _args3 = arguments;
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -174,11 +166,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "post",
     value: function () {
-      var _post = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(endpoint, params) {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(endpoint, params) {
         var dataJson,
           respJson,
           _args4 = arguments;
-        return _regenerator.default.wrap(function _callee4$(_context4) {
+        return _regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
@@ -200,8 +192,8 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "postForm",
     value: function () {
-      var _postForm = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(endpoint, params) {
-        return _regenerator.default.wrap(function _callee5$(_context5) {
+      var _postForm = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(endpoint, params) {
+        return _regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
@@ -221,11 +213,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "put",
     value: function () {
-      var _put = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(endpoint, params) {
+      var _put = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee6(endpoint, params) {
         var dataJson,
           respJson,
           _args6 = arguments;
-        return _regenerator.default.wrap(function _callee6$(_context6) {
+        return _regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
@@ -247,11 +239,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "delete",
     value: function () {
-      var _delete2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(endpoint, params) {
+      var _delete2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee7(endpoint, params) {
         var dataJson,
           respJson,
           _args7 = arguments;
-        return _regenerator.default.wrap(function _callee7$(_context7) {
+        return _regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
@@ -273,11 +265,11 @@ var ConfigRequest = /*#__PURE__*/function () {
   }, {
     key: "patch",
     value: function () {
-      var _patch = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(endpoint, params) {
+      var _patch = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee8(endpoint, params) {
         var dataJson,
           respJson,
           _args8 = arguments;
-        return _regenerator.default.wrap(function _callee8$(_context8) {
+        return _regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
@@ -299,4 +291,4 @@ var ConfigRequest = /*#__PURE__*/function () {
   }]);
   return ConfigRequest;
 }();
-exports.default = ConfigRequest;
+export { ConfigRequest as default };
