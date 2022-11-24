@@ -366,6 +366,51 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Segment'
+  /v1/route/{routeName}/files:
+    get:
+      operationId: getRouteFiles
+      summary: Raw driving data
+      description: Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
+      parameters:
+        - $ref: '#/components/parameters/routeName'
+      responses:
+        '200':
+          description: JSON object containing signed URLs to various log files. URLs are valid for 1 hour. All arrays are sorted by segment number ascending.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qlogs:
+                    type: array
+                    description: Array of signed URLs to qlog.bz2 files
+                    items:
+                      type: string
+                  qcameras:
+                    type: array
+                    description: Array of signed URLs to qcamera.ts files
+                    items:
+                      type: string
+                  logs:
+                    type: array
+                    description: Array of signed URLs to rlog.bz2 files
+                    items:
+                      type: string
+                  cameras:
+                    type: array
+                    description: Array of signed URLs to fcamera.hevc files
+                    items:
+                      type: string
+                  dcameras:
+                    type: array
+                    description: Array of signed URLs to dcamera.hevc files
+                    items:
+                      type: string
+                  ecameras:
+                    type: array
+                    description: Array of signed URLs to ecamera.hevc files
+                    items:
+                      type: string
 components:
   schemas:
     Profile:
