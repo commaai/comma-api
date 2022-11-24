@@ -280,6 +280,33 @@ paths:
       responses:
         '200':
           description: Success
+  /v1/devices/{dongleId}/owner:
+    get:
+      operationId: getDeviceOwner
+      summary: Device owner
+      description: Returns the owner of a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: JSON object containing information about the device owner
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    description: OAuth2 user ID
+                  points:
+                    type: integer
+                    description: comma points
+                  username:
+                    type: string
+                    deprecated: true
+                    nullable: true
+                  email:
+                    type: string
   /v1.4/{dongleId}/upload_url:
     get:
       operationId: getUploadUrl
