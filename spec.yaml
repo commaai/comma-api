@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: comma API
   description: comma API
@@ -22,6 +22,21 @@ paths:
     get:
       operationId: getDevices
       summary: List devices owned or readable by authenticated user
+      responses:
+        '200':
+          description: JSON array of device objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /v1/{dongleId}/devices:
+    get:
+      operationId: getUserDevices
+      summary: List devices owned or readable by specified user
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
       responses:
         '200':
           description: JSON array of device objects
