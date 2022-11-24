@@ -621,7 +621,7 @@ components:
         canonical_route_name:
           $ref: '#/components/schemas/RouteName'
         dongle_id:
-          $ref: '#/components/schemas/DongleId'
+          $ref: '#/components/schemas/DongleID'
         create_time:
           type: integer
           description: Unix timestamp at which upload_url was first called for file in segment
@@ -674,9 +674,9 @@ components:
         fullname:
           $ref: '#/components/schemas/RouteName'
         dongle_id:
-          $ref: '#/components/schemas/DongleId'
+          $ref: '#/components/schemas/DongleID'
         user_id:
-          $ref: '#/components/schemas/DongleId'
+          $ref: '#/components/schemas/DongleID'
         is_public:
           type: boolean
         create_time:
