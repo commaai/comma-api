@@ -180,6 +180,84 @@ paths:
                 type: array
                 items:
                   type: string
+  /v1/devices/{dongleId}/routes:
+    get:
+      operationId: getDeviceRoutes
+      summary: Device routes
+      description: Returns a list of routes uploaded from a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+        - name: limit
+          in: query
+          description: Maximum number of routes to return
+          schema:
+            type: integer
+            default: 20
+        - name: created_after
+          in: query
+          description: Return routes created after this timestamp
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: JSON array of route objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+  /v1/devices/{dongleId}/routes_segments:
+    get:
+      operationId: getDeviceRoutesSegments
+      summary: Device routes segments
+      description: Returns a list of route segments uploaded from a device between a start and end timestamp.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+        - name: start
+          in: query
+          description: Start timestamp in milliseconds
+          schema:
+            type: integer
+        - name: end
+          in: query
+          description: End timestamp in milliseconds
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RouteSegment'
+  /v1/devices/{dongleId}/segments:
+    get:
+      operationId: getDeviceSegments
+      summary: Segments
+      description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: JSON array of segments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
   /v1.4/{dongleId}/upload_url:
     get:
       operationId: getUploadUrl
@@ -323,32 +401,6 @@ paths:
                   access_token:
                     type: string
                     description: JWT
-  /v1/devices/{dongleId}/segments:
-    get:
-      operationId: getDeviceSegments
-      summary: Segments
-      description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
-      parameters:
-        - $ref: '#/components/parameters/dongleId'
-        - name: from
-          in: query
-          required: true
-          schema:
-            type: number
-        - name: to
-          in: query
-          required: true
-          schema:
-            type: number
-      responses:
-        '200':
-          description: JSON array of segments
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Segment'
   /v1/route/{routeName}:
     get:
       operationId: getRoute
@@ -697,7 +749,13 @@ components:
           description: Unix timestamp at which upload_url was first called for file in route
         url:
           type: string
-          description: Signed URL from which route.coords and JPEGs can be downloaded
+          description: Signed storage bucket URL from which route.coords and JPEGs can be downloaded
+        share_expiry:
+          type: integer
+          description: Unix timestamp at which signed URL expires
+        share_sig:
+          type: string
+          description: URL signature
         length:
           type: number
           description: Sum of distances between GPS points in miles
@@ -779,6 +837,27 @@ components:
         init_logmonotime:
           type: integer
           description: Minimum logMonoTime from openpilot log
+    RouteSegment:
+      allOf:
+        - $ref: '#/components/schemas/Route'
+        - type: object
+          properties:
+            segment_numbers:
+              type: array
+              description: Segment numbers in route
+              items:
+                type: integer
+                minimum: 0
+            segment_start_times:
+              type: array
+              description: Segment start times in milliseconds since epoch
+              items:
+                type: integer
+            segment_end_times:
+              type: array
+              description: Segment end times in milliseconds since epoch
+              items:
+                type: integer
     DeviceType:
       type: string
       description: Device type
@@ -837,26 +916,28 @@ components:
       type: string
       title: Dongle ID
       description: A unique 16-character hexadecimal string. Can represent a device or a user.
-      example: "1a2b3c4d5e6f7a8b"
       pattern: '^[0-9a-f]{16}$'
+      example: "1a2b3c4d5e6f7a8b"
     RouteName:
       type: string
       title: Canonical route name
       description: Contains a dongle ID and timestamp of the beginning of the route
-      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
+      required: true
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}$'
+      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
     SegmentName:
       type: string
       title: Canonical segment name
       description: Contains a dongle ID, timestamp of the beginning of the route, and segment number
-      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
+      required: true
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}--[0-9]+$'
+      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
     VIN:
       type: string
       title: Vehicle identification number
       description: 17-character alphanumeric string
-      example: "5YJ3E1EA7HF000000"
       pattern: '^[0-9A-Z]{17}$'
+      example: "5YJ3E1EA7HF000000"
   parameters:
     dongleId:
       name: dongleId
