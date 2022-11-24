@@ -1,0 +1,615 @@
+openapi: 3.1.0
+info:
+  title: comma API
+  description: comma API
+  version: 1.0.0
+servers:
+  - url: 'https://api.comma.ai'
+    description: Production server
+paths:
+  /v1/me:
+    get:
+      operationId: getProfile
+      summary: Returns information about the authenticated user
+      responses:
+        '200':
+          description: A JSON object containing the user's profile information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+  /v1/me/devices:
+    get:
+      operationId: getDevices
+      summary: List devices owned or readable by authenticated user
+      responses:
+        '200':
+          description: A JSON array of device objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /v1.1/devices/{dongleId}:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDevice
+      summary: Returns information about a device
+      responses:
+        '200':
+          description: A JSON object containing the device's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    patch:
+      operationId: updateDevice
+      summary: Update device alias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alias:
+                  type: string
+      responses:
+        '200':
+          description: A JSON object containing the updated device's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}/users:
+    get:
+      operationId: getDeviceUsers
+      summary: Device users
+      description: List users with access to a device
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: A JSON array of device user objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceUser'
+  /v1/devices/{dongleId}/add_user:
+    post:
+      operationId: addDeviceUser
+      summary: Grant device read permissions to a user
+      description: Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Success
+  /v1/devices/{dongleId}/del_user:
+    post:
+      operationId: revokeDeviceUser
+      summary: Revoke device read permissions from a user
+      description: Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Success
+  /v1.1/devices/{dongleId}/stats:
+    get:
+      operationId: getDeviceStatistics
+      summary: Device driving statistics
+      description: Returns aggregate driving statistics for a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  all:
+                    $ref: '#/components/schemas/DrivingStatistics'
+                  week:
+                    $ref: '#/components/schemas/DrivingStatistics'
+  /v1/devices/{dongleId}/bootlogs:
+    get:
+      operationId: getDeviceBootLogs
+      summary: Device boot logs
+      description: Returns most recent boot logs uploaded from a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: JSON array of URLs to boot log files. Files are available at each URL for one hour from the time of the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/devices/{dongleId}/crashlogs:
+    get:
+      operationId: getDeviceCrashLogs
+      summary: Device crash logs
+      description: Returns most recent crash logs uploaded from a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: JSON array of URLs to crash log files. Files are available at each URL for one hour from the time of the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1.4/{dongleId}/upload_url:
+    get:
+      operationId: getUploadUrl
+      summary: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                  description: File to upload from openpilot data directory.
+                expiry_days:
+                  type: integer
+                  minimum: 1
+                  maximum: 30
+                  default: 1
+                  description: number of days the url should be valid
+            example:
+              path: "2019-06-06--11-30-31--9/fcamera.hevc"
+              expiry_days: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL to which a PUT request can be sent with file contents
+                example:
+                    url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+  /v1/{dongleId}/upload_urls:
+    post:
+      operationId: getUploadUrls
+      summary: Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paths:
+                  type: array
+                  items:
+                    type: string
+                  description: Files to upload from openpilot data directory.
+                expiry_days:
+                  type: integer
+                  minimum: 1
+                  maximum: 30
+                  default: 1
+                  description: number of days the url should be valid
+            example:
+                paths:
+                  - "2019-06-06--11-30-31--9/fcamera.hevc"
+                  - "2019-06-06--11-30-31--9/ecamera.hevc"
+                expiry_days: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: URL to which a PUT request can be sent with file contents
+                example:
+                    - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+                    - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/ecamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+  /v2/pilotpair:
+    post:
+      operationId: pilotPair
+      summary: Pair device
+      description: Pair a device to the authenticated user's account.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pair_token:
+                  type: string
+                  description: "JWT signed by your device private key. Payload contains `{\"identity\": <dongle-id>, \"pair\": true}`"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  first_pair:
+                    type: boolean
+                    description: True if the device was unpaired prior to this call. False if the device was previously paired by an authenticated user.
+  /v2/pilotauth:
+    post:
+      operationId: pilotAuth
+      summary: openpilot auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imei:
+                  type: string
+                  description: Device IMEI
+                imei2:
+                  type: string
+                  description: Device IMEI, second slot
+                serial:
+                  type: string
+                  description: Device serial number
+                public_key:
+                  type: string
+                  description: 2048-bit RSA public key
+                register_token:
+                  type: string
+                  description: "JWT signed by private key. Payload must contain {\"register\": true}"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dongle_id:
+                    type: string
+                    description: Dongle ID
+                  access_token:
+                    type: string
+                    description: JWT
+  /v1/devices/{dongleId}/segments:
+    get:
+      operationId: getDeviceSegments
+      summary: Segments
+      description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
+components:
+  schemas:
+    Profile:
+      type: object
+      discriminator:
+        propertyName: user_id
+      properties:
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+          description: Dongle ID
+        points:
+          type: integer
+          description: comma points
+          deprecated: true
+        regdate:
+          type: integer
+          description: Unix timestamp at time of registration
+        superuser:
+          type: boolean
+        username:
+          type: string
+          deprecated: true
+          nullable: true
+        user_id:
+          type: string
+          description: OAuth2 user ID
+      required:
+        - email
+        - id
+        - points
+        - regdate
+        - superuser
+        - user_id
+    Device:
+      type: object
+      properties:
+        dongle_id:
+          type: string
+        alias:
+          type: string
+          description: Device nickname
+        serial:
+          type: string
+          description: Device serial number
+        athena_host:
+          type: string
+          description: Last connected athena server hostname
+        last_athena_ping:
+          type: integer
+          description: Unix timestamp of last athena ping
+        ignore_uploads:
+          type: boolean
+          description: Uploads are ignored from this device
+        is_paired:
+          type: boolean
+          description: Device has an owner
+        is_owner:
+          type: boolean
+          description: Authenticated user has write-access to the device
+        public_key:
+          type: string
+          description: 2048-bit public RSA key
+        prime:
+          type: boolean
+          description: Device has a prime subscription
+        prime_type:
+          type: number
+          description: Prime subscription type
+          oneOf:
+            - const: 0
+              description: None
+            - const: 1
+              description: Magenta
+            - const: 2
+              description: Lite
+            - const: 3
+              description: Blue
+            - const: 4
+              description: Magenta new
+        trial_claimed:
+          type: boolean
+          description: Device prime trial is claimed
+        device_type:
+          type: string
+          description: Device type
+          enum:
+            - app
+            - neo
+            - panda
+            - two
+            - freon
+            - pc
+            - three
+        last_gps_time:
+          type: integer
+        last_gps_lat:
+          type: number
+        last_gps_lng:
+          type: number
+        last_gps_accuracy:
+          type: number
+        last_gps_speed:
+          type: number
+        last_gps_bearing:
+          type: number
+        openpilot_version:
+          type: string
+        sim_id:
+          type: string
+          nullable: true
+    DeviceUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email
+        permission:
+          type: string
+          description: Device permission
+          oneOf:
+            - const: owner
+            - const: read_access
+    DeviceLocation:
+      type: object
+      properties:
+        dongle_id:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        time:
+          type: integer
+          description: Milliseconds since epoch
+        accuracy:
+          type: number
+        speed:
+          type: number
+        bearing:
+          type: number
+    DrivingStatistics:
+      type: object
+      properties:
+        distance:
+          type: number
+          description: Total miles driven in time period
+        minutes:
+          type: integer
+          description: Total minutes driven in time period
+        routes:
+          type: integer
+          description: Count of routes in time period
+    Segment:
+      type: object
+      properties:
+        canonical_name:
+          type: string
+          description: Segment name
+        number:
+          type: integer
+          description: Segment number
+        canonical_route_name:
+          type: string
+          description: Route name
+        dongle_id:
+          type: string
+          description: Dongle ID
+        create_time:
+          type: integer
+          description: Unix timestamp at which upload_url was called for first file in segment
+        start_time_utc_millis:
+          type: integer
+          description: Milliseconds since epoch of segment start time
+        end_time_utc_millis:
+          type: integer
+          description: Milliseconds since epoch of segment end time
+        url:
+          type: string
+          description: Signed URL from which route.coords and JPEGs can be downloaded
+        length:
+          type: number
+          description: Sum of distances between GPS points in miles
+        can:
+          type: boolean
+          description: Segment contains CAN messages
+        hpgps:
+          type: boolean
+          description: Segment has ublox packets
+        radar:
+          type: boolean
+          description: Segment contains radar tracks in CAN
+        devicetype:
+          $ref: '#/components/schemas/SegmentDataSource'
+        proc_log:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_qlog:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_camera:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_dcamera:
+          $ref: '#/components/schemas/FileProcStatus'
+        passive:
+          type: boolean
+        version:
+          type: string
+        git_commit:
+          type: string
+        git_branch:
+          type: string
+        git_remote:
+          type: string
+        git_dirty:
+          type: boolean
+    DeviceType:
+      type: string
+      description: Device type
+      enum:
+        - app
+        - neo
+        - panda
+        - two
+        - freon
+        - pc
+        - three
+    SegmentDataSource:
+      type: integer
+      description: Data source
+      oneOf:
+        - const: 3
+          title: eon
+        - const: 6
+          title: comma two
+        - const: 7
+          title: comma three
+    FileProcStatus:
+      type: integer
+      description: Log file status
+      oneOf:
+        - const: -1
+          title: Not received
+        - const: 0
+          title: Upload URL sent
+        - const: 10
+          title: Received
+        - const: 20
+          title: Enqueued
+        - const: 30
+          title: Processing
+        - const: 40
+          title: Processed
+        - const: 50
+          title: Errored
+    FileType:
+      type: integer
+      oneOf:
+        - const: 1
+          title: Road camera (camera)
+        - const: 2
+          title: Front camera (driver, dcamera)
+        - const: 3
+          title: Log (raw, rlog)
+        - const: 4
+          title: Qlog
+        - const: 5
+          title: QCamera
+        - const: 6
+          title: Wide road camera (extended, ecamera)
+  parameters:
+    dongleId:
+      name: dongleId
+      in: path
+      required: true
+      schema:
+        type: string
