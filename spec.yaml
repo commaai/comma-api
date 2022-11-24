@@ -350,6 +350,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+  /v1/route/{routeName}/segments:
+    get:
+      operationId: getRouteSegments
+      summary: Route Segments
+      description: Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
+      parameters:
+        - $ref: '#/components/parameters/routeName'
+      responses:
+        '200':
+          description: JSON array of segments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
 components:
   schemas:
     Profile:
