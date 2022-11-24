@@ -923,14 +923,12 @@ components:
       type: string
       title: Canonical route name
       description: Contains a dongle ID and timestamp of the beginning of the route
-      required: true
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}$'
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
     SegmentName:
       type: string
       title: Canonical segment name
       description: Contains a dongle ID, timestamp of the beginning of the route, and segment number
-      required: true
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}--[0-9]+$'
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
     VIN:
