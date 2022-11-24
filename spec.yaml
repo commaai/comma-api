@@ -343,6 +343,13 @@ paths:
       description: Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
       parameters:
         - $ref: '#/components/parameters/routeName'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
 components:
   schemas:
     Profile:
@@ -513,7 +520,7 @@ components:
           $ref: '#/components/schemas/DongleId'
         create_time:
           type: integer
-          description: Unix timestamp at which upload_url was called for first file in segment
+          description: Unix timestamp at which upload_url was first called for file in segment
         start_time_utc_millis:
           type: integer
           description: Milliseconds since epoch of segment start time
@@ -557,6 +564,104 @@ components:
           type: string
         git_dirty:
           type: boolean
+    Route:
+      type: object
+      properties:
+        fullname:
+          $ref: '#/components/schemas/RouteName'
+        dongle_id:
+          $ref: '#/components/schemas/DongleId'
+        user_id:
+          $ref: '#/components/schemas/DongleId'
+        is_public:
+          type: boolean
+        create_time:
+          type: integer
+          description: Unix timestamp at which upload_url was first called for file in route
+        url:
+          type: string
+          description: Signed URL from which route.coords and JPEGs can be downloaded
+        length:
+          type: number
+          description: Sum of distances between GPS points in miles
+        can:
+          type: boolean
+          description: Route contains CAN messages
+        hpgps:
+          type: boolean
+          description: Route has ublox packets
+        radar:
+          type: boolean
+          description: Route contains radar tracks in CAN
+        devicetype:
+          $ref: '#/components/schemas/SegmentDataSource'
+        maxqlog:
+          type: integer
+          description: Maximum qlog segment number uploaded
+        maxqcamera:
+          type: integer
+          description: Maximum qcamera segment number uploaded
+        maxlog:
+          type: integer
+          description: Maximum log segment number uploaded
+        maxcamera:
+          type: integer
+          description: Maximum road camera segment number uploaded
+        maxdcamera:
+          type: integer
+          description: Maximum driver camera segment number uploaded
+        maxecamera:
+          type: integer
+          description: Maximum wide road camera segment number uploaded
+        procqlog:
+          type: integer
+          description: Maximum qlog segment number processed
+        procqcamera:
+          type: integer
+          description: Maximum qcamera segment number processed
+        proclog:
+          type: integer
+          description: Maximum log segment number processed
+        proccamera:
+          type: integer
+          description: Maximum road camera segment number processed
+        start_lat:
+          type: number
+          description: First latitude recorded in route from GPS
+        start_lng:
+          type: number
+          description: First longitude recorded in route from GPS
+        start_time:
+          type: number
+          description: Unix timestamp at beginning of route
+        end_lat:
+          type: number
+          description: Last latitude recorded in route from GPS
+        end_lng:
+          type: number
+          description: Last longitude recorded in route from GPS
+        end_time:
+          type: number
+          description: Unix timestamp at end of last segment in route
+        passive:
+          type: boolean
+        version:
+          type: string
+        git_commit:
+          type: string
+        git_branch:
+          type: string
+        git_remote:
+          type: string
+        git_dirty:
+          type: boolean
+        platform:
+          type: string
+        vin:
+          $ref: '#/components/schemas/VIN'
+        init_logmonotime:
+          type: integer
+          description: Minimum logMonoTime from openpilot log
     DeviceType:
       type: string
       description: Device type
@@ -613,19 +718,28 @@ components:
           title: Wide road camera (extended, ecamera)
     DongleID:
       type: string
-      description: Device dongle ID
+      title: Dongle ID
+      description: A unique 16-character hexadecimal string. Can represent a device or a user.
       example: "1a2b3c4d5e6f7a8b"
       pattern: '^[0-9a-f]{16}$'
     RouteName:
       type: string
-      description: Canonical route name
+      title: Canonical route name
+      description: Contains a dongle ID and timestamp of the beginning of the route
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}$'
     SegmentName:
       type: string
-      description: Canonical segment name
+      title: Canonical segment name
+      description: Contains a dongle ID, timestamp of the beginning of the route, and segment number
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}--[0-9]+$'
+    VIN:
+      type: string
+      title: Vehicle identification number
+      description: 17-character alphanumeric string
+      example: "5YJ3E1EA7HF000000"
+      pattern: '^[0-9A-Z]{17}$'
   parameters:
     dongleId:
       name: dongleId
