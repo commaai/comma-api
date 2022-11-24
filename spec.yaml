@@ -13,7 +13,7 @@ paths:
       summary: Returns information about the authenticated user
       responses:
         '200':
-          description: A JSON object containing the user's profile information
+          description: JSON object containing the user's profile information
           content:
             application/json:
               schema:
@@ -24,7 +24,7 @@ paths:
       summary: List devices owned or readable by authenticated user
       responses:
         '200':
-          description: A JSON array of device objects
+          description: JSON array of device objects
           content:
             application/json:
               schema:
@@ -39,7 +39,7 @@ paths:
       summary: Returns information about a device
       responses:
         '200':
-          description: A JSON object containing the device's information
+          description: JSON object containing the device's information
           content:
             application/json:
               schema:
@@ -57,7 +57,7 @@ paths:
                   type: string
       responses:
         '200':
-          description: A JSON object containing the updated device's information
+          description: JSON object containing the updated device's information
           content:
             application/json:
               schema:
@@ -71,7 +71,7 @@ paths:
         - $ref: '#/components/parameters/dongleId'
       responses:
         '200':
-          description: A JSON array of device user objects
+          description: JSON array of device user objects
           content:
             application/json:
               schema:
@@ -191,7 +191,7 @@ paths:
               expiry_days: 1
       responses:
         '200':
-          description: OK
+          description: JSON object containing upload URL
           content:
             application/json:
               schema:
@@ -232,7 +232,7 @@ paths:
                 expiry_days: 1
       responses:
         '200':
-          description: OK
+          description: JSON array containing upload URLs
           content:
             application/json:
               schema:
@@ -262,7 +262,7 @@ paths:
                   description: "JWT signed by your device private key. Payload contains `{\"identity\": <dongle-id>, \"pair\": true}`"
       responses:
         '200':
-          description: OK
+          description: JSON object containing pairing result
           content:
             application/json:
               schema:
@@ -298,7 +298,7 @@ paths:
                   description: "JWT signed by private key. Payload must contain {\"register\": true}"
       responses:
         '200':
-          description: OK
+          description: Authenticated dongle ID and token
           content:
             application/json:
               schema:
@@ -329,7 +329,7 @@ paths:
             type: number
       responses:
         '200':
-          description: OK
+          description: JSON array of segments
           content:
             application/json:
               schema:
@@ -345,7 +345,7 @@ paths:
         - $ref: '#/components/parameters/routeName'
       responses:
         '200':
-          description: OK
+          description: JSON object containing route information
           content:
             application/json:
               schema:
