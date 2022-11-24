@@ -226,6 +226,7 @@ paths:
             type: integer
       responses:
         '200':
+          description: JSON array of route segment objects
           content:
             application/json:
               schema:
