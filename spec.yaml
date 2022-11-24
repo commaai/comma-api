@@ -411,6 +411,49 @@ paths:
                     description: Array of signed URLs to ecamera.hevc files
                     items:
                       type: string
+  /v1/route/{routeName}/qcamera.m3u8:
+    get:
+      operationId: getRouteStream
+      summary: Video Stream
+      description: Returns rear camera HLS stream index of MPEG-TS fragments.
+      parameters:
+        - $ref: '#/components/parameters/routeName'
+      responses:
+        '200':
+          description: m3u8 playlist
+          content:
+            application/x-mpegURL:
+              schema:
+                type: string
+                example: |
+                  #EXTM3U
+                  #EXT-X-VERSION:3
+                  #EXT-X-TARGETDURATION:4
+                  #EXT-X-MEDIA-SEQUENCE:0
+                  #EXT-X-PLAYLIST-TYPE:VOD
+
+                  #EXTINF:3.049958,
+                  8_61.ts?v=2
+                  #EXTINF:3.049955,
+                  69_61.ts?v=2
+                  #EXTINF:3.049955,
+                  130_61.ts?v=2
+                  #EXTINF:3.049958,
+                  191_61.ts?v=2
+                  #EXTINF:3.049970,
+                  252_61.ts?v=2
+                  #EXTINF:3.049955,
+                  313_61.ts?v=2
+                  #EXTINF:3.050007,
+                  374_61.ts?v=2
+                  #EXTINF:3.049913,
+                  435_61.ts?v=2
+                  #EXTINF:3.049942,
+                  496_61.ts?v=2
+                  #EXTINF:3.049964,
+                  557_61.ts?v=2
+                  #EXTINF:3.049955,
+                  618_61.ts?v=2
 components:
   schemas:
     Profile:
