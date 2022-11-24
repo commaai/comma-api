@@ -171,24 +171,21 @@ paths:
       summary: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
       parameters:
         - $ref: '#/components/parameters/dongleId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                path:
-                  type: string
-                  description: File to upload from openpilot data directory.
-                expiry_days:
-                  type: integer
-                  minimum: 1
-                  maximum: 30
-                  default: 1
-                  description: number of days the url should be valid
-            example:
-              path: "2019-06-06--11-30-31--9/fcamera.hevc"
-              expiry_days: 1
+        - name: path
+          in: query
+          type: string
+          description: File to upload from openpilot data directory.
+          required: true
+          example: "2019-06-06--11-30-31--9/fcamera.hevc"
+        - name: expiry_days
+          in: query
+          type: integer
+          description: Number of days the url should be valid.
+          minimum: 1
+          maximum: 30
+          default: 1
+          required: true
+          example: 1
       responses:
         '200':
           description: JSON object containing upload URL
