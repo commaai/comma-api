@@ -524,8 +524,6 @@ components:
   schemas:
     Profile:
       type: object
-      discriminator:
-        propertyName: user_id
       properties:
         email:
           type: string
@@ -839,6 +837,7 @@ components:
           type: integer
           description: Minimum logMonoTime from openpilot log
     RouteSegment:
+      type: object
       allOf:
         - $ref: '#/components/schemas/Route'
         - type: object
