@@ -180,6 +180,40 @@ paths:
                 type: array
                 items:
                   type: string
+  /v1.4/{dongleId}/upload_url:
+    get:
+      operationId: getUploadUrl
+      summary: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+        - name: path
+          in: query
+          type: string
+          description: File to upload from openpilot data directory.
+          required: true
+          example: "2019-06-06--11-30-31--9/fcamera.hevc"
+        - name: expiry_days
+          in: query
+          type: integer
+          description: Number of days the url should be valid.
+          minimum: 1
+          maximum: 30
+          default: 1
+          required: true
+          example: 1
+      responses:
+        '200':
+          description: JSON object containing upload URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL to which a PUT request can be sent with file contents
+                example:
+                    url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
   /v1/{dongleId}/upload_urls:
     post:
       operationId: getUploadUrls
