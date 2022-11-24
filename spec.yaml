@@ -47,11 +47,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Device'
   /v1.1/devices/{dongleId}:
-    parameters:
-      - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getDevice
       summary: Returns information about a device
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
       responses:
         '200':
           description: JSON object containing the device's information
@@ -59,9 +59,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}:
     patch:
       operationId: updateDevice
       summary: Update device alias
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
       requestBody:
         content:
           application/json:
@@ -259,6 +262,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Segment'
+  /v1/devices/{dongleId}/pair:
+    post:
+      operationId: pairDeviceToUser
+      summary: Pair device
+      description: Pair a device to a user's account.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: Success
   /v1.4/{dongleId}/upload_url:
     get:
       operationId: getUploadUrl
