@@ -823,6 +823,7 @@ components:
           type: number
     DrivingStatistics:
       type: object
+      description: Summary of drives over a period of time
       properties:
         distance:
           type: number
@@ -835,6 +836,7 @@ components:
           description: Count of routes in time period
     Segment:
       type: object
+      description: A single segment of a route is up to 60 seconds in length.
       properties:
         canonical_name:
           $ref: '#/components/schemas/SegmentName'
