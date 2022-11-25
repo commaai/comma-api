@@ -893,31 +893,34 @@ components:
     DeviceLocation:
       type: object
       properties:
-        dongle_id:
-          type: string
         lat:
           type: number
+          description: Latitude, in decimal degrees
         lng:
           type: number
+          description: Longitude, in decimal degrees
         time:
           type: integer
-          description: Milliseconds since epoch
+          description: Unix timestamp, in milliseconds
         accuracy:
           type: number
+          description: Accuracy, in metres
         speed:
           type: number
+          description: Speed, in metres per second
         bearing:
           type: number
+          description: Bearing angle, in degrees from north
     DrivingStatistics:
       type: object
       description: Summary of drives over a period of time
       properties:
         distance:
           type: number
-          description: Total miles driven in time period
+          description: Sum of distance driven in time period, in miles
         minutes:
           type: integer
-          description: Total minutes driven in time period
+          description: Sum of time driven in time period, in minutes
         routes:
           type: integer
           description: Count of routes in time period
