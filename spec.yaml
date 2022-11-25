@@ -787,12 +787,14 @@ components:
         athena_host:
           type: string
           description: Last connected athena server hostname
+          nullable: true
         last_athena_ping:
           type: integer
           description: Unix timestamp of last athena ping
         ignore_uploads:
           type: boolean
           description: Uploads are ignored from this device
+          nullable: true
         is_paired:
           type: boolean
           description: Device has an owner
@@ -802,6 +804,7 @@ components:
         public_key:
           type: string
           description: 2048-bit public RSA key
+          nullable: true
         prime:
           type: boolean
           description: Device has a prime subscription
@@ -822,6 +825,7 @@ components:
         trial_claimed:
           type: boolean
           description: Device prime trial is claimed
+          nullable: true
         device_type:
           type: string
           description: Device type
@@ -835,21 +839,45 @@ components:
             - three
         last_gps_time:
           type: integer
+          nullable: true
         last_gps_lat:
           type: number
+          nullable: true
         last_gps_lng:
           type: number
+          nullable: true
         last_gps_accuracy:
           type: number
+          nullable: true
         last_gps_speed:
           type: number
+          nullable: true
         last_gps_bearing:
           type: number
+          nullable: true
         openpilot_version:
           type: string
+          nullable: true
         sim_id:
           type: string
           nullable: true
+      required:
+        - dongle_id
+        - alias
+        - serial
+        - is_paired
+        - public_key
+        - prime
+        - prime_type
+        - trial_claimed
+        - device_type
+        - last_gps_time
+        - last_gps_lat
+        - last_gps_lng
+        - last_gps_accuracy
+        - last_gps_speed
+        - last_gps_bearing
+        - sim_id
     DeviceUser:
       type: object
       properties:
