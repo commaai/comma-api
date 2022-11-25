@@ -680,6 +680,65 @@ paths:
                   token:
                     type: string
                     description: Mapbox token
+  /v1/navigation/{dongleId}/set_destination:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: setDestination
+      summary: Set destination
+      description: Set destination for navigation. Authenticated user must have ownership of the dongle ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NavigationDestination'
+      responses:
+        '200':
+          description: Destination set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  saved_next:
+                    type: boolean
+                    description: True if the destination was stored and will be applied when the device is next online. False if the destination was set immediately.
+  /v1/navigation/{dongleId}/next:
+    properties:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getNavigationNext
+      summary: Retrieve navigation destination
+      description: Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
+      responses:
+        '200':
+          description: JSON object containing next destination, or null if no destination is set
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/NavigationDestination'
+                  - type: null
+    delete:
+      operationId: clearNavigationNext
+      summary: Clear navigation destination
+      description: Delete next destination from database.
+      responses:
+        '200':
+          description: Destination cleared
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  deleted:
+                    $ref: '#/components/schemas/NavigationDestination'
 components:
   schemas:
     Profile:
@@ -1098,6 +1157,26 @@ components:
       description: 17-character alphanumeric string
       pattern: '^[0-9A-Z]{17}$'
       example: "5YJ3E1EA7HF000000"
+    NavigationDestination:
+      type: object
+      title: Navigation destination
+      properties:
+        place_name:
+          type: string
+          description: Short name of destination
+          example: 1441 State St
+        place_details:
+          type: string
+          description: Address details of destination. Should not include short name.
+          example: San Diego, CA 92101, United States
+        latitude:
+          type: number
+          description: Latitude, decimal degrees
+          example: 32.720450
+        longitude:
+          type: number
+          description: Longitude, decimal degrees
+          example: -117.166210
   parameters:
     dongleId:
       name: dongleId
