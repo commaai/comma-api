@@ -570,6 +570,27 @@ paths:
                   557_61.ts?v=2
                   #EXTINF:3.049955,
                   618_61.ts?v=2
+  /v1/route/{routeName}/share_signature:
+    get:
+      operationId: getRouteShareSignature
+      summary: Route share signature
+      description: Return route share URL signature. Expires in 365 days.
+      parameters:
+        - $ref: '#/components/parameters/routeName'
+      responses:
+        '200':
+          description: JSON object containing route share signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exp:
+                    type: string
+                    description: Unix timestamp of expiration
+                  sig:
+                    type: string
+                    description: Signature
 components:
   schemas:
     Profile:
@@ -990,18 +1011,21 @@ components:
     dongleId:
       name: dongleId
       in: path
+      description: Dongle ID
       required: true
       schema:
         $ref: '#/components/schemas/DongleID'
     routeName:
       name: routeName
       in: path
+      description: Canonical route name
       required: true
       schema:
         $ref: '#/components/schemas/RouteName'
     segmentName:
       name: segmentName
       in: path
+      description: Canonical segment name
       required: true
       schema:
         $ref: '#/components/schemas/SegmentName'
