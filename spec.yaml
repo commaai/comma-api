@@ -340,6 +340,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Segment'
+  /v1/devices/{dongleId}/athena_offline_queue:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceAthenaOfflineQueue
+      summary: Athena offline queue
+      description: Return a list of queued payloads for delivery to device when it is online.
+      responses:
+        '200':
+          description: JSON array of queued payloads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    expiry:
+                      type: integer
+                  additionalProperties: true
   /v1.4/{dongleId}/upload_url:
     parameters:
       - $ref: '#/components/parameters/dongleId'
