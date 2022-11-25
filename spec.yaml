@@ -763,6 +763,50 @@ paths:
                     const: true
                   deleted:
                     $ref: '#/components/schemas/NavigationDestination'
+  /v1/navigation/{dongleId}/locations:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getNavigationSavedLocations
+      summary: Retrieve saved locations
+      description: Retrieve saved locations from database.
+      responses:
+        '200':
+          description: JSON object containing saved locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NavigationLocation'
+    put:
+      operationId: saveNavigationLocation
+      summary: Save location
+    patch:
+      operationId: updateNavigationLocation
+      summary: Update saved location
+    delete:
+      operationId: deleteNavigationLocation
+      summary: Delete saved location
+  /v1/clips/create:
+    post:
+      operationId: createClip
+      summary: Create clip
+  /v1/clips/list:
+    get:
+      operationId: listClips
+      summary: List clips
+  /v1/clips/details:
+    get:
+      operationId: getClip
+      summary: Get clip
+  /v1/clips/update:
+    patch:
+      operationId: updateClip
+      summary: Update clip
+    delete:
+      operationId: deleteClip
+      summary: Delete clip
 components:
   schemas:
     Profile:
@@ -1232,6 +1276,29 @@ components:
           type: number
           description: Longitude, decimal degrees
           example: -117.166210
+    NavigationLocation:
+      type: object
+      title: Navigation location
+      properties:
+        id:
+          type: number
+          description: Identifier for this saved location
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        save_type:
+          type: string
+          description: Type of saved location
+          oneOf:
+            - const: favorite
+              title: Favorite
+            - const: recent
+              title: Recent
+        label:
+          type: string
+          description: Optional label for for locations with type "favorite"
+          nullable: true
+        modified:
+          type: string
   parameters:
     dongleId:
       name: dongleId
