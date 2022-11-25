@@ -210,6 +210,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Route'
+  /v1/devices/{dongleId}/routes/preserved:
+    get:
+      operationId: getDevicePreservedRoutes
+      summary: Device preserved routes
+      description: Returns a list of preserved routes uploaded from a device.
+      parameters:
+        - $ref: '#/components/parameters/dongleId'
+      responses:
+        '200':
+          description: JSON array of route objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
   /v1/devices/{dongleId}/routes_segments:
     get:
       operationId: getDeviceRoutesSegments
@@ -591,6 +607,23 @@ paths:
                   sig:
                     type: string
                     description: Signature
+  /v1/route/{routeName}/preserve:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    post:
+      operationId: preserveRoute
+      summary: Preserve route
+      description: Preserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      responses:
+        '200':
+          description: Route preserved
+    delete:
+      operationId: unpreserveRoute
+      summary: Unpreserve route
+      description: Unpreserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      responses:
+        '200':
+          description: Route unpreserved
 components:
   schemas:
     Profile:
