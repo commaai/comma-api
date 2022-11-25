@@ -1299,6 +1299,63 @@ components:
           nullable: true
         modified:
           type: string
+    Clip:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this clip
+        create_time:
+          type: integer
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        route_name:
+          $ref: '#/components/schemas/RouteName'
+        start_time:
+          type: integer
+        end_time:
+          type: integer
+        video_type:
+          type: string
+          description: Clip type
+          oneOf:
+            - const: q
+              title: QCamera
+            - const: f
+              title: Road camera
+            - const: e
+              title: Wide road camera
+            - const: d
+              title: Driver camera
+            - const: 360
+              title: 360
+        status:
+          type: string
+          description: Clip status
+          oneOf:
+            - const: pending
+              title: Pending
+            - const: done
+              title: Done
+            - const: failed
+              title: Failed
+        is_public:
+          type: boolean
+          description: Clip is publicly accessible
+        title:
+          type: string
+          description: Optional title for clip
+          nullable: true
+      required:
+        - id
+        - create_time
+        - dongle_id
+        - route_name
+        - start_time
+        - end_time
+        - video_type
+        - status
+        - is_public
   parameters:
     dongleId:
       name: dongleId
