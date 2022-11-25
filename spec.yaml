@@ -662,6 +662,24 @@ paths:
       responses:
         '200':
           description: Route unpreserved
+  /v1/tokens/mapbox/{dongleId}:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getMapboxToken
+      summary: Mapbox token
+      description: Returns a Mapbox token for the specified dongle ID. Authenticated user must have ownership of the dongle ID.
+      responses:
+        '200':
+          description: JSON object containing Mapbox token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Mapbox token
 components:
   schemas:
     Profile:
