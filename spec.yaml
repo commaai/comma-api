@@ -80,6 +80,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}/location:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceLocation
+      summary: Device location
+      responses:
+        '200':
+          description: JSON object containing device location, or an error message if the location is not known.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - allOf:
+                      - $ref: '#/components/schemas/DeviceLocation'
+                      - type: object
+                        properties:
+                          dongle_id:
+                            $ref: '#/components/schemas/DongleID'
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        const: Location unavailable
   /v1/devices/{dongleId}/pair:
     parameters:
       - $ref: '#/components/parameters/dongleId'
