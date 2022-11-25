@@ -80,6 +80,61 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}/pair:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: pairDeviceToUser
+      summary: Pair device
+      description: Pair a device to a user's account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: Success
+  /v1/devices/{dongleId}/unpair:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: unpairDevice
+      summary: Unpair device
+      description: Unpair device from authenticated user's account. Any comma prime subscription linked to the device will be cancelled.
+      responses:
+        '200':
+          description: Success
+  /v1/devices/{dongleId}/owner:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceOwner
+      summary: Device owner
+      description: Returns the owner of a device.
+      responses:
+        '200':
+          description: JSON object containing information about the device owner
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    description: OAuth2 user ID
+                  points:
+                    type: integer
+                    description: comma points
+                  username:
+                    type: string
+                    deprecated: true
+                    nullable: true
+                  email:
+                    type: string
   /v1/devices/{dongleId}/users:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -111,6 +166,10 @@ paths:
               properties:
                 email:
                   type: string
+                  description: Email of user to add
+                email_userid:
+                  type: string
+                  description: OAuth2 user ID of user to add
       responses:
         '200':
           description: Success
@@ -281,51 +340,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Segment'
-  /v1/devices/{dongleId}/pair:
-    parameters:
-      - $ref: '#/components/parameters/dongleId'
-    post:
-      operationId: pairDeviceToUser
-      summary: Pair device
-      description: Pair a device to a user's account.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  $ref: '#/components/schemas/DongleID'
-      responses:
-        '200':
-          description: Success
-  /v1/devices/{dongleId}/owner:
-    parameters:
-      - $ref: '#/components/parameters/dongleId'
-    get:
-      operationId: getDeviceOwner
-      summary: Device owner
-      description: Returns the owner of a device.
-      responses:
-        '200':
-          description: JSON object containing information about the device owner
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user_id:
-                    type: string
-                    description: OAuth2 user ID
-                  points:
-                    type: integer
-                    description: comma points
-                  username:
-                    type: string
-                    deprecated: true
-                    nullable: true
-                  email:
-                    type: string
   /v1.4/{dongleId}/upload_url:
     parameters:
       - $ref: '#/components/parameters/dongleId'
