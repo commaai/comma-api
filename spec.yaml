@@ -105,6 +105,8 @@ paths:
                         type: string
                         oneOf:
                           - const: Location unavailable
+                    required:
+                      - error
   /v1/devices/{dongleId}/pair:
     parameters:
       - $ref: '#/components/parameters/dongleId'
