@@ -1038,18 +1038,19 @@ components:
           description: Device has a prime subscription
         prime_type:
           type: number
-          description: Prime subscription type
-          oneOf:
-            - const: 0
-              description: None
-            - const: 1
-              description: Magenta
-            - const: 2
-              description: Lite
-            - const: 3
-              description: Blue
-            - const: 4
-              description: Magenta new
+          description: |
+            Prime subscription type
+            0. None
+            1. Magenta
+            2. Lite
+            3. Blue
+            4. Magenta New
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
         trial_claimed:
           type: boolean
           description: Device prime trial is claimed
@@ -1362,47 +1363,47 @@ components:
         - three
     SegmentDataSource:
       type: integer
-      description: Data source
-      oneOf:
-        - const: 3
-          title: eon
-        - const: 6
-          title: comma two
-        - const: 7
-          title: comma three
+      description: Data source (3=eon, 6=comma two, 7=comma three)
+      enum:
+        - 3
+        - 6
+        - 7
     FileProcStatus:
       type: integer
-      description: Log file status
-      oneOf:
-        - const: -1
-          title: Not received
-        - const: 0
-          title: Upload URL sent
-        - const: 10
-          title: Received
-        - const: 20
-          title: Enqueued
-        - const: 30
-          title: Processing
-        - const: 40
-          title: Processed
-        - const: 50
-          title: Errored
+      description: |
+        Log file status
+        -1 = Not received
+        0 = Upload URL sent
+        10 = Received
+        20 = Enqueued
+        30 = Processing
+        40 = Processed
+        50 = Errored
+      enum:
+        - -1
+        - 0
+        - 10
+        - 20
+        - 30
+        - 40
+        - 50
     FileType:
       type: integer
-      oneOf:
-        - const: 1
-          title: Road camera (camera)
-        - const: 2
-          title: Front camera (driver, dcamera)
-        - const: 3
-          title: Log (raw, rlog)
-        - const: 4
-          title: Qlog
-        - const: 5
-          title: QCamera
-        - const: 6
-          title: Wide road camera (extended, ecamera)
+      description: |
+        File type
+        1. Road camera (camera)
+        2. Front camera (driver, dcamera)
+        3. Log (raw, rlog)
+        4. Qlog
+        5. QCamera
+        6. Wide road camera (extended, ecamera)
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
     DongleID:
       title: Dongle ID
       description: A unique 16-character hexadecimal string. Can represent a device or a user.
