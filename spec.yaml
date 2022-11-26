@@ -785,9 +785,25 @@ paths:
     patch:
       operationId: updateNavigationLocation
       summary: Update saved location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nav_location_id:
+                  $ref: '#/components/schemas/NavigationLocationID'
     delete:
       operationId: deleteNavigationLocation
       summary: Delete saved location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nav_location_id:
+                  $ref: '#/components/schemas/NavigationLocationID'
   /v1/clips/create:
     post:
       operationId: createClip
@@ -1281,8 +1297,7 @@ components:
       title: Navigation location
       properties:
         id:
-          type: number
-          description: Identifier for this saved location
+          $ref: '#/components/schemas/NavigationLocationID'
         dongle_id:
           $ref: '#/components/schemas/DongleID'
         save_type:
@@ -1299,6 +1314,11 @@ components:
           nullable: true
         modified:
           type: string
+          description: When this saved location was last modified
+    NavigationLocationID:
+      type: number
+      title: Navigation location ID
+      description: Identifier for a saved location
     Clip:
       type: object
       properties:
