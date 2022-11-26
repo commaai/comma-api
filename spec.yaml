@@ -1385,33 +1385,33 @@ components:
         - const: 6
           title: Wide road camera (extended, ecamera)
     DongleID:
-      type: string
       title: Dongle ID
       description: A unique 16-character hexadecimal string. Can represent a device or a user.
+      type: string
       pattern: '^[0-9a-f]{16}$'
       example: "1a2b3c4d5e6f7a8b"
       readOnly: true
     RouteName:
-      type: string
       title: Canonical route name
       description: Contains a dongle ID and timestamp of the beginning of the route
+      type: string
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}$'
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
     SegmentName:
-      type: string
       title: Canonical segment name
       description: Contains a dongle ID, timestamp of the beginning of the route, and segment number
+      type: string
       pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}--[0-9]+$'
       example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
     VIN:
-      type: string
       title: Vehicle identification number
       description: 17-character alphanumeric string
+      type: string
       pattern: '^[0-9A-Z]{17}$'
       example: "5YJ3E1EA7HF000000"
     NavigationDestination:
-      type: object
       title: Navigation destination
+      type: object
       properties:
         place_name:
           type: string
@@ -1430,13 +1430,13 @@ components:
           description: Longitude, decimal degrees
           example: -117.166210
     NavigationSavedLocationID:
-      type: number
       title: Navigation saved location ID
       description: Identifier for a saved location
+      type: number
       readOnly: true
     NavigationSavedLocation:
-      type: object
       title: Navigation saved location
+      type: object
       allOf:
         - type: object
           properties:
@@ -1462,13 +1462,14 @@ components:
               readOnly: true
         - $ref: '#/components/schemas/NavigationDestination'
     ClipID:
-      type: integer
       title: Clip ID
       description: Unique identifier for a clip
+      type: integer
       readOnly: true
     Clip:
-      type: object
+      title: Clip
       description: Video clip created from a route
+      type: object
       properties:
         id:
           $ref: '#/components/schemas/ClipID'
@@ -1527,6 +1528,7 @@ components:
         - status
         - is_public
     PendingClip:
+      title: Pending Clip
       type: object
       allOf:
         - $ref: '#/components/schemas/Clip'
@@ -1545,6 +1547,7 @@ components:
               description: Pending clip progress
               readOnly: true
     DoneClip:
+      title: Done Clip
       type: object
       allOf:
         - $ref: '#/components/schemas/Clip'
@@ -1563,6 +1566,7 @@ components:
               description: URL to clip thumbnail
               readOnly: true
     FailedClip:
+      title: Failed Clip
       type: object
       allOf:
         - $ref: '#/components/schemas/Clip'
@@ -1577,6 +1581,8 @@ components:
               description: Error message
               readOnly: true
     ClipDetails:
+      title: Clip Details
+      type: object
       oneOf:
         - $ref: '#/components/schemas/PendingClip'
         - $ref: '#/components/schemas/DoneClip'
@@ -1590,22 +1596,22 @@ components:
   parameters:
     dongleId:
       name: dongleId
-      in: path
       description: Dongle ID
+      in: path
       required: true
       schema:
         $ref: '#/components/schemas/DongleID'
     routeName:
       name: routeName
-      in: path
       description: Canonical route name
+      in: path
       required: true
       schema:
         $ref: '#/components/schemas/RouteName'
     segmentName:
       name: segmentName
-      in: path
       description: Canonical segment name
+      in: path
       required: true
       schema:
         $ref: '#/components/schemas/SegmentName'
