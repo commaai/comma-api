@@ -734,7 +734,7 @@ paths:
                     type: boolean
                     description: True if the destination was stored and will be applied when the device is next online. False if the destination was set immediately.
   /v1/navigation/{dongleId}/next:
-    properties:
+    parameters:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getNavigationNext
