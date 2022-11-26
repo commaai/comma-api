@@ -896,9 +896,45 @@ paths:
     patch:
       operationId: updateClip
       summary: Update clip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+                is_public:
+                  type: boolean
+                  description: Whether the clip is public or not
+              required:
+                - clip_id
+                - dongle_id
+                - is_public
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
     delete:
       operationId: deleteClip
       summary: Delete clip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+              required:
+                - clip_id
+                - dongle_id
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
 components:
   responses:
     SuccessInteger:
