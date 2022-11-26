@@ -791,7 +791,7 @@ paths:
             schema:
               type: object
               properties:
-                nav_location_id:
+                id:
                   $ref: '#/components/schemas/NavigationLocationID'
     delete:
       operationId: deleteNavigationLocation
