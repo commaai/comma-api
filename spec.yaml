@@ -1509,8 +1509,8 @@ components:
               title: Wide road camera
             - const: d
               title: Driver camera
-            - const: 360
-              title: 360
+            - const: '360'
+              title: '360'
         status:
           type: string
           description: Clip status
