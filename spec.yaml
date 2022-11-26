@@ -823,7 +823,7 @@ paths:
     post:
       operationId: createClip
       summary: Create clip
-      description: Create a clip from a route. Authenticated user must have ownership of the device from which the route was uploaded.
+      description: Create a clip from a route.
       requestBody:
         content:
           application/json:
@@ -842,8 +842,7 @@ paths:
                         type: boolean
                         const: true
                       clip_id:
-                        type: integer
-                        description: Clip ID
+                        $ref: '#/components/schemas/ClipID'
                   - type: object
                     properties:
                       error:
@@ -856,7 +855,7 @@ paths:
     get:
       operationId: getClips
       summary: List clips
-      description: List clips created for the specified device. Authenticated user must have read access to the device.
+      description: List clips created for the specified device.
       requestBody:
         content:
           application/json:
@@ -871,13 +870,28 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Clip'
+                $ref: '#/components/schemas/ClipDetails'
   /v1/clips/details:
     get:
       operationId: getClip
       summary: Get clip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: JSON object containing clip details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClipDetails'
   /v1/clips/update:
     patch:
       operationId: updateClip
@@ -1464,10 +1478,6 @@ components:
           description: Optional title for clip
           nullable: true
           maxLength: 128
-        thumbnail:
-          type: string
-          description: URL to clip thumbnail, if available
-          readOnly: true
       required:
         - id
         - create_time
@@ -1478,6 +1488,67 @@ components:
         - video_type
         - status
         - is_public
+    PendingClip:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: pending
+              readOnly: true
+            pending_status:
+              type: string
+              description: Pending clip status
+              readOnly: true
+            pending_progress:
+              type: string
+              description: Pending clip progress
+              readOnly: true
+    DoneClip:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: done
+              readOnly: true
+            url:
+              type: string
+              description: URL to clip
+              readOnly: true
+            thumbnail:
+              type: string
+              description: URL to clip thumbnail
+              readOnly: true
+    FailedClip:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: failed
+              readOnly: true
+            error_status:
+              type: string
+              description: Error message
+              readOnly: true
+    ClipDetails:
+      oneOf:
+        - $ref: '#/components/schemas/PendingClip'
+        - $ref: '#/components/schemas/DoneClip'
+        - $ref: '#/components/schemas/FailedClip'
+      discriminator:
+        propertyName: status
+        mapping:
+          pending: '#/components/schemas/PendingClip'
+          done: '#/components/schemas/DoneClip'
+          failed: '#/components/schemas/FailedClip'
   parameters:
     dongleId:
       name: dongleId
