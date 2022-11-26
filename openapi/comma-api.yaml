@@ -349,11 +349,13 @@ paths:
       description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
       parameters:
         - name: from
+          description: Start timestamp in milliseconds
           in: query
           required: true
           schema:
             type: number
         - name: to
+          description: End timestamp in milliseconds
           in: query
           required: true
           schema:
