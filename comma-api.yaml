@@ -1472,13 +1472,7 @@ components:
             dongle_id:
               $ref: '#/components/schemas/DongleID'
             save_type:
-              type: string
-              description: Type of saved location
-              oneOf:
-                - const: favorite
-                  title: Favorite
-                - const: recent
-                  title: Recent
+              $ref: '#/components/schemas/NavigationLocationType'
             label:
               type: string
               description: Optional label for for locations with type "favorite"
@@ -1493,6 +1487,12 @@ components:
             - save_type
             - modified
         - $ref: '#/components/schemas/NavigationDestination'
+    NavigationLocationType:
+      type: string
+      description: Navigation location type
+      enum:
+        - favorite
+        - recent
     ClipID:
       title: Clip ID
       description: Unique identifier for a clip
