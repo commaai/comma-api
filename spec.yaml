@@ -744,11 +744,10 @@ paths:
         '200':
           description: JSON object containing next destination, or null if no destination is set
           content:
+            # TODO: can return text null
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/NavigationDestination'
-                  - type: 'null'
+                $ref: '#/components/schemas/NavigationDestination'
     delete:
       operationId: clearNavigationNext
       summary: Clear navigation destination
