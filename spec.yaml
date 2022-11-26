@@ -1131,6 +1131,13 @@ components:
         bearing:
           type: number
           description: Bearing angle, in degrees from north
+      required:
+        - lat
+        - lng
+        - time
+        - accuracy
+        - speed
+        - bearing
     DrivingStatistics:
       type: object
       description: Summary of drives over a period of time
@@ -1144,6 +1151,10 @@ components:
         routes:
           type: integer
           description: Count of routes in time period
+      required:
+        - distance
+        - minutes
+        - routes
     Segment:
       type: object
       description: A single segment of a route is up to 60 seconds in length.
