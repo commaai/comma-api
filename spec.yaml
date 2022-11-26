@@ -778,10 +778,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NavigationLocation'
+                  $ref: '#/components/schemas/NavigationSavedLocation'
     put:
       operationId: saveNavigationLocation
       summary: Save location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NavigationSavedLocation'
     patch:
       operationId: updateNavigationLocation
       summary: Update saved location
@@ -792,7 +797,7 @@ paths:
               type: object
               properties:
                 id:
-                  $ref: '#/components/schemas/NavigationLocationID'
+                  $ref: '#/components/schemas/NavigationSavedLocationID'
     delete:
       operationId: deleteNavigationLocation
       summary: Delete saved location
@@ -1254,6 +1259,7 @@ components:
       description: A unique 16-character hexadecimal string. Can represent a device or a user.
       pattern: '^[0-9a-f]{16}$'
       example: "1a2b3c4d5e6f7a8b"
+      readOnly: true
     RouteName:
       type: string
       title: Canonical route name
@@ -1279,11 +1285,11 @@ components:
         place_name:
           type: string
           description: Short name of destination
-          example: 1441 State St
+          example: "1441 State St"
         place_details:
           type: string
           description: Address details of destination. Should not include short name.
-          example: San Diego, CA 92101, United States
+          example: "San Diego, CA 92101, United States"
         latitude:
           type: number
           description: Latitude, decimal degrees
@@ -1292,39 +1298,45 @@ components:
           type: number
           description: Longitude, decimal degrees
           example: -117.166210
-    NavigationLocation:
-      type: object
-      title: Navigation location
-      properties:
-        id:
-          $ref: '#/components/schemas/NavigationLocationID'
-        dongle_id:
-          $ref: '#/components/schemas/DongleID'
-        save_type:
-          type: string
-          description: Type of saved location
-          oneOf:
-            - const: favorite
-              title: Favorite
-            - const: recent
-              title: Recent
-        label:
-          type: string
-          description: Optional label for for locations with type "favorite"
-          nullable: true
-        modified:
-          type: string
-          description: When this saved location was last modified
-    NavigationLocationID:
+    NavigationSavedLocationID:
       type: number
-      title: Navigation location ID
+      title: Navigation saved location ID
       description: Identifier for a saved location
+      readOnly: true
+    NavigationSavedLocation:
+      type: object
+      title: Navigation saved location
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/NavigationSavedLocationID'
+            dongle_id:
+              $ref: '#/components/schemas/DongleID'
+            save_type:
+              type: string
+              description: Type of saved location
+              oneOf:
+                - const: favorite
+                  title: Favorite
+                - const: recent
+                  title: Recent
+            label:
+              type: string
+              description: Optional label for for locations with type "favorite"
+              nullable: true
+            modified:
+              type: string
+              description: When this saved location was last modified
+              readOnly: true
+        - $ref: '#/components/schemas/NavigationDestination'
     Clip:
       type: object
       properties:
         id:
           type: string
           description: Unique identifier for this clip
+          readOnly: true
         create_time:
           type: integer
         dongle_id:
