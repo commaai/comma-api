@@ -121,7 +121,7 @@ paths:
                   $ref: '#/components/schemas/DongleID'
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/SuccessInteger'
   /v1/devices/{dongleId}/unpair:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -131,7 +131,7 @@ paths:
       description: Unpair device from authenticated user's account. Any comma prime subscription linked to the device will be cancelled.
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/SuccessInteger'
   /v1/devices/{dongleId}/owner:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -196,7 +196,7 @@ paths:
                   description: OAuth2 user ID of user to add
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/SuccessInteger'
   /v1/devices/{dongleId}/del_user:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -214,17 +214,17 @@ paths:
                   type: string
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/SuccessInteger'
   /v1.1/devices/{dongleId}/stats:
     parameters:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getDeviceStatistics
       summary: Device driving statistics
-      description: Returns aggregate driving statistics for a device.
+      description: Returns aggregate driving statistics for a device over the past 7 days and all time.
       responses:
         '200':
-          description: OK
+          description: JSON object containing driving statistics
           content:
             application/json:
               schema:
@@ -240,7 +240,7 @@ paths:
     get:
       operationId: getDeviceBootLogs
       summary: Device boot logs
-      description: Returns most recent boot logs uploaded from a device.
+      description: Retrieve boot logs uploaded from a device.
       responses:
         '200':
           description: JSON array of URLs to boot log files. Files are available at each URL for one hour from the time of the request.
@@ -256,7 +256,7 @@ paths:
     get:
       operationId: getDeviceCrashLogs
       summary: Device crash logs
-      description: Returns most recent crash logs uploaded from a device.
+      description: Retrieve crash logs uploaded from a device.
       responses:
         '200':
           description: JSON array of URLs to crash log files. Files are available at each URL for one hour from the time of the request.
@@ -464,8 +464,8 @@ paths:
                       type: string
                       description: URL to which a PUT request can be sent with file contents
                 example:
-                    - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
-                    - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/ecamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+                  - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+                  - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/ecamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
   /v2/pilotpair:
     post:
       operationId: pilotPair
@@ -518,7 +518,7 @@ paths:
                   description: "JWT signed by private key. Payload must contain {\"register\": true}"
       responses:
         '200':
-          description: Authenticated dongle ID and token
+          description: JSON object containing authenticated dongle ID and token
           content:
             application/json:
               schema:
@@ -678,14 +678,14 @@ paths:
       description: Preserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
       responses:
         '200':
-          description: Route preserved
+          $ref: '#/components/responses/SuccessInteger'
     delete:
       operationId: unpreserveRoute
       summary: Unpreserve route
       description: Unpreserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
       responses:
         '200':
-          description: Route unpreserved
+          $ref: '#/components/responses/SuccessInteger'
   /v1/tokens/mapbox/{dongleId}:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -787,6 +787,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/NavigationSavedLocation'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
     patch:
       operationId: updateNavigationLocation
       summary: Update saved location
@@ -798,6 +801,9 @@ paths:
               properties:
                 id:
                   $ref: '#/components/schemas/NavigationSavedLocationID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
     delete:
       operationId: deleteNavigationLocation
       summary: Delete saved location
@@ -809,6 +815,9 @@ paths:
               properties:
                 nav_location_id:
                   $ref: '#/components/schemas/NavigationLocationID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
   /v1/clips/create:
     post:
       operationId: createClip
@@ -829,6 +838,28 @@ paths:
       operationId: deleteClip
       summary: Delete clip
 components:
+  responses:
+    SuccessInteger:
+      description: Operation successful
+      content:
+        application/json:
+          schema:
+            properties:
+              success:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    const: 1
+    SuccessBoolean:
+      description: Operation successful
+      content:
+        application/json:
+          schema:
+            properties:
+              success:
+                type: boolean
+                const: true
   schemas:
     Profile:
       type: object
