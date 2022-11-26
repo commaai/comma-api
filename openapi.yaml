@@ -104,7 +104,7 @@ paths:
                       error:
                         type: string
                         oneOf:
-                          - const: Location unavailable
+                          - const: '"Location unavailable"'
                     required:
                       - error
   /v1/devices/{dongleId}/pair:
@@ -854,7 +854,7 @@ paths:
                         type: string
                         description: Error code
                         oneOf:
-                          - const: 'too_many_pending'
+                          - const: '"too_many_pending"'
                             description: Too many pending clips
   /v1/clips/list:
     get:
@@ -1517,29 +1517,17 @@ components:
         end_time:
           type: integer
         video_type:
-          type: string
-          description: Clip type
-          oneOf:
-            - const: q
-              title: QCamera
-            - const: f
-              title: Road camera
-            - const: e
-              title: Wide road camera
-            - const: d
-              title: Driver camera
-            - const: '360'
-              title: '360'
+          $ref: '#/components/schemas/ClipVideoType'
         status:
           type: string
           description: Clip status
           readOnly: true
           oneOf:
-            - const: pending
+            - const: "'pending'"
               title: Pending
-            - const: done
+            - const: "'done'"
               title: Done
-            - const: failed
+            - const: "'failed'"
               title: Failed
         is_public:
           type: boolean
@@ -1559,6 +1547,20 @@ components:
         - video_type
         - status
         - is_public
+    ClipVideoType:
+      description: Clip video type
+      type: string
+      oneOf:
+        - const: '"q"'
+          title: QCamera
+        - const: '"f"'
+          title: Road camera
+        - const: '"e"'
+          title: Wide road camera
+        - const: '"d"'
+          title: Driver camera
+        - const: '"360"'
+          title: '360'
     PendingClip:
       title: Pending Clip
       type: object
@@ -1568,8 +1570,7 @@ components:
           properties:
             status:
               type: string
-              const: pending
-              readOnly: true
+              const: '"pending"'
             pending_status:
               type: string
               description: Pending clip status
@@ -1587,8 +1588,7 @@ components:
           properties:
             status:
               type: string
-              const: done
-              readOnly: true
+              const: '"done"'
             url:
               type: string
               description: URL to clip
@@ -1606,8 +1606,7 @@ components:
           properties:
             status:
               type: string
-              const: failed
-              readOnly: true
+              const: '"failed"'
             error_status:
               type: string
               description: Error message

@@ -627,19 +627,20 @@ export interface components {
       route_name: components["schemas"]["RouteName"];
       start_time: number;
       end_time: number;
-      /** @description Clip type */
-      video_type: q | f | e | d | 360;
+      video_type: components["schemas"]["ClipVideoType"];
       /** @description Clip status */
-      status: pending | done | failed;
+      status: 'pending' | 'done' | 'failed';
       /** @description Clip is publicly accessible */
       is_public: boolean;
       /** @description Optional title for clip */
       title?: string | null;
     };
+    /** @description Clip video type */
+    ClipVideoType: "q" | "f" | "e" | "d" | "360";
     /** Pending Clip */
     PendingClip: components["schemas"]["Clip"] & {
       /** @constant */
-      status?: pending;
+      status?: "pending";
       /** @description Pending clip status */
       pending_status?: string;
       /** @description Pending clip progress */
@@ -648,7 +649,7 @@ export interface components {
     /** Done Clip */
     DoneClip: components["schemas"]["Clip"] & {
       /** @constant */
-      status?: done;
+      status?: "done";
       /** @description URL to clip */
       url?: string;
       /** @description URL to clip thumbnail */
@@ -657,7 +658,7 @@ export interface components {
     /** Failed Clip */
     FailedClip: components["schemas"]["Clip"] & {
       /** @constant */
-      status?: failed;
+      status?: "failed";
       /** @description Error message */
       error_status?: string;
     };
@@ -772,7 +773,7 @@ export interface operations {
           "application/json": OneOf<[components["schemas"]["DeviceLocation"] & {
             dongle_id?: components["schemas"]["DongleID"];
           }, {
-            error: Location unavailable;
+            error: "Location unavailable";
           }]>;
         };
       };
@@ -1387,7 +1388,7 @@ export interface operations {
             clip_id?: components["schemas"]["ClipID"];
           }, {
             /** @description Error code */
-            error?: too_many_pending;
+            error?: "too_many_pending";
           }]>;
         };
       };
