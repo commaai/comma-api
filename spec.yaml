@@ -1619,10 +1619,3 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/RouteName'
-    segmentName:
-      name: segmentName
-      description: Canonical segment name
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/SegmentName'
