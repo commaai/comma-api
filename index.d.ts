@@ -605,7 +605,7 @@ export interface components {
       id: components["schemas"]["NavigationSavedLocationID"];
       dongle_id: components["schemas"]["DongleID"];
       save_type: components["schemas"]["NavigationLocationType"];
-      /** @description Optional label for for locations with type "favorite" */
+      /** @description Optional label for locations with type "favorite" */
       label?: string | null;
       /** @description When this saved location was last modified */
       modified: string;

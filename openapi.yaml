@@ -1479,7 +1479,7 @@ components:
               $ref: '#/components/schemas/NavigationLocationType'
             label:
               type: string
-              description: Optional label for for locations with type "favorite"
+              description: Optional label for locations with type "favorite"
               nullable: true
             modified:
               type: string
