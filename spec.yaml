@@ -856,6 +856,24 @@ paths:
     get:
       operationId: listClips
       summary: List clips
+      description: List clips created for the specified device. Authenticated user must have read access to the device.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: JSON array of clip objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clip'
   /v1/clips/details:
     get:
       operationId: getClip
@@ -1446,6 +1464,10 @@ components:
           description: Optional title for clip
           nullable: true
           maxLength: 128
+        thumbnail:
+          type: string
+          description: URL to clip thumbnail, if available
+          readOnly: true
       required:
         - id
         - create_time
