@@ -798,10 +798,12 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                id:
-                  $ref: '#/components/schemas/NavigationSavedLocationID'
+              allOf:
+                - $ref: '#/components/schemas/NavigationSavedLocation'
+                - type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/NavigationSavedLocationID'
       responses:
         '200':
           $ref: '#/components/responses/SuccessBoolean'
@@ -814,8 +816,8 @@ paths:
             schema:
               type: object
               properties:
-                nav_location_id:
-                  $ref: '#/components/schemas/NavigationLocationID'
+                id:
+                  $ref: '#/components/schemas/NavigationSavedLocationID'
       responses:
         '200':
           $ref: '#/components/responses/SuccessBoolean'
