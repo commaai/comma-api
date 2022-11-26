@@ -1365,7 +1365,11 @@ components:
         - three
     SegmentDataSource:
       type: integer
-      description: Data source (3=eon, 6=comma two, 7=comma three)
+      description: |
+        Data source
+        - 3 = eon
+        - 6 = comma two
+        - 7 = comma three
       enum:
         - 3
         - 6

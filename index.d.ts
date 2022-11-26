@@ -515,7 +515,11 @@ export interface components {
      */
     DeviceType: "app" | "neo" | "panda" | "two" | "freon" | "pc" | "three";
     /**
-     * @description Data source (3=eon, 6=comma two, 7=comma three) 
+     * @description Data source
+     * - 3 = eon
+     * - 6 = comma two
+     * - 7 = comma three
+     *  
      * @enum {integer}
      */
     SegmentDataSource: 3 | 6 | 7;
