@@ -1114,11 +1114,13 @@ components:
           type: string
           description: User email
         permission:
-          type: string
-          description: Device permission
-          oneOf:
-            - const: owner
-            - const: read_access
+          $ref: '#/components/schemas/DeviceUserPermission'
+    DeviceUserPermission:
+      type: string
+      description: Device user permission
+      enum:
+        - read_access
+        - owner
     DeviceLocation:
       type: object
       properties:
