@@ -939,6 +939,11 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessBoolean'
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   responses:
     SuccessInteger:
       description: Operation successful
