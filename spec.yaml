@@ -1363,6 +1363,7 @@ components:
         - $ref: '#/components/schemas/NavigationDestination'
     Clip:
       type: object
+      description: Video clip created from a route
       properties:
         id:
           type: string
@@ -1370,6 +1371,7 @@ components:
           readOnly: true
         create_time:
           type: integer
+          readOnly: true
         dongle_id:
           $ref: '#/components/schemas/DongleID'
         route_name:
@@ -1395,6 +1397,7 @@ components:
         status:
           type: string
           description: Clip status
+          readOnly: true
           oneOf:
             - const: pending
               title: Pending
