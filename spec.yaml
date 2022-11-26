@@ -1361,14 +1361,17 @@ components:
               description: When this saved location was last modified
               readOnly: true
         - $ref: '#/components/schemas/NavigationDestination'
+    ClipID:
+      type: integer
+      title: Clip ID
+      description: Unique identifier for a clip
+      readOnly: true
     Clip:
       type: object
       description: Video clip created from a route
       properties:
         id:
-          type: string
-          description: Unique identifier for this clip
-          readOnly: true
+          $ref: '#/components/schemas/ClipID'
         create_time:
           type: integer
           readOnly: true
@@ -1412,6 +1415,7 @@ components:
           type: string
           description: Optional title for clip
           nullable: true
+          maxLength: 128
       required:
         - id
         - create_time
