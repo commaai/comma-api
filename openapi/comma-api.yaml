@@ -1441,6 +1441,11 @@ components:
           type: number
           description: Longitude, decimal degrees
           example: -117.166210
+      required:
+        - place_name
+        - place_details
+        - latitude
+        - longitude
     NavigationSavedLocationID:
       title: Navigation saved location ID
       description: Identifier for a saved location
