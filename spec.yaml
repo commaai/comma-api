@@ -103,7 +103,8 @@ paths:
                     properties:
                       error:
                         type: string
-                        const: Location unavailable
+                        oneOf:
+                          - const: Location unavailable
   /v1/devices/{dongleId}/pair:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -822,6 +823,35 @@ paths:
     post:
       operationId: createClip
       summary: Create clip
+      description: Create a clip from a route. Authenticated user must have ownership of the device from which the route was uploaded.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clip'
+      responses:
+        '200':
+          description: JSON object containing clip ID, or an error message
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        const: true
+                      clip_id:
+                        type: integer
+                        description: Clip ID
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        description: Error code
+                        oneOf:
+                          - const: 'too_many_pending'
+                            description: Too many pending clips
   /v1/clips/list:
     get:
       operationId: listClips
