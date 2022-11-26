@@ -1477,6 +1477,11 @@ components:
               type: string
               description: When this saved location was last modified
               readOnly: true
+          required:
+            - id
+            - dongle_id
+            - save_type
+            - modified
         - $ref: '#/components/schemas/NavigationDestination'
     ClipID:
       title: Clip ID
