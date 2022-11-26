@@ -1,3 +1,7 @@
+Version 3.1.0
+=============
+* create OpenAPI spec for the API
+
 Version 3.0.1
 =============
 * fix: disable transformation of ES module syntax
