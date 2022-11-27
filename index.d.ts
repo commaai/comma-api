@@ -26,7 +26,7 @@ export interface paths {
   };
   "/v1/{dongleId}/devices": {
     /**
-     * User device list (admin) 
+     * List devices (superuser) 
      * @description List devices owned or readable by specified user
      */
     get: operations["getUserDevices"];
@@ -795,7 +795,7 @@ export interface operations {
   };
   getUserDevices: {
     /**
-     * User device list (admin) 
+     * List devices (superuser) 
      * @description List devices owned or readable by specified user
      */
     responses: {
@@ -1036,12 +1036,12 @@ export interface operations {
      * Device routes segments 
      * @description Returns a list of route segments uploaded from a device between a start and end timestamp.
      */
-    parameters?: {
+    parameters: {
         /** @description Start timestamp in milliseconds */
         /** @description End timestamp in milliseconds */
-      query?: {
-        start?: number;
-        end?: number;
+      query: {
+        start: number;
+        end: number;
       };
     };
     responses: {
@@ -1060,10 +1060,10 @@ export interface operations {
      */
     parameters: {
         /** @description Start timestamp in milliseconds */
-        /** @description End timestamp in milliseconds */
+        /** @description End timestamp in milliseconds. If omitted, the current time is used. */
       query: {
         from: number;
-        to: number;
+        to?: number;
       };
     };
     responses: {
