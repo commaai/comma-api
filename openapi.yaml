@@ -398,7 +398,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getUploadUrl
-      summary: Log file upload URL
+      summary: Log file upload
       description: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
       parameters:
         - name: path
@@ -435,7 +435,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     post:
       operationId: getUploadUrls
-      summary: Batch log file upload URLs
+      summary: Batch log file upload
       description: Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
       requestBody:
         content:
