@@ -1547,11 +1547,11 @@ components:
           description: Clip status
           readOnly: true
           oneOf:
-            - const: "'pending'"
+            - const: '"pending"'
               title: Pending
-            - const: "'done'"
+            - const: '"done"'
               title: Done
-            - const: "'failed'"
+            - const: '"failed"'
               title: Failed
         is_public:
           type: boolean

@@ -11,20 +11,32 @@ type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A
 
 export interface paths {
   "/v1/me": {
-    /** Returns information about the authenticated user */
+    /**
+     * User profile 
+     * @description Returns information about the authenticated user
+     */
     get: operations["getProfile"];
   };
   "/v1/me/devices": {
-    /** List devices owned or readable by authenticated user */
+    /**
+     * Device list 
+     * @description List devices owned or readable by authenticated user
+     */
     get: operations["getDevices"];
   };
   "/v1/{dongleId}/devices": {
-    /** List devices owned or readable by specified user */
+    /**
+     * User device list (admin) 
+     * @description List devices owned or readable by specified user
+     */
     get: operations["getUserDevices"];
     
   };
   "/v1.1/devices/{dongleId}": {
-    /** Returns information about a device */
+    /**
+     * Device details 
+     * @description Returns information about the specified device
+     */
     get: operations["getDevice"];
     
   };
@@ -72,7 +84,7 @@ export interface paths {
   };
   "/v1/devices/{dongleId}/add_user": {
     /**
-     * Grant device read permissions to a user 
+     * Grant device access 
      * @description Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
      */
     post: operations["addDeviceUser"];
@@ -80,7 +92,7 @@ export interface paths {
   };
   "/v1/devices/{dongleId}/del_user": {
     /**
-     * Revoke device read permissions from a user 
+     * Revoke device access 
      * @description Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
      */
     post: operations["revokeDeviceUser"];
@@ -136,7 +148,7 @@ export interface paths {
   };
   "/v1/devices/{dongleId}/segments": {
     /**
-     * Segments 
+     * Device segments 
      * @description Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
      */
     get: operations["getDeviceSegments"];
@@ -152,7 +164,7 @@ export interface paths {
   };
   "/v1.4/{dongleId}/upload_url": {
     /**
-     * Get log file upload URL 
+     * Log file upload 
      * @description Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
      */
     get: operations["getUploadUrl"];
@@ -160,7 +172,7 @@ export interface paths {
   };
   "/v1/{dongleId}/upload_urls": {
     /**
-     * Get multiple log file upload URLs 
+     * Batch log file upload 
      * @description Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
      */
     post: operations["getUploadUrls"];
@@ -174,12 +186,12 @@ export interface paths {
     post: operations["pilotPair"];
   };
   "/v2/pilotauth": {
-    /** openpilot auth */
+    /** Authenticate device (openpilot) */
     post: operations["pilotAuth"];
   };
   "/v1/route/{routeName}": {
     /**
-     * Route Info 
+     * Route details 
      * @description Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
      */
     get: operations["getRoute"];
@@ -187,7 +199,7 @@ export interface paths {
   };
   "/v1/route/{routeName}/segments": {
     /**
-     * Route Segments 
+     * Route segments 
      * @description Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
      */
     get: operations["getRouteSegments"];
@@ -195,7 +207,7 @@ export interface paths {
   };
   "/v1/route/{routeName}/files": {
     /**
-     * Raw driving data 
+     * Raw log files 
      * @description Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
      */
     get: operations["getRouteFiles"];
@@ -203,7 +215,7 @@ export interface paths {
   };
   "/v1/route/{routeName}/qcamera.m3u8": {
     /**
-     * Video Stream 
+     * Route HLS stream 
      * @description Returns rear camera HLS stream index of MPEG-TS fragments.
      */
     get: operations["getRouteStream"];
@@ -211,7 +223,7 @@ export interface paths {
   };
   "/v1/route/{routeName}/share_signature": {
     /**
-     * Route share signature 
+     * Route sharing signature 
      * @description Return route share URL signature. Expires in 365 days.
      */
     get: operations["getRouteShareSignature"];
@@ -240,7 +252,7 @@ export interface paths {
   };
   "/v1/navigation/{dongleId}/set_destination": {
     /**
-     * Set destination 
+     * Set nav destination 
      * @description Set destination for navigation. Authenticated user must have ownership of the dongle ID.
      */
     post: operations["setDestination"];
@@ -248,12 +260,12 @@ export interface paths {
   };
   "/v1/navigation/{dongleId}/next": {
     /**
-     * Retrieve navigation destination 
+     * Get nav destination 
      * @description Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
      */
     get: operations["getNavigationNext"];
     /**
-     * Clear navigation destination 
+     * Clear nav destination 
      * @description Delete next destination from database.
      */
     delete: operations["clearNavigationNext"];
@@ -261,15 +273,15 @@ export interface paths {
   };
   "/v1/navigation/{dongleId}/locations": {
     /**
-     * Retrieve saved locations 
+     * Saved locations 
      * @description Retrieve saved locations from database.
      */
     get: operations["getNavigationSavedLocations"];
     /** Save location */
     put: operations["saveNavigationLocation"];
-    /** Delete saved location */
+    /** Delete location */
     delete: operations["deleteNavigationLocation"];
-    /** Update saved location */
+    /** Update location */
     patch: operations["updateNavigationLocation"];
     
   };
@@ -288,7 +300,7 @@ export interface paths {
     get: operations["getClips"];
   };
   "/v1/clips/details": {
-    /** Get clip */
+    /** Get clip details */
     get: operations["getClip"];
   };
   "/v1/clips/update": {
@@ -304,25 +316,47 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     Profile: {
-      /** Format: email */
+      /**
+       * Format: email 
+       * @description Email address 
+       * @example commaphone3@gmail.com
+       */
       email: string;
-      /** @description Dongle ID */
+      /**
+       * @description Dongle ID 
+       * @example 2e9eeac96ea4e6a6
+       */
       id: string;
       /**
        * @deprecated 
-       * @description comma points
+       * @description comma points 
+       * @example 34933
        */
       points: number;
-      /** @description Unix timestamp at time of registration */
+      /**
+       * @description Unix timestamp at time of registration 
+       * @example 1465103707
+       */
       regdate: number;
+      /**
+       * @description <a href="https://comma.ai/jobs">Apply for superuser here</a> 
+       * @example false
+       */
       superuser: boolean;
-      /** @deprecated */
+      /**
+       * @deprecated 
+       * @description Username 
+       * @example joeyjoejoe
+       */
       username?: string | null;
-      /** @description OAuth2 user ID */
+      /**
+       * @description OAuth2 user ID 
+       * @example google_111803823964622526972
+       */
       user_id: string;
     };
     Device: {
-      dongle_id: string;
+      dongle_id: components["schemas"]["DongleID"];
       /** @description Device nickname */
       alias: string;
       /** @description Device serial number */
@@ -343,11 +377,11 @@ export interface components {
       prime: boolean;
       /**
        * @description Prime subscription type
-       * 0. None
-       * 1. Magenta
-       * 2. Lite
-       * 3. Blue
-       * 4. Magenta New
+       * - 0 = None
+       * - 1 = Magenta
+       * - 2 = Lite
+       * - 3 = Blue
+       * - 4 = Magenta New
        *  
        * @enum {number}
        */
@@ -633,7 +667,7 @@ export interface components {
       end_time: number;
       video_type: components["schemas"]["ClipVideoType"];
       /** @description Clip status */
-      status: 'pending' | 'done' | 'failed';
+      status: "pending" | "done" | "failed";
       /** @description Clip is publicly accessible */
       is_public: boolean;
       /** @description Optional title for clip */
@@ -674,10 +708,8 @@ export interface components {
     SuccessInteger: {
       content: {
         "application/json": {
-          success?: {
-            /** @constant */
-            success?: 1;
-          };
+          /** @constant */
+          success?: 1;
         };
       };
     };
@@ -707,7 +739,10 @@ export type external = Record<string, never>;
 export interface operations {
 
   getProfile: {
-    /** Returns information about the authenticated user */
+    /**
+     * User profile 
+     * @description Returns information about the authenticated user
+     */
     responses: {
       /** @description JSON object containing the user's profile information */
       200: {
@@ -718,7 +753,10 @@ export interface operations {
     };
   };
   getDevices: {
-    /** List devices owned or readable by authenticated user */
+    /**
+     * Device list 
+     * @description List devices owned or readable by authenticated user
+     */
     responses: {
       /** @description JSON array of device objects */
       200: {
@@ -729,7 +767,10 @@ export interface operations {
     };
   };
   getUserDevices: {
-    /** List devices owned or readable by specified user */
+    /**
+     * User device list (admin) 
+     * @description List devices owned or readable by specified user
+     */
     responses: {
       /** @description JSON array of device objects */
       200: {
@@ -740,7 +781,10 @@ export interface operations {
     };
   };
   getDevice: {
-    /** Returns information about a device */
+    /**
+     * Device details 
+     * @description Returns information about the specified device
+     */
     responses: {
       /** @description JSON object containing the device's information */
       200: {
@@ -756,6 +800,7 @@ export interface operations {
       content: {
         "application/json": {
           alias?: string;
+          required?: [alias];
         };
       };
     };
@@ -775,7 +820,7 @@ export interface operations {
       200: {
         content: {
           "application/json": OneOf<[components["schemas"]["DeviceLocation"] & {
-            dongle_id?: components["schemas"]["DongleID"];
+            dongle_id: components["schemas"]["DongleID"];
           }, {
             error: "Location unavailable";
           }]>;
@@ -846,7 +891,7 @@ export interface operations {
   };
   addDeviceUser: {
     /**
-     * Grant device read permissions to a user 
+     * Grant device access 
      * @description Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
      */
     requestBody?: {
@@ -865,7 +910,7 @@ export interface operations {
   };
   revokeDeviceUser: {
     /**
-     * Revoke device read permissions from a user 
+     * Revoke device access 
      * @description Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
      */
     requestBody?: {
@@ -984,7 +1029,7 @@ export interface operations {
   };
   getDeviceSegments: {
     /**
-     * Segments 
+     * Device segments 
      * @description Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
      */
     parameters: {
@@ -1023,7 +1068,7 @@ export interface operations {
   };
   getUploadUrl: {
     /**
-     * Get log file upload URL 
+     * Log file upload 
      * @description Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
      */
     parameters: {
@@ -1048,7 +1093,7 @@ export interface operations {
   };
   getUploadUrls: {
     /**
-     * Get multiple log file upload URLs 
+     * Batch log file upload 
      * @description Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
      */
     requestBody?: {
@@ -1111,7 +1156,7 @@ export interface operations {
     };
   };
   pilotAuth: {
-    /** openpilot auth */
+    /** Authenticate device (openpilot) */
     requestBody?: {
       content: {
         "application/json": {
@@ -1144,7 +1189,7 @@ export interface operations {
   };
   getRoute: {
     /**
-     * Route Info 
+     * Route details 
      * @description Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
      */
     responses: {
@@ -1158,7 +1203,7 @@ export interface operations {
   };
   getRouteSegments: {
     /**
-     * Route Segments 
+     * Route segments 
      * @description Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
      */
     responses: {
@@ -1172,7 +1217,7 @@ export interface operations {
   };
   getRouteFiles: {
     /**
-     * Raw driving data 
+     * Raw log files 
      * @description Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
      */
     responses: {
@@ -1199,7 +1244,7 @@ export interface operations {
   };
   getRouteStream: {
     /**
-     * Video Stream 
+     * Route HLS stream 
      * @description Returns rear camera HLS stream index of MPEG-TS fragments.
      */
     responses: {
@@ -1213,7 +1258,7 @@ export interface operations {
   };
   getRouteShareSignature: {
     /**
-     * Route share signature 
+     * Route sharing signature 
      * @description Return route share URL signature. Expires in 365 days.
      */
     responses: {
@@ -1267,7 +1312,7 @@ export interface operations {
   };
   setDestination: {
     /**
-     * Set destination 
+     * Set nav destination 
      * @description Set destination for navigation. Authenticated user must have ownership of the dongle ID.
      */
     requestBody?: {
@@ -1291,7 +1336,7 @@ export interface operations {
   };
   getNavigationNext: {
     /**
-     * Retrieve navigation destination 
+     * Get nav destination 
      * @description Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
      */
     responses: {
@@ -1305,7 +1350,7 @@ export interface operations {
   };
   clearNavigationNext: {
     /**
-     * Clear navigation destination 
+     * Clear nav destination 
      * @description Delete next destination from database.
      */
     responses: {
@@ -1323,7 +1368,7 @@ export interface operations {
   };
   getNavigationSavedLocations: {
     /**
-     * Retrieve saved locations 
+     * Saved locations 
      * @description Retrieve saved locations from database.
      */
     responses: {
@@ -1347,7 +1392,7 @@ export interface operations {
     };
   };
   deleteNavigationLocation: {
-    /** Delete saved location */
+    /** Delete location */
     requestBody?: {
       content: {
         "application/json": {
@@ -1360,7 +1405,7 @@ export interface operations {
     };
   };
   updateNavigationLocation: {
-    /** Update saved location */
+    /** Update location */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["NavigationSavedLocation"] & {
@@ -1420,7 +1465,7 @@ export interface operations {
     };
   };
   getClip: {
-    /** Get clip */
+    /** Get clip details */
     requestBody?: {
       content: {
         "application/json": {
