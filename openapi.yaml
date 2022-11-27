@@ -463,11 +463,13 @@ paths:
                   maximum: 30
                   default: 1
                   description: number of days the url should be valid
+              required:
+                - paths
             example:
-                paths:
-                  - "2019-06-06--11-30-31--9/fcamera.hevc"
-                  - "2019-06-06--11-30-31--9/ecamera.hevc"
-                expiry_days: 1
+              paths:
+                - "2019-06-06--11-30-31--9/fcamera.hevc"
+                - "2019-06-06--11-30-31--9/ecamera.hevc"
+              expiry_days: 1
       responses:
         '200':
           description: JSON array containing upload URLs

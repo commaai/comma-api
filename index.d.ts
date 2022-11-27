@@ -1108,7 +1108,7 @@ export interface operations {
          */
         "application/json": {
           /** @description Files to upload from openpilot data directory. */
-          paths?: (string)[];
+          paths: (string)[];
           /**
            * @description number of days the url should be valid 
            * @default 1
