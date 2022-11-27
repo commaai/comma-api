@@ -1,0 +1,1740 @@
+openapi: 3.1.0
+info:
+  title: comma API
+  version: 3.1.0
+  termsOfService: https://comma.ai/terms
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  x-logo:
+    url: https://api.comma.ai/images/logo-806c3186.png
+servers:
+  - url: 'https://api.comma.ai'
+    description: Production server
+paths:
+  /v1/me:
+    get:
+      operationId: getProfile
+      summary: User profile
+      description: Returns information about the authenticated user
+      responses:
+        '200':
+          description: JSON object containing the user's profile information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+  /v1/me/devices:
+    get:
+      operationId: getDevices
+      summary: Device list
+      description: List devices owned or readable by authenticated user
+      responses:
+        '200':
+          description: JSON array of device objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /v1/{dongleId}/devices:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getUserDevices
+      summary: User device list (admin)
+      description: List devices owned or readable by specified user
+      responses:
+        '200':
+          description: JSON array of device objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /v1.1/devices/{dongleId}:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDevice
+      summary: Device details
+      description: Returns information about the specified device
+      responses:
+        '200':
+          description: JSON object containing the device's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    patch:
+      operationId: updateDevice
+      summary: Update device alias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alias:
+                  type: string
+              required:
+                - alias
+      responses:
+        '200':
+          description: JSON object containing the updated device's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /v1/devices/{dongleId}/location:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceLocation
+      summary: Device location
+      responses:
+        '200':
+          description: JSON object containing device location, or an error message if the location is not known.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - allOf:
+                      - $ref: '#/components/schemas/DeviceLocation'
+                      - type: object
+                        properties:
+                          dongle_id:
+                            $ref: '#/components/schemas/DongleID'
+                        required:
+                          - dongle_id
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        oneOf:
+                          - const: '"Location unavailable"'
+                    required:
+                      - error
+  /v1/devices/{dongleId}/pair:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: pairDeviceToUser
+      summary: Pair device
+      description: Pair a device to a user's account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+  /v1/devices/{dongleId}/unpair:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: unpairDevice
+      summary: Unpair device
+      description: Unpair device from authenticated user's account. Any comma prime subscription linked to the device will be cancelled.
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+  /v1/devices/{dongleId}/owner:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceOwner
+      summary: Device owner
+      description: Returns the owner of a device.
+      responses:
+        '200':
+          description: JSON object containing information about the device owner
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    description: OAuth2 user ID
+                  points:
+                    type: integer
+                    description: comma points
+                  username:
+                    type: string
+                    deprecated: true
+                    nullable: true
+                  email:
+                    type: string
+  /v1/devices/{dongleId}/users:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceUsers
+      summary: Device users
+      description: List users with access to a device
+      responses:
+        '200':
+          description: JSON array of device user objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceUser'
+  /v1/devices/{dongleId}/add_user:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: addDeviceUser
+      summary: Grant device access
+      description: Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of user to add
+                email_userid:
+                  type: string
+                  description: OAuth2 user ID of user to add
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+  /v1/devices/{dongleId}/del_user:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: revokeDeviceUser
+      summary: Revoke device access
+      description: Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                - email
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+  /v1.1/devices/{dongleId}/stats:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceStatistics
+      summary: Device driving statistics
+      description: Returns aggregate driving statistics for a device over the past 7 days and all time.
+      responses:
+        '200':
+          description: JSON object containing driving statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  all:
+                    $ref: '#/components/schemas/DrivingStatistics'
+                  week:
+                    $ref: '#/components/schemas/DrivingStatistics'
+  /v1/devices/{dongleId}/bootlogs:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceBootLogs
+      summary: Device boot logs
+      description: Retrieve boot logs uploaded from a device.
+      responses:
+        '200':
+          description: JSON array of URLs to boot log files. Files are available at each URL for one hour from the time of the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/devices/{dongleId}/crashlogs:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceCrashLogs
+      summary: Device crash logs
+      description: Retrieve crash logs uploaded from a device.
+      responses:
+        '200':
+          description: JSON array of URLs to crash log files. Files are available at each URL for one hour from the time of the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/devices/{dongleId}/routes:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceRoutes
+      summary: Device routes
+      description: Returns a list of routes uploaded from a device.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of routes to return
+          schema:
+            type: integer
+            default: 20
+        - name: created_after
+          in: query
+          description: Return routes created after this timestamp
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: JSON array of route objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+  /v1/devices/{dongleId}/routes/preserved:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDevicePreservedRoutes
+      summary: Device preserved routes
+      description: Returns a list of preserved routes uploaded from a device.
+      responses:
+        '200':
+          description: JSON array of route objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+  /v1/devices/{dongleId}/routes_segments:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceRoutesSegments
+      summary: Device routes segments
+      description: Returns a list of route segments uploaded from a device between a start and end timestamp.
+      parameters:
+        - name: start
+          in: query
+          description: Start timestamp in milliseconds
+          schema:
+            type: integer
+        - name: end
+          in: query
+          description: End timestamp in milliseconds
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: JSON array of route segment objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RouteSegment'
+  /v1/devices/{dongleId}/segments:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceSegments
+      summary: Device segments
+      description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
+      parameters:
+        - name: from
+          description: Start timestamp in milliseconds
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: to
+          description: End timestamp in milliseconds
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: JSON array of segments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
+  /v1/devices/{dongleId}/athena_offline_queue:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getDeviceAthenaOfflineQueue
+      summary: Athena offline queue
+      description: Return a list of queued payloads for delivery to device when it is online.
+      responses:
+        '200':
+          description: JSON array of queued payloads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    expiry:
+                      type: integer
+                  additionalProperties: true
+  /v1.4/{dongleId}/upload_url:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getUploadUrl
+      summary: Log file upload
+      description: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      parameters:
+        - name: path
+          in: query
+          description: File to upload from openpilot data directory.
+          required: true
+          schema:
+            type: string
+            example: "2019-06-06--11-30-31--9/fcamera.hevc"
+        - name: expiry_days
+          in: query
+          description: Number of days the url should be valid.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 30
+            default: 1
+            example: 1
+      responses:
+        '200':
+          description: JSON object containing upload URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL to which a PUT request can be sent with file contents
+                example:
+                    url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+  /v1/{dongleId}/upload_urls:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: getUploadUrls
+      summary: Batch log file upload
+      description: Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paths:
+                  type: array
+                  items:
+                    type: string
+                  description: Files to upload from openpilot data directory.
+                expiry_days:
+                  type: integer
+                  minimum: 1
+                  maximum: 30
+                  default: 1
+                  description: number of days the url should be valid
+              required:
+                - paths
+            example:
+              paths:
+                - "2019-06-06--11-30-31--9/fcamera.hevc"
+                - "2019-06-06--11-30-31--9/ecamera.hevc"
+              expiry_days: 1
+      responses:
+        '200':
+          description: JSON array containing upload URLs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: URL to which a PUT request can be sent with file contents
+                example:
+                  - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+                  - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/ecamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
+  /v2/pilotpair:
+    post:
+      operationId: pilotPair
+      summary: Pair device
+      description: Pair a device to the authenticated user's account.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pair_token:
+                  type: string
+                  description: "JWT signed by your device private key. Payload contains `{\"identity\": <dongle-id>, \"pair\": true}`"
+              required:
+                - pair_token
+      responses:
+        '200':
+          description: JSON object containing pairing result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  first_pair:
+                    type: boolean
+                    description: True if the device was unpaired prior to this call. False if the device was previously paired by an authenticated user.
+  /v2/pilotauth:
+    post:
+      operationId: pilotAuth
+      summary: Authenticate device (openpilot)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imei:
+                  type: string
+                  description: Device IMEI
+                imei2:
+                  type: string
+                  description: Device IMEI, second slot
+                serial:
+                  type: string
+                  description: Device serial number
+                public_key:
+                  type: string
+                  description: 2048-bit RSA public key
+                register_token:
+                  type: string
+                  description: "JWT signed by private key. Payload must contain {\"register\": true}"
+              required:
+                - imei
+                - serial
+                - public_key
+                - register_token
+      responses:
+        '200':
+          description: JSON object containing authenticated dongle ID and token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dongle_id:
+                    $ref: '#/components/schemas/DongleID'
+                  access_token:
+                    type: string
+                    description: JWT
+                required:
+                  - dongle_id
+                  - access_token
+  /v1/route/{routeName}:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    get:
+      operationId: getRoute
+      summary: Route details
+      description: Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
+      responses:
+        '200':
+          description: JSON object containing route information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+  /v1/route/{routeName}/segments:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    get:
+      operationId: getRouteSegments
+      summary: Route segments
+      description: Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
+      responses:
+        '200':
+          description: JSON array of segments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Segment'
+  /v1/route/{routeName}/files:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    get:
+      operationId: getRouteFiles
+      summary: Raw log files
+      description: Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
+      responses:
+        '200':
+          description: JSON object containing signed URLs to various log files. URLs are valid for 1 hour. All arrays are sorted by segment number ascending.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qlogs:
+                    type: array
+                    description: Array of signed URLs to qlog.bz2 files
+                    items:
+                      type: string
+                  qcameras:
+                    type: array
+                    description: Array of signed URLs to qcamera.ts files
+                    items:
+                      type: string
+                  logs:
+                    type: array
+                    description: Array of signed URLs to rlog.bz2 files
+                    items:
+                      type: string
+                  cameras:
+                    type: array
+                    description: Array of signed URLs to fcamera.hevc files
+                    items:
+                      type: string
+                  dcameras:
+                    type: array
+                    description: Array of signed URLs to dcamera.hevc files
+                    items:
+                      type: string
+                  ecameras:
+                    type: array
+                    description: Array of signed URLs to ecamera.hevc files
+                    items:
+                      type: string
+                required:
+                  - qlogs
+                  - qcameras
+                  - logs
+                  - cameras
+                  - dcameras
+                  - ecameras
+  /v1/route/{routeName}/qcamera.m3u8:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    get:
+      operationId: getRouteStream
+      summary: Route HLS stream
+      description: Returns rear camera HLS stream index of MPEG-TS fragments.
+      responses:
+        '200':
+          description: m3u8 playlist
+          content:
+            application/x-mpegURL:
+              schema:
+                type: string
+                example: |
+                  #EXTM3U
+                  #EXT-X-VERSION:3
+                  #EXT-X-TARGETDURATION:4
+                  #EXT-X-MEDIA-SEQUENCE:0
+                  #EXT-X-PLAYLIST-TYPE:VOD
+
+                  #EXTINF:3.049958,
+                  8_61.ts?v=2
+                  #EXTINF:3.049955,
+                  69_61.ts?v=2
+                  #EXTINF:3.049955,
+                  130_61.ts?v=2
+                  #EXTINF:3.049958,
+                  191_61.ts?v=2
+                  #EXTINF:3.049970,
+                  252_61.ts?v=2
+                  #EXTINF:3.049955,
+                  313_61.ts?v=2
+                  #EXTINF:3.050007,
+                  374_61.ts?v=2
+                  #EXTINF:3.049913,
+                  435_61.ts?v=2
+                  #EXTINF:3.049942,
+                  496_61.ts?v=2
+                  #EXTINF:3.049964,
+                  557_61.ts?v=2
+                  #EXTINF:3.049955,
+                  618_61.ts?v=2
+  /v1/route/{routeName}/share_signature:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    get:
+      operationId: getRouteShareSignature
+      summary: Route sharing signature
+      description: Return route share URL signature. Expires in 365 days.
+      responses:
+        '200':
+          description: JSON object containing route share signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exp:
+                    type: string
+                    description: Unix timestamp of expiration
+                  sig:
+                    type: string
+                    description: Signature
+                required:
+                  - exp
+                  - sig
+  /v1/route/{routeName}/preserve:
+    parameters:
+      - $ref: '#/components/parameters/routeName'
+    post:
+      operationId: preserveRoute
+      summary: Preserve route
+      description: Preserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+    delete:
+      operationId: unpreserveRoute
+      summary: Unpreserve route
+      description: Unpreserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessInteger'
+  /v1/tokens/mapbox/{dongleId}:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getMapboxToken
+      summary: Mapbox token
+      description: Returns a Mapbox token for the specified dongle ID. Authenticated user must have ownership of the dongle ID.
+      responses:
+        '200':
+          description: JSON object containing Mapbox token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Mapbox token
+  /v1/navigation/{dongleId}/set_destination:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: setDestination
+      summary: Set nav destination
+      description: Set destination for navigation. Authenticated user must have ownership of the dongle ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NavigationDestination'
+      responses:
+        '200':
+          description: Destination set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  saved_next:
+                    type: boolean
+                    description: True if the destination was stored and will be applied when the device is next online. False if the destination was set immediately.
+  /v1/navigation/{dongleId}/next:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getNavigationNext
+      summary: Get nav destination
+      description: Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
+      responses:
+        '200':
+          description: JSON object containing next destination, or null if no destination is set
+          content:
+            # TODO: can return text null
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NavigationDestination'
+    delete:
+      operationId: clearNavigationNext
+      summary: Clear nav destination
+      description: Delete next destination from database.
+      responses:
+        '200':
+          description: Destination cleared
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  deleted:
+                    $ref: '#/components/schemas/NavigationDestination'
+  /v1/navigation/{dongleId}/locations:
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    get:
+      operationId: getNavigationSavedLocations
+      summary: Saved locations
+      description: Retrieve saved locations from database.
+      responses:
+        '200':
+          description: JSON object containing saved locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NavigationSavedLocation'
+    put:
+      operationId: saveNavigationLocation
+      summary: Save location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NavigationSavedLocation'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
+    patch:
+      operationId: updateNavigationLocation
+      summary: Update location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/NavigationSavedLocation'
+                - type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/NavigationSavedLocationID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
+    delete:
+      operationId: deleteNavigationLocation
+      summary: Delete location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/NavigationSavedLocationID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
+  /v1/clips/create:
+    post:
+      operationId: createClip
+      summary: Create clip
+      description: Create a clip from a route.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clip'
+      responses:
+        '200':
+          description: JSON object containing clip ID, or an error message
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        const: true
+                      clip_id:
+                        $ref: '#/components/schemas/ClipID'
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        description: Error code
+                        oneOf:
+                          - const: '"too_many_pending"'
+                            description: Too many pending clips
+  /v1/clips/list:
+    get:
+      operationId: getClips
+      summary: List clips
+      description: List clips created for the specified device.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: JSON array of clip objects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClipDetails'
+  /v1/clips/details:
+    get:
+      operationId: getClip
+      summary: Get clip details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+      responses:
+        '200':
+          description: JSON object containing clip details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClipDetails'
+  /v1/clips/update:
+    patch:
+      operationId: updateClip
+      summary: Update clip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+                is_public:
+                  type: boolean
+                  description: Whether the clip is public or not
+              required:
+                - clip_id
+                - dongle_id
+                - is_public
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
+    delete:
+      operationId: deleteClip
+      summary: Delete clip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clip_id:
+                  $ref: '#/components/schemas/ClipID'
+                dongle_id:
+                  $ref: '#/components/schemas/DongleID'
+              required:
+                - clip_id
+                - dongle_id
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBoolean'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    SuccessInteger:
+      description: Operation successful
+      content:
+        application/json:
+          schema:
+            properties:
+              success:
+                type: integer
+                const: 1
+            required:
+              - success
+    SuccessBoolean:
+      description: Operation successful
+      content:
+        application/json:
+          schema:
+            properties:
+              success:
+                type: boolean
+                const: true
+            required:
+              - success
+  schemas:
+    Profile:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address
+          example: "commaphone3@gmail.com"
+        id:
+          type: string
+          description: Dongle ID
+          example: "2e9eeac96ea4e6a6"
+        points:
+          type: integer
+          description: comma points
+          deprecated: true
+          example: 34933
+        regdate:
+          type: integer
+          description: Unix timestamp at time of registration
+          example: 1465103707
+        superuser:
+          type: boolean
+          description: <a href="https://comma.ai/jobs">Apply for superuser here</a>
+          example: false
+        username:
+          type: string
+          description: Username
+          deprecated: true
+          nullable: true
+          example: "joeyjoejoe"
+        user_id:
+          type: string
+          description: OAuth2 user ID
+          example: google_111803823964622526972
+      required:
+        - email
+        - id
+        - points
+        - regdate
+        - superuser
+        - user_id
+    Device:
+      type: object
+      properties:
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        alias:
+          type: string
+          description: Device nickname
+        serial:
+          type: string
+          description: Device serial number
+        athena_host:
+          type: string
+          description: Last connected athena server hostname
+          nullable: true
+        last_athena_ping:
+          type: integer
+          description: Unix timestamp of last athena ping
+        ignore_uploads:
+          type: boolean
+          description: Uploads are ignored from this device
+          nullable: true
+        is_paired:
+          type: boolean
+          description: Device has an owner
+        is_owner:
+          type: boolean
+          description: Authenticated user has write-access to the device
+        public_key:
+          type: string
+          description: 2048-bit public RSA key
+          nullable: true
+        prime:
+          type: boolean
+          description: Device has a prime subscription
+        prime_type:
+          type: number
+          description: |
+            Prime subscription type
+            - 0 = None
+            - 1 = Magenta
+            - 2 = Lite
+            - 3 = Blue
+            - 4 = Magenta New
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+        trial_claimed:
+          type: boolean
+          description: Device prime trial is claimed
+          nullable: true
+        device_type:
+          type: string
+          description: Device type
+          enum:
+            - app
+            - neo
+            - panda
+            - two
+            - freon
+            - pc
+            - three
+        last_gps_time:
+          type: integer
+          nullable: true
+        last_gps_lat:
+          type: number
+          nullable: true
+        last_gps_lng:
+          type: number
+          nullable: true
+        last_gps_accuracy:
+          type: number
+          nullable: true
+        last_gps_speed:
+          type: number
+          nullable: true
+        last_gps_bearing:
+          type: number
+          nullable: true
+        openpilot_version:
+          type: string
+          nullable: true
+        sim_id:
+          type: string
+          nullable: true
+      required:
+        - dongle_id
+        - alias
+        - serial
+        - is_paired
+        - public_key
+        - prime
+        - prime_type
+        - trial_claimed
+        - device_type
+        - last_gps_time
+        - last_gps_lat
+        - last_gps_lng
+        - last_gps_accuracy
+        - last_gps_speed
+        - last_gps_bearing
+        - sim_id
+    DeviceUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email
+        permission:
+          $ref: '#/components/schemas/DeviceUserPermission'
+      required:
+        - email
+        - permission
+    DeviceUserPermission:
+      type: string
+      description: Device user permission
+      enum:
+        - read_access
+        - owner
+    DeviceLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          description: Latitude, in decimal degrees
+        lng:
+          type: number
+          description: Longitude, in decimal degrees
+        time:
+          type: integer
+          description: Unix timestamp, in milliseconds
+        accuracy:
+          type: number
+          description: Accuracy, in metres
+        speed:
+          type: number
+          description: Speed, in metres per second
+        bearing:
+          type: number
+          description: Bearing angle, in degrees from north
+      required:
+        - lat
+        - lng
+        - time
+        - accuracy
+        - speed
+        - bearing
+    DrivingStatistics:
+      type: object
+      description: Summary of drives over a period of time
+      properties:
+        distance:
+          type: number
+          description: Sum of distance driven in time period, in miles
+        minutes:
+          type: integer
+          description: Sum of time driven in time period, in minutes
+        routes:
+          type: integer
+          description: Count of routes in time period
+      required:
+        - distance
+        - minutes
+        - routes
+    Segment:
+      type: object
+      description: A single segment of a route is up to 60 seconds in length.
+      properties:
+        canonical_name:
+          $ref: '#/components/schemas/SegmentName'
+        number:
+          type: integer
+          description: Segment number
+          minimum: 0
+        canonical_route_name:
+          $ref: '#/components/schemas/RouteName'
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        create_time:
+          type: integer
+          description: Unix timestamp at which upload_url was first called for file in segment
+        start_time_utc_millis:
+          type: integer
+          description: Milliseconds since epoch of segment start time
+        end_time_utc_millis:
+          type: integer
+          description: Milliseconds since epoch of segment end time
+        url:
+          type: string
+          description: Signed URL from which route.coords and JPEGs can be downloaded
+        length:
+          type: number
+          description: Sum of distances between GPS points in miles
+        can:
+          type: boolean
+          description: Segment contains CAN messages
+        hpgps:
+          type: boolean
+          description: Segment has ublox packets
+        radar:
+          type: boolean
+          description: Segment contains radar tracks in CAN
+        devicetype:
+          $ref: '#/components/schemas/SegmentDataSource'
+        proc_log:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_qlog:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_camera:
+          $ref: '#/components/schemas/FileProcStatus'
+        proc_dcamera:
+          $ref: '#/components/schemas/FileProcStatus'
+        passive:
+          type: boolean
+        version:
+          type: string
+        git_commit:
+          type: string
+        git_branch:
+          type: string
+        git_remote:
+          type: string
+        git_dirty:
+          type: boolean
+      required:
+        - canonical_name
+        - number
+        - canonical_route_name
+        - dongle_id
+        - create_time
+        - start_time_utc_millis
+        - end_time_utc_millis
+        - url
+        - length
+        - can
+        - hpgps
+        - radar
+        - devicetype
+        - proc_log
+        - proc_qlog
+        - proc_camera
+        - proc_dcamera
+        - passive
+        - version
+        - git_commit
+        - git_branch
+        - git_remote
+        - git_dirty
+    Route:
+      type: object
+      properties:
+        fullname:
+          $ref: '#/components/schemas/RouteName'
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        user_id:
+          $ref: '#/components/schemas/DongleID'
+        is_public:
+          type: boolean
+        create_time:
+          type: integer
+          description: Unix timestamp at which upload_url was first called for file in route
+        url:
+          type: string
+          description: Signed storage bucket URL from which route.coords and JPEGs can be downloaded
+        share_expiry:
+          type: integer
+          description: Unix timestamp at which signed URL expires
+        share_sig:
+          type: string
+          description: URL signature
+        length:
+          type: number
+          description: Sum of distances between GPS points in miles
+        can:
+          type: boolean
+          description: Route contains CAN messages
+        hpgps:
+          type: boolean
+          description: Route has ublox packets
+        radar:
+          type: boolean
+          description: Route contains radar tracks in CAN
+        devicetype:
+          $ref: '#/components/schemas/SegmentDataSource'
+        maxqlog:
+          type: integer
+          description: Maximum qlog segment number uploaded
+        maxqcamera:
+          type: integer
+          description: Maximum qcamera segment number uploaded
+        maxlog:
+          type: integer
+          description: Maximum log segment number uploaded
+        maxcamera:
+          type: integer
+          description: Maximum road camera segment number uploaded
+        maxdcamera:
+          type: integer
+          description: Maximum driver camera segment number uploaded
+        maxecamera:
+          type: integer
+          description: Maximum wide road camera segment number uploaded
+        procqlog:
+          type: integer
+          description: Maximum qlog segment number processed
+        procqcamera:
+          type: integer
+          description: Maximum qcamera segment number processed
+        proclog:
+          type: integer
+          description: Maximum log segment number processed
+        proccamera:
+          type: integer
+          description: Maximum road camera segment number processed
+        start_lat:
+          type: number
+          description: First latitude recorded in route from GPS
+        start_lng:
+          type: number
+          description: First longitude recorded in route from GPS
+        start_time:
+          type: number
+          description: Unix timestamp at beginning of route
+        end_lat:
+          type: number
+          description: Last latitude recorded in route from GPS
+        end_lng:
+          type: number
+          description: Last longitude recorded in route from GPS
+        end_time:
+          type: number
+          description: Unix timestamp at end of last segment in route
+        passive:
+          type: boolean
+        version:
+          type: string
+        git_commit:
+          type: string
+        git_branch:
+          type: string
+        git_remote:
+          type: string
+        git_dirty:
+          type: boolean
+        platform:
+          type: string
+        vin:
+          $ref: '#/components/schemas/VIN'
+        init_logmonotime:
+          type: integer
+          description: Minimum logMonoTime from openpilot log
+      required:
+        - fullname
+        - dongle_id
+        - user_id
+        - create_time
+        - url
+        - share_expiry
+        - share_sig
+        - length
+        - devicetype
+        - maxlog
+        - maxcamera
+        - maxdcamera
+        - proclog
+        - proccamera
+        - start_time
+        - end_time
+    RouteSegment:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Route'
+        - type: object
+          properties:
+            segment_numbers:
+              type: array
+              description: Segment numbers in route
+              items:
+                type: integer
+                minimum: 0
+            segment_start_times:
+              type: array
+              description: Segment start times in milliseconds since epoch
+              items:
+                type: integer
+            segment_end_times:
+              type: array
+              description: Segment end times in milliseconds since epoch
+              items:
+                type: integer
+          required:
+            - segment_numbers
+            - segment_start_times
+            - segment_end_times
+    DeviceType:
+      type: string
+      description: Device type
+      enum:
+        - app
+        - neo
+        - panda
+        - two
+        - freon
+        - pc
+        - three
+    SegmentDataSource:
+      type: integer
+      description: |
+        Data source
+        - 3 = eon
+        - 6 = comma two
+        - 7 = comma three
+      enum:
+        - 3
+        - 6
+        - 7
+    FileProcStatus:
+      type: integer
+      description: |
+        Log file status
+        -1 = Not received
+        0 = Upload URL sent
+        10 = Received
+        20 = Enqueued
+        30 = Processing
+        40 = Processed
+        50 = Errored
+      enum:
+        - -1
+        - 0
+        - 10
+        - 20
+        - 30
+        - 40
+        - 50
+    FileType:
+      type: integer
+      description: |
+        File type
+        1. Road camera (camera)
+        2. Front camera (driver, dcamera)
+        3. Log (raw, rlog)
+        4. Qlog
+        5. QCamera
+        6. Wide road camera (extended, ecamera)
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+    DongleID:
+      title: Dongle ID
+      description: A unique 16-character hexadecimal string. Can represent a device or a user.
+      type: string
+      pattern: '^[0-9a-f]{16}$'
+      example: "1a2b3c4d5e6f7a8b"
+      readOnly: true
+    RouteName:
+      title: Canonical route name
+      description: Contains a dongle ID and timestamp of the beginning of the route
+      type: string
+      pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}$'
+      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00"
+    SegmentName:
+      title: Canonical segment name
+      description: Contains a dongle ID, timestamp of the beginning of the route, and segment number
+      type: string
+      pattern: '^[0-9a-f]{16}\|[0-9]{4}-[0-9]{2}-[0-9]{2}--[0-9]{2}-[0-9]{2}-[0-9]{2}--[0-9]+$'
+      example: "1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0"
+    VIN:
+      title: Vehicle identification number
+      description: 17-character alphanumeric string
+      type: string
+      pattern: '^[0-9A-Z]{17}$'
+      example: "5YJ3E1EA7HF000000"
+    NavigationDestination:
+      title: Navigation destination
+      type: object
+      properties:
+        place_name:
+          type: string
+          description: Short name of destination
+          example: "1441 State St"
+        place_details:
+          type: string
+          description: Address details of destination. Should not include short name.
+          example: "San Diego, CA 92101, United States"
+        latitude:
+          type: number
+          description: Latitude, decimal degrees
+          example: 32.720450
+        longitude:
+          type: number
+          description: Longitude, decimal degrees
+          example: -117.166210
+      required:
+        - place_name
+        - place_details
+        - latitude
+        - longitude
+    NavigationSavedLocationID:
+      title: Navigation saved location ID
+      description: Identifier for a saved location
+      type: number
+      readOnly: true
+    NavigationSavedLocation:
+      title: Navigation saved location
+      type: object
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/NavigationSavedLocationID'
+            dongle_id:
+              $ref: '#/components/schemas/DongleID'
+            save_type:
+              $ref: '#/components/schemas/NavigationLocationType'
+            label:
+              type: string
+              description: Optional label for locations with type "favorite"
+              nullable: true
+            modified:
+              type: string
+              description: When this saved location was last modified
+              readOnly: true
+          required:
+            - id
+            - dongle_id
+            - save_type
+            - modified
+        - $ref: '#/components/schemas/NavigationDestination'
+    NavigationLocationType:
+      type: string
+      description: Navigation location type
+      enum:
+        - favorite
+        - recent
+    ClipID:
+      title: Clip ID
+      description: Unique identifier for a clip
+      type: integer
+      readOnly: true
+    Clip:
+      title: Clip
+      description: Video clip created from a route
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClipID'
+        create_time:
+          type: integer
+          readOnly: true
+        dongle_id:
+          $ref: '#/components/schemas/DongleID'
+        route_name:
+          $ref: '#/components/schemas/RouteName'
+        start_time:
+          type: integer
+        end_time:
+          type: integer
+        video_type:
+          $ref: '#/components/schemas/ClipVideoType'
+        status:
+          type: string
+          description: Clip status
+          readOnly: true
+          oneOf:
+            - const: '"pending"'
+              title: Pending
+            - const: '"done"'
+              title: Done
+            - const: '"failed"'
+              title: Failed
+        is_public:
+          type: boolean
+          description: Clip is publicly accessible
+        title:
+          type: string
+          description: Optional title for clip
+          nullable: true
+          maxLength: 128
+      required:
+        - id
+        - create_time
+        - dongle_id
+        - route_name
+        - start_time
+        - end_time
+        - video_type
+        - status
+        - is_public
+    ClipVideoType:
+      description: Clip video type
+      type: string
+      oneOf:
+        - const: '"q"'
+          title: QCamera
+        - const: '"f"'
+          title: Road camera
+        - const: '"e"'
+          title: Wide road camera
+        - const: '"d"'
+          title: Driver camera
+        - const: '"360"'
+          title: '360'
+    PendingClip:
+      title: Pending Clip
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: '"pending"'
+            pending_status:
+              type: string
+              description: Pending clip status
+              readOnly: true
+            pending_progress:
+              type: string
+              description: Pending clip progress
+              readOnly: true
+    DoneClip:
+      title: Done Clip
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: '"done"'
+            url:
+              type: string
+              description: URL to clip
+              readOnly: true
+            thumbnail:
+              type: string
+              description: URL to clip thumbnail
+              readOnly: true
+    FailedClip:
+      title: Failed Clip
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Clip'
+        - type: object
+          properties:
+            status:
+              type: string
+              const: '"failed"'
+            error_status:
+              type: string
+              description: Error message
+              readOnly: true
+    ClipDetails:
+      title: Clip Details
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PendingClip'
+        - $ref: '#/components/schemas/DoneClip'
+        - $ref: '#/components/schemas/FailedClip'
+      discriminator:
+        propertyName: status
+        mapping:
+          pending: '#/components/schemas/PendingClip'
+          done: '#/components/schemas/DoneClip'
+          failed: '#/components/schemas/FailedClip'
+  parameters:
+    dongleId:
+      name: dongleId
+      description: Dongle ID
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/DongleID'
+    routeName:
+      name: routeName
+      description: Canonical route name
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/RouteName'
