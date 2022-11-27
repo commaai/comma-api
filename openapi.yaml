@@ -500,6 +500,8 @@ paths:
                 pair_token:
                   type: string
                   description: "JWT signed by your device private key. Payload contains `{\"identity\": <dongle-id>, \"pair\": true}`"
+              required:
+                - pair_token
       responses:
         '200':
           description: JSON object containing pairing result
@@ -536,6 +538,11 @@ paths:
                 register_token:
                   type: string
                   description: "JWT signed by private key. Payload must contain {\"register\": true}"
+              required:
+                - imei
+                - serial
+                - public_key
+                - register_token
       responses:
         '200':
           description: JSON object containing authenticated dongle ID and token

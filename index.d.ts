@@ -1138,7 +1138,7 @@ export interface operations {
       content: {
         "application/x-www-form-urlencoded": {
           /** @description JWT signed by your device private key. Payload contains `{"identity": <dongle-id>, "pair": true}` */
-          pair_token?: string;
+          pair_token: string;
         };
       };
     };
@@ -1160,15 +1160,15 @@ export interface operations {
       content: {
         "application/json": {
           /** @description Device IMEI */
-          imei?: string;
+          imei: string;
           /** @description Device IMEI, second slot */
           imei2?: string;
           /** @description Device serial number */
-          serial?: string;
+          serial: string;
           /** @description 2048-bit RSA public key */
-          public_key?: string;
+          public_key: string;
           /** @description JWT signed by private key. Payload must contain {"register": true} */
-          register_token?: string;
+          register_token: string;
         };
       };
     };
