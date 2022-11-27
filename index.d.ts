@@ -398,13 +398,21 @@ export interface components {
        * @enum {string}
        */
       device_type: "app" | "neo" | "panda" | "two" | "freon" | "pc" | "three";
+      /** @description Unix timestamp, in milliseconds */
       last_gps_time: number | null;
+      /** @description Latitude, in decimal degrees */
       last_gps_lat: number | null;
+      /** @description Longitude, in decimal degrees */
       last_gps_lng: number | null;
+      /** @description Accuracy, in metres */
       last_gps_accuracy: number | null;
+      /** @description Speed, in metres per second */
       last_gps_speed: number | null;
+      /** @description Direction angle, in degrees from north */
       last_gps_bearing: number | null;
+      /** @description openpilot version */
       openpilot_version?: string | null;
+      /** @description Last known SIM ID of the device */
       sim_id: string | null;
     };
     DeviceUser: {
@@ -428,7 +436,7 @@ export interface components {
       accuracy: number;
       /** @description Speed, in metres per second */
       speed: number;
-      /** @description Bearing angle, in degrees from north */
+      /** @description Direction angle, in degrees from north */
       bearing: number;
     };
     /** @description Summary of drives over a period of time */
@@ -468,17 +476,24 @@ export interface components {
       proc_qlog: components["schemas"]["FileProcStatus"];
       proc_camera: components["schemas"]["FileProcStatus"];
       proc_dcamera: components["schemas"]["FileProcStatus"];
+      /** @description openpilot is running in passive mode */
       passive: boolean;
+      /** @description openpilot version */
       version: string;
+      /** @description git commit hash */
       git_commit: string;
+      /** @description git branch */
       git_branch: string;
+      /** @description git remote url */
       git_remote: string;
+      /** @description git working tree is dirty */
       git_dirty: boolean;
     };
     Route: {
       fullname: components["schemas"]["RouteName"];
       dongle_id: components["schemas"]["DongleID"];
       user_id: components["schemas"]["DongleID"];
+      /** @description Route is publicly accessible */
       is_public?: boolean;
       /** @description Unix timestamp at which upload_url was first called for file in route */
       create_time: number;
@@ -529,12 +544,19 @@ export interface components {
       end_lng?: number;
       /** @description Unix timestamp at end of last segment in route */
       end_time: number;
+      /** @description openpilot is running in passive mode */
       passive?: boolean;
+      /** @description openpilot version */
       version?: string;
+      /** @description git commit hash */
       git_commit?: string;
+      /** @description git branch */
       git_branch?: string;
+      /** @description git remote url */
       git_remote?: string;
+      /** @description git working tree is dirty */
       git_dirty?: boolean;
+      /** @description openpilot platform name */
       platform?: string;
       vin?: components["schemas"]["VIN"];
       /** @description Minimum logMonoTime from openpilot log */
@@ -1172,7 +1194,7 @@ export interface operations {
           serial: string;
           /** @description 2048-bit RSA public key */
           public_key: string;
-          /** @description JWT signed by private key. Payload must contain {"register": true} */
+          /** @description JWT signed by private key. Payload must contain `{"register": true}`. */
           register_token: string;
         };
       };

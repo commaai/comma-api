@@ -539,7 +539,7 @@ paths:
                   description: 2048-bit RSA public key
                 register_token:
                   type: string
-                  description: "JWT signed by private key. Payload must contain {\"register\": true}"
+                  description: "JWT signed by private key. Payload must contain `{\"register\": true}`."
               required:
                 - imei
                 - serial
@@ -1144,27 +1144,35 @@ components:
         last_gps_time:
           type: integer
           nullable: true
+          description: Unix timestamp, in milliseconds
         last_gps_lat:
           type: number
           nullable: true
+          description: Latitude, in decimal degrees
         last_gps_lng:
           type: number
           nullable: true
+          description: Longitude, in decimal degrees
         last_gps_accuracy:
           type: number
           nullable: true
+          description: Accuracy, in metres
         last_gps_speed:
           type: number
           nullable: true
+          description: Speed, in metres per second
         last_gps_bearing:
           type: number
           nullable: true
+          description: Direction angle, in degrees from north
         openpilot_version:
           type: string
           nullable: true
+          description: openpilot version
         sim_id:
           type: string
           nullable: true
+          description: Last known SIM ID of the device
       required:
         - dongle_id
         - alias
@@ -1219,7 +1227,7 @@ components:
           description: Speed, in metres per second
         bearing:
           type: number
-          description: Bearing angle, in degrees from north
+          description: Direction angle, in degrees from north
       required:
         - lat
         - lng
@@ -1294,16 +1302,22 @@ components:
           $ref: '#/components/schemas/FileProcStatus'
         passive:
           type: boolean
+          description: openpilot is running in passive mode
         version:
           type: string
+          description: openpilot version
         git_commit:
           type: string
+          description: git commit hash
         git_branch:
           type: string
+          description: git branch
         git_remote:
           type: string
+          description: git remote url
         git_dirty:
           type: boolean
+          description: git working tree is dirty
       required:
         - canonical_name
         - number
@@ -1339,6 +1353,7 @@ components:
           $ref: '#/components/schemas/DongleID'
         is_public:
           type: boolean
+          description: Route is publicly accessible
         create_time:
           type: integer
           description: Unix timestamp at which upload_url was first called for file in route
@@ -1415,18 +1430,25 @@ components:
           description: Unix timestamp at end of last segment in route
         passive:
           type: boolean
+          description: openpilot is running in passive mode
         version:
           type: string
+          description: openpilot version
         git_commit:
           type: string
+          description: git commit hash
         git_branch:
           type: string
+          description: git branch
         git_remote:
           type: string
+          description: git remote url
         git_dirty:
           type: boolean
+          description: git working tree is dirty
         platform:
           type: string
+          description: openpilot platform name
         vin:
           $ref: '#/components/schemas/VIN'
         init_logmonotime:
