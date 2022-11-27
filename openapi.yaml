@@ -82,8 +82,8 @@ paths:
               properties:
                 alias:
                   type: string
-                required:
-                  - alias
+              required:
+                - alias
       responses:
         '200':
           description: JSON object containing the updated device's information

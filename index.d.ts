@@ -799,8 +799,7 @@ export interface operations {
     requestBody?: {
       content: {
         "application/json": {
-          alias?: string;
-          required?: [alias];
+          alias: string;
         };
       };
     };
