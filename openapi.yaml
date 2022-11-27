@@ -958,11 +958,8 @@ components:
           schema:
             properties:
               success:
-                type: object
-                properties:
-                  success:
-                    type: integer
-                    const: 1
+                type: integer
+                const: 1
     SuccessBoolean:
       description: Operation successful
       content:
