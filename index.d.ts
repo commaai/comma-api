@@ -1224,17 +1224,17 @@ export interface operations {
         content: {
           "application/json": {
             /** @description Array of signed URLs to qlog.bz2 files */
-            qlogs?: (string)[];
+            qlogs: (string)[];
             /** @description Array of signed URLs to qcamera.ts files */
-            qcameras?: (string)[];
+            qcameras: (string)[];
             /** @description Array of signed URLs to rlog.bz2 files */
-            logs?: (string)[];
+            logs: (string)[];
             /** @description Array of signed URLs to fcamera.hevc files */
-            cameras?: (string)[];
+            cameras: (string)[];
             /** @description Array of signed URLs to dcamera.hevc files */
-            dcameras?: (string)[];
+            dcameras: (string)[];
             /** @description Array of signed URLs to ecamera.hevc files */
-            ecameras?: (string)[];
+            ecameras: (string)[];
           };
         };
       };

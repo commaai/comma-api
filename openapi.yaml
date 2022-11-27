@@ -634,6 +634,13 @@ paths:
                     description: Array of signed URLs to ecamera.hevc files
                     items:
                       type: string
+                required:
+                  - qlogs
+                  - qcameras
+                  - logs
+                  - cameras
+                  - dcameras
+                  - ecameras
   /v1/route/{routeName}/qcamera.m3u8:
     parameters:
       - $ref: '#/components/parameters/routeName'
