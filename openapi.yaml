@@ -82,6 +82,8 @@ paths:
               properties:
                 alias:
                   type: string
+                required:
+                  - alias
       responses:
         '200':
           description: JSON object containing the updated device's information
@@ -108,6 +110,8 @@ paths:
                         properties:
                           dongle_id:
                             $ref: '#/components/schemas/DongleID'
+                        required:
+                          - dongle_id
                   - type: object
                     properties:
                       error:
@@ -1056,11 +1060,11 @@ components:
           type: number
           description: |
             Prime subscription type
-            0. None
-            1. Magenta
-            2. Lite
-            3. Blue
-            4. Magenta New
+            - 0 = None
+            - 1 = Magenta
+            - 2 = Lite
+            - 3 = Blue
+            - 4 = Magenta New
           enum:
             - 0
             - 1
