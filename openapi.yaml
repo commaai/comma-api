@@ -327,6 +327,9 @@ paths:
                     $ref: '#/components/schemas/DrivingStatistics'
                   week:
                     $ref: '#/components/schemas/DrivingStatistics'
+                required:
+                  - all
+                  - week
   /v1/devices/{dongleId}/bootlogs:
     parameters:
       - $ref: '#/components/parameters/dongleId'

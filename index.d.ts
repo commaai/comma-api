@@ -960,8 +960,8 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            all?: components["schemas"]["DrivingStatistics"];
-            week?: components["schemas"]["DrivingStatistics"];
+            all: components["schemas"]["DrivingStatistics"];
+            week: components["schemas"]["DrivingStatistics"];
           };
         };
       };
