@@ -17,6 +17,8 @@ paths:
       operationId: getProfile
       summary: User profile
       description: Returns information about the authenticated user
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON object containing the user's profile information
@@ -29,6 +31,8 @@ paths:
       operationId: getDevices
       summary: Device list
       description: List devices owned or readable by authenticated user
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of device objects
@@ -45,6 +49,8 @@ paths:
       operationId: getUserDevices
       summary: User device list (admin)
       description: List devices owned or readable by specified user
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of device objects
@@ -61,6 +67,8 @@ paths:
       operationId: getDevice
       summary: Device details
       description: Returns information about the specified device
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON object containing the device's information
@@ -74,6 +82,8 @@ paths:
     patch:
       operationId: updateDevice
       summary: Update device alias
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -97,6 +107,8 @@ paths:
     get:
       operationId: getDeviceLocation
       summary: Device location
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON object containing device location, or an error message if the location is not known.
@@ -127,6 +139,8 @@ paths:
       operationId: pairDeviceToUser
       summary: Pair device
       description: Pair a device to a user's account.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -145,6 +159,8 @@ paths:
       operationId: unpairDevice
       summary: Unpair device
       description: Unpair device from authenticated user's account. Any comma prime subscription linked to the device will be cancelled.
+      security:
+        - AuthUser: []
       responses:
         '200':
           $ref: '#/components/responses/SuccessInteger'
@@ -155,6 +171,8 @@ paths:
       operationId: getDeviceOwner
       summary: Device owner
       description: Returns the owner of a device.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON object containing information about the device owner
@@ -182,6 +200,8 @@ paths:
       operationId: getDeviceUsers
       summary: Device users
       description: List users with access to a device
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of device user objects
@@ -198,6 +218,8 @@ paths:
       operationId: addDeviceUser
       summary: Grant device access
       description: Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -220,6 +242,8 @@ paths:
       operationId: revokeDeviceUser
       summary: Revoke device access
       description: Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -240,6 +264,9 @@ paths:
       operationId: getDeviceStatistics
       summary: Device driving statistics
       description: Returns aggregate driving statistics for a device over the past 7 days and all time.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       responses:
         '200':
           description: JSON object containing driving statistics
@@ -259,6 +286,8 @@ paths:
       operationId: getDeviceBootLogs
       summary: Device boot logs
       description: Retrieve boot logs uploaded from a device.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of URLs to boot log files. Files are available at each URL for one hour from the time of the request.
@@ -275,6 +304,8 @@ paths:
       operationId: getDeviceCrashLogs
       summary: Device crash logs
       description: Retrieve crash logs uploaded from a device.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of URLs to crash log files. Files are available at each URL for one hour from the time of the request.
@@ -291,6 +322,8 @@ paths:
       operationId: getDeviceRoutes
       summary: Device routes
       description: Returns a list of routes uploaded from a device.
+      security:
+        - AuthUser: []
       parameters:
         - name: limit
           in: query
@@ -319,6 +352,8 @@ paths:
       operationId: getDevicePreservedRoutes
       summary: Device preserved routes
       description: Returns a list of preserved routes uploaded from a device.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of route objects
@@ -335,6 +370,9 @@ paths:
       operationId: getDeviceRoutesSegments
       summary: Device routes segments
       description: Returns a list of route segments uploaded from a device between a start and end timestamp.
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       parameters:
         - name: start
           in: query
@@ -362,6 +400,9 @@ paths:
       operationId: getDeviceSegments
       summary: Device segments
       description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       parameters:
         - name: from
           description: Start timestamp in milliseconds
@@ -391,6 +432,8 @@ paths:
       operationId: getDeviceAthenaOfflineQueue
       summary: Athena offline queue
       description: Return a list of queued payloads for delivery to device when it is online.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of queued payloads
@@ -411,6 +454,9 @@ paths:
       operationId: getUploadUrl
       summary: Log file upload
       description: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       parameters:
         - name: path
           in: query
@@ -448,6 +494,9 @@ paths:
       operationId: getUploadUrls
       summary: Batch log file upload
       description: Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       requestBody:
         content:
           application/json:
@@ -493,6 +542,8 @@ paths:
       operationId: pilotPair
       summary: Pair device
       description: Pair a device to the authenticated user's account.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -519,6 +570,8 @@ paths:
     post:
       operationId: pilotAuth
       summary: Authenticate device (openpilot)
+      security:
+        - AuthPublic: []
       requestBody:
         content:
           application/json:
@@ -568,6 +621,9 @@ paths:
       operationId: getRoute
       summary: Route details
       description: Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       responses:
         '200':
           description: JSON object containing route information
@@ -579,6 +635,8 @@ paths:
       operationId: updateRoute
       summary: Update route
       description: Update route metadata. Authenticated user must have ownership of the device from which the route was uploaded.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -610,6 +668,8 @@ paths:
       operationId: getRouteSegments
       summary: Route segments
       description: Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON array of segments
@@ -626,6 +686,9 @@ paths:
       operationId: getRouteFiles
       summary: Raw log files
       description: Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       responses:
         '200':
           description: JSON object containing signed URLs to various log files. URLs are valid for 1 hour. All arrays are sorted by segment number ascending.
@@ -678,6 +741,9 @@ paths:
       operationId: getRouteStream
       summary: Route HLS stream
       description: Returns rear camera HLS stream index of MPEG-TS fragments.
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       responses:
         '200':
           description: m3u8 playlist
@@ -721,6 +787,8 @@ paths:
       operationId: getRouteShareSignature
       summary: Route sharing signature
       description: Return route share URL signature. Expires in 365 days.
+      security:
+        - AuthUser: []
       responses:
         '200':
           description: JSON object containing route share signature
@@ -745,6 +813,8 @@ paths:
       operationId: preserveRoute
       summary: Preserve route
       description: Preserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      security:
+        - AuthUser: []
       responses:
         '200':
           $ref: '#/components/responses/SuccessInteger'
@@ -752,6 +822,8 @@ paths:
       operationId: unpreserveRoute
       summary: Unpreserve route
       description: Unpreserve route from deletion. Authenticated user must have ownership of the device from which the route was uploaded.
+      security:
+        - AuthUser: []
       responses:
         '200':
           $ref: '#/components/responses/SuccessInteger'
@@ -762,6 +834,9 @@ paths:
       operationId: getMapboxToken
       summary: Mapbox token
       description: Returns a Mapbox token for the specified dongle ID. Authenticated user must have ownership of the dongle ID.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       responses:
         '200':
           description: JSON object containing Mapbox token
@@ -780,6 +855,8 @@ paths:
       operationId: setDestination
       summary: Set nav destination
       description: Set destination for navigation. Authenticated user must have ownership of the dongle ID.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -806,6 +883,9 @@ paths:
       operationId: getNavigationNext
       summary: Get nav destination
       description: Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       responses:
         '200':
           description: JSON object containing next destination, or null if no destination is set
@@ -818,6 +898,9 @@ paths:
       operationId: clearNavigationNext
       summary: Clear nav destination
       description: Delete next destination from database.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       responses:
         '200':
           description: Destination cleared
@@ -838,6 +921,9 @@ paths:
       operationId: getNavigationSavedLocations
       summary: Saved locations
       description: Retrieve saved locations from database.
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       responses:
         '200':
           description: JSON object containing saved locations
@@ -850,6 +936,9 @@ paths:
     put:
       operationId: saveNavigationLocation
       summary: Save location
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       requestBody:
         content:
           application/json:
@@ -861,6 +950,9 @@ paths:
     patch:
       operationId: updateNavigationLocation
       summary: Update location
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       requestBody:
         content:
           application/json:
@@ -877,6 +969,9 @@ paths:
     delete:
       operationId: deleteNavigationLocation
       summary: Delete location
+      security:
+        - AuthUser: []
+        - AuthDevice: []
       requestBody:
         content:
           application/json:
@@ -893,6 +988,8 @@ paths:
       operationId: createClip
       summary: Create clip
       description: Create a clip from a route.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -925,6 +1022,8 @@ paths:
       operationId: getClips
       summary: List clips
       description: List clips created for the specified device.
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -944,6 +1043,9 @@ paths:
     get:
       operationId: getClip
       summary: Get clip details
+      security:
+        - AuthUser: []
+        - AuthPublic: []
       requestBody:
         content:
           application/json:
@@ -965,6 +1067,8 @@ paths:
     patch:
       operationId: updateClip
       summary: Update clip
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -988,6 +1092,8 @@ paths:
     delete:
       operationId: deleteClip
       summary: Delete clip
+      security:
+        - AuthUser: []
       requestBody:
         content:
           application/json:
@@ -1006,7 +1112,15 @@ paths:
           $ref: '#/components/responses/SuccessBoolean'
 components:
   securitySchemes:
-    BearerAuth:
+    AuthUser:
+      summary: Authenticated User
+      description: Generate a JWT using the service at https://jwt.comma.ai.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    AuthDevice:
+      summary: Authenticated Device
+      description: Device can authenticate using the `/v2/pilotauth` endpoint.
       type: http
       scheme: bearer
       bearerFormat: JWT
