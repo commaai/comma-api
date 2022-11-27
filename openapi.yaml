@@ -553,6 +553,8 @@ paths:
                   url:
                     type: string
                     description: URL to which a PUT request can be sent with file contents
+                required:
+                  - url
                 example:
                     url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
   /v1/{dongleId}/upload_urls:
@@ -604,6 +606,8 @@ paths:
                     url:
                       type: string
                       description: URL to which a PUT request can be sent with file contents
+                  required:
+                    - url
                 example:
                   - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/fcamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
                   - url: "https://commaincoming.blob.core.windows.net/commaincoming/239e82a1d3c855f2/2019-06-06--11-30-31/9/ecamera.hevc?sr=b&sp=c&sig=cMCrZt5fje7SDXlKcOIjHgA0wEVAol71FL6ac08Q2Iw%3D&sv=2018-03-28&se=2019-06-13T18%3A43%3A01Z"
@@ -638,6 +642,8 @@ paths:
                   first_pair:
                     type: boolean
                     description: True if the device was unpaired prior to this call. False if the device was previously paired by an authenticated user.
+                required:
+                  - first_pair
   /v2/pilotauth:
     post:
       operationId: pilotAuth
@@ -941,6 +947,8 @@ paths:
                   token:
                     type: string
                     description: Mapbox token
+                required:
+                  - token
   /v1/navigation/{dongleId}/set_destination:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -971,6 +979,9 @@ paths:
                   saved_next:
                     type: boolean
                     description: True if the destination was stored and will be applied when the device is next online. False if the destination was set immediately.
+                required:
+                  - success
+                  - saved_next
   /v1/navigation/{dongleId}/next:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -1013,6 +1024,9 @@ paths:
                     const: true
                   deleted:
                     $ref: '#/components/schemas/NavigationDestination'
+                required:
+                  - success
+                  - deleted
   /v1/navigation/{dongleId}/locations:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -1118,6 +1132,9 @@ paths:
                         const: true
                       clip_id:
                         $ref: '#/components/schemas/ClipID'
+                    required:
+                      - success
+                      - clip_id
                   - type: object
                     properties:
                       error:
@@ -1126,6 +1143,8 @@ paths:
                         oneOf:
                           - const: '"too_many_pending"'
                             description: Too many pending clips
+                    required:
+                      - error
   /v1/clips/list:
     get:
       operationId: getClips
@@ -1169,6 +1188,9 @@ paths:
                   $ref: '#/components/schemas/ClipID'
                 dongle_id:
                   $ref: '#/components/schemas/DongleID'
+              required:
+                - clip_id
+                - dongle_id
       responses:
         '200':
           description: JSON object containing clip details

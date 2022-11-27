@@ -1111,7 +1111,7 @@ export interface operations {
         content: {
           "application/json": {
             /** @description URL to which a PUT request can be sent with file contents */
-            url?: string;
+            url: string;
           };
         };
       };
@@ -1150,7 +1150,7 @@ export interface operations {
         content: {
           "application/json": ({
               /** @description URL to which a PUT request can be sent with file contents */
-              url?: string;
+              url: string;
             })[];
         };
       };
@@ -1175,7 +1175,7 @@ export interface operations {
         content: {
           "application/json": {
             /** @description True if the device was unpaired prior to this call. False if the device was previously paired by an authenticated user. */
-            first_pair?: boolean;
+            first_pair: boolean;
           };
         };
       };
@@ -1360,7 +1360,7 @@ export interface operations {
         content: {
           "application/json": {
             /** @description Mapbox token */
-            token?: string;
+            token: string;
           };
         };
       };
@@ -1382,9 +1382,9 @@ export interface operations {
         content: {
           "application/json": {
             /** @constant */
-            success?: true;
+            success: true;
             /** @description True if the destination was stored and will be applied when the device is next online. False if the destination was set immediately. */
-            saved_next?: boolean;
+            saved_next: boolean;
           };
         };
       };
@@ -1415,8 +1415,8 @@ export interface operations {
         content: {
           "application/json": {
             /** @constant */
-            success?: true;
-            deleted?: components["schemas"]["NavigationDestination"];
+            success: true;
+            deleted: components["schemas"]["NavigationDestination"];
           };
         };
       };
@@ -1489,11 +1489,11 @@ export interface operations {
         content: {
           "application/json": OneOf<[{
             /** @constant */
-            success?: true;
-            clip_id?: components["schemas"]["ClipID"];
+            success: true;
+            clip_id: components["schemas"]["ClipID"];
           }, {
             /** @description Error code */
-            error?: "too_many_pending";
+            error: "too_many_pending";
           }]>;
         };
       };
@@ -1525,8 +1525,8 @@ export interface operations {
     requestBody?: {
       content: {
         "application/json": {
-          clip_id?: components["schemas"]["ClipID"];
-          dongle_id?: components["schemas"]["DongleID"];
+          clip_id: components["schemas"]["ClipID"];
+          dongle_id: components["schemas"]["DongleID"];
         };
       };
     };
