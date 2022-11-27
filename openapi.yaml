@@ -10,7 +10,8 @@ paths:
   /v1/me:
     get:
       operationId: getProfile
-      summary: Returns information about the authenticated user
+      summary: User profile
+      description: Returns information about the authenticated user
       responses:
         '200':
           description: JSON object containing the user's profile information
@@ -21,7 +22,8 @@ paths:
   /v1/me/devices:
     get:
       operationId: getDevices
-      summary: List devices owned or readable by authenticated user
+      summary: Device list
+      description: List devices owned or readable by authenticated user
       responses:
         '200':
           description: JSON array of device objects
@@ -36,7 +38,8 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getUserDevices
-      summary: List devices owned or readable by specified user
+      summary: User device list (admin)
+      description: List devices owned or readable by specified user
       responses:
         '200':
           description: JSON array of device objects
@@ -51,7 +54,8 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getDevice
-      summary: Returns information about a device
+      summary: Device details
+      description: Returns information about the specified device
       responses:
         '200':
           description: JSON object containing the device's information
@@ -183,7 +187,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     post:
       operationId: addDeviceUser
-      summary: Grant device read permissions to a user
+      summary: Grant device access
       description: Grant read permissions to a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is granted to all users.
       requestBody:
         content:
@@ -205,7 +209,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     post:
       operationId: revokeDeviceUser
-      summary: Revoke device read permissions from a user
+      summary: Revoke device access
       description: Revoke read permissions from a user by email. Authed user must be device owner to perform. If multiple users are attached to an email address, device access is removed from all users.
       requestBody:
         content:
@@ -345,7 +349,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getDeviceSegments
-      summary: Segments
+      summary: Device segments
       description: Returns time-sorted list of segments, each of which includes basic metadata derived from openpilot logs.
       parameters:
         - name: from
@@ -394,7 +398,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getUploadUrl
-      summary: Get log file upload URL
+      summary: Log file upload URL
       description: Request a URL to which an openpilot file an be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
       parameters:
         - name: path
@@ -431,7 +435,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     post:
       operationId: getUploadUrls
-      summary: Get multiple log file upload URLs
+      summary: Batch log file upload URLs
       description: Request URLs to which openpilot files can be uploaded via HTTP PUT. This endpoint only accepts tokens signed with a device private key.
       requestBody:
         content:
@@ -499,7 +503,7 @@ paths:
   /v2/pilotauth:
     post:
       operationId: pilotAuth
-      summary: openpilot auth
+      summary: Authenticate device (openpilot)
       requestBody:
         content:
           application/json:
@@ -540,7 +544,7 @@ paths:
       - $ref: '#/components/parameters/routeName'
     get:
       operationId: getRoute
-      summary: Route Info
+      summary: Route details
       description: Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
       responses:
         '200':
@@ -554,7 +558,7 @@ paths:
       - $ref: '#/components/parameters/routeName'
     get:
       operationId: getRouteSegments
-      summary: Route Segments
+      summary: Route segments
       description: Returns list of segments comprising a route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
       responses:
         '200':
@@ -570,7 +574,7 @@ paths:
       - $ref: '#/components/parameters/routeName'
     get:
       operationId: getRouteFiles
-      summary: Raw driving data
+      summary: Raw log files
       description: Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
       responses:
         '200':
@@ -615,7 +619,7 @@ paths:
       - $ref: '#/components/parameters/routeName'
     get:
       operationId: getRouteStream
-      summary: Video Stream
+      summary: Route HLS stream
       description: Returns rear camera HLS stream index of MPEG-TS fragments.
       responses:
         '200':
@@ -658,7 +662,7 @@ paths:
       - $ref: '#/components/parameters/routeName'
     get:
       operationId: getRouteShareSignature
-      summary: Route share signature
+      summary: Route sharing signature
       description: Return route share URL signature. Expires in 365 days.
       responses:
         '200':
@@ -714,7 +718,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     post:
       operationId: setDestination
-      summary: Set destination
+      summary: Set nav destination
       description: Set destination for navigation. Authenticated user must have ownership of the dongle ID.
       requestBody:
         content:
@@ -740,7 +744,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getNavigationNext
-      summary: Retrieve navigation destination
+      summary: Get nav destination
       description: Retrieve next location from database. This was set on Set destination if the device was offline. Next location is removed from the database after this call or when a new destination is set.
       responses:
         '200':
@@ -752,7 +756,7 @@ paths:
                 $ref: '#/components/schemas/NavigationDestination'
     delete:
       operationId: clearNavigationNext
-      summary: Clear navigation destination
+      summary: Clear nav destination
       description: Delete next destination from database.
       responses:
         '200':
@@ -772,7 +776,7 @@ paths:
       - $ref: '#/components/parameters/dongleId'
     get:
       operationId: getNavigationSavedLocations
-      summary: Retrieve saved locations
+      summary: Saved locations
       description: Retrieve saved locations from database.
       responses:
         '200':
@@ -796,7 +800,7 @@ paths:
           $ref: '#/components/responses/SuccessBoolean'
     patch:
       operationId: updateNavigationLocation
-      summary: Update saved location
+      summary: Update location
       requestBody:
         content:
           application/json:
@@ -812,7 +816,7 @@ paths:
           $ref: '#/components/responses/SuccessBoolean'
     delete:
       operationId: deleteNavigationLocation
-      summary: Delete saved location
+      summary: Delete location
       requestBody:
         content:
           application/json:
@@ -879,7 +883,7 @@ paths:
   /v1/clips/details:
     get:
       operationId: getClip
-      summary: Get clip
+      summary: Get clip details
       requestBody:
         content:
           application/json:
