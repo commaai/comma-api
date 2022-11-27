@@ -228,6 +228,8 @@ paths:
               properties:
                 email:
                   type: string
+              required:
+                - email
       responses:
         '200':
           $ref: '#/components/responses/SuccessInteger'
@@ -705,6 +707,9 @@ paths:
                   sig:
                     type: string
                     description: Signature
+                required:
+                  - exp
+                  - sig
   /v1/route/{routeName}/preserve:
     parameters:
       - $ref: '#/components/parameters/routeName'
@@ -987,6 +992,8 @@ components:
               success:
                 type: integer
                 const: 1
+            required:
+              - success
     SuccessBoolean:
       description: Operation successful
       content:
@@ -996,6 +1003,8 @@ components:
               success:
                 type: boolean
                 const: true
+            required:
+              - success
   schemas:
     Profile:
       type: object
@@ -1153,6 +1162,9 @@ components:
           description: User email
         permission:
           $ref: '#/components/schemas/DeviceUserPermission'
+      required:
+        - email
+        - permission
     DeviceUserPermission:
       type: string
       description: Device user permission
@@ -1264,6 +1276,30 @@ components:
           type: string
         git_dirty:
           type: boolean
+      required:
+        - canonical_name
+        - number
+        - canonical_route_name
+        - dongle_id
+        - create_time
+        - start_time_utc_millis
+        - end_time_utc_millis
+        - url
+        - length
+        - can
+        - hpgps
+        - radar
+        - devicetype
+        - proc_log
+        - proc_qlog
+        - proc_camera
+        - proc_dcamera
+        - passive
+        - version
+        - git_commit
+        - git_branch
+        - git_remote
+        - git_dirty
     Route:
       type: object
       properties:
@@ -1368,6 +1404,23 @@ components:
         init_logmonotime:
           type: integer
           description: Minimum logMonoTime from openpilot log
+      required:
+        - fullname
+        - dongle_id
+        - user_id
+        - create_time
+        - url
+        - share_expiry
+        - share_sig
+        - length
+        - devicetype
+        - maxlog
+        - maxcamera
+        - maxdcamera
+        - proclog
+        - proccamera
+        - start_time
+        - end_time
     RouteSegment:
       type: object
       allOf:
@@ -1390,6 +1443,10 @@ components:
               description: Segment end times in milliseconds since epoch
               items:
                 type: integer
+          required:
+            - segment_numbers
+            - segment_start_times
+            - segment_end_times
     DeviceType:
       type: string
       description: Device type

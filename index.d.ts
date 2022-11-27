@@ -404,8 +404,8 @@ export interface components {
     };
     DeviceUser: {
       /** @description User email */
-      email?: string;
-      permission?: components["schemas"]["DeviceUserPermission"];
+      email: string;
+      permission: components["schemas"]["DeviceUserPermission"];
     };
     /**
      * @description Device user permission 
@@ -437,71 +437,71 @@ export interface components {
     };
     /** @description A single segment of a route is up to 60 seconds in length. */
     Segment: {
-      canonical_name?: components["schemas"]["SegmentName"];
+      canonical_name: components["schemas"]["SegmentName"];
       /** @description Segment number */
-      number?: number;
-      canonical_route_name?: components["schemas"]["RouteName"];
-      dongle_id?: components["schemas"]["DongleID"];
+      number: number;
+      canonical_route_name: components["schemas"]["RouteName"];
+      dongle_id: components["schemas"]["DongleID"];
       /** @description Unix timestamp at which upload_url was first called for file in segment */
-      create_time?: number;
+      create_time: number;
       /** @description Milliseconds since epoch of segment start time */
-      start_time_utc_millis?: number;
+      start_time_utc_millis: number;
       /** @description Milliseconds since epoch of segment end time */
-      end_time_utc_millis?: number;
+      end_time_utc_millis: number;
       /** @description Signed URL from which route.coords and JPEGs can be downloaded */
-      url?: string;
+      url: string;
       /** @description Sum of distances between GPS points in miles */
-      length?: number;
+      length: number;
       /** @description Segment contains CAN messages */
-      can?: boolean;
+      can: boolean;
       /** @description Segment has ublox packets */
-      hpgps?: boolean;
+      hpgps: boolean;
       /** @description Segment contains radar tracks in CAN */
-      radar?: boolean;
-      devicetype?: components["schemas"]["SegmentDataSource"];
-      proc_log?: components["schemas"]["FileProcStatus"];
-      proc_qlog?: components["schemas"]["FileProcStatus"];
-      proc_camera?: components["schemas"]["FileProcStatus"];
-      proc_dcamera?: components["schemas"]["FileProcStatus"];
-      passive?: boolean;
-      version?: string;
-      git_commit?: string;
-      git_branch?: string;
-      git_remote?: string;
-      git_dirty?: boolean;
+      radar: boolean;
+      devicetype: components["schemas"]["SegmentDataSource"];
+      proc_log: components["schemas"]["FileProcStatus"];
+      proc_qlog: components["schemas"]["FileProcStatus"];
+      proc_camera: components["schemas"]["FileProcStatus"];
+      proc_dcamera: components["schemas"]["FileProcStatus"];
+      passive: boolean;
+      version: string;
+      git_commit: string;
+      git_branch: string;
+      git_remote: string;
+      git_dirty: boolean;
     };
     Route: {
-      fullname?: components["schemas"]["RouteName"];
-      dongle_id?: components["schemas"]["DongleID"];
-      user_id?: components["schemas"]["DongleID"];
+      fullname: components["schemas"]["RouteName"];
+      dongle_id: components["schemas"]["DongleID"];
+      user_id: components["schemas"]["DongleID"];
       is_public?: boolean;
       /** @description Unix timestamp at which upload_url was first called for file in route */
-      create_time?: number;
+      create_time: number;
       /** @description Signed storage bucket URL from which route.coords and JPEGs can be downloaded */
-      url?: string;
+      url: string;
       /** @description Unix timestamp at which signed URL expires */
-      share_expiry?: number;
+      share_expiry: number;
       /** @description URL signature */
-      share_sig?: string;
+      share_sig: string;
       /** @description Sum of distances between GPS points in miles */
-      length?: number;
+      length: number;
       /** @description Route contains CAN messages */
       can?: boolean;
       /** @description Route has ublox packets */
       hpgps?: boolean;
       /** @description Route contains radar tracks in CAN */
       radar?: boolean;
-      devicetype?: components["schemas"]["SegmentDataSource"];
+      devicetype: components["schemas"]["SegmentDataSource"];
       /** @description Maximum qlog segment number uploaded */
       maxqlog?: number;
       /** @description Maximum qcamera segment number uploaded */
       maxqcamera?: number;
       /** @description Maximum log segment number uploaded */
-      maxlog?: number;
+      maxlog: number;
       /** @description Maximum road camera segment number uploaded */
-      maxcamera?: number;
+      maxcamera: number;
       /** @description Maximum driver camera segment number uploaded */
-      maxdcamera?: number;
+      maxdcamera: number;
       /** @description Maximum wide road camera segment number uploaded */
       maxecamera?: number;
       /** @description Maximum qlog segment number processed */
@@ -509,21 +509,21 @@ export interface components {
       /** @description Maximum qcamera segment number processed */
       procqcamera?: number;
       /** @description Maximum log segment number processed */
-      proclog?: number;
+      proclog: number;
       /** @description Maximum road camera segment number processed */
-      proccamera?: number;
+      proccamera: number;
       /** @description First latitude recorded in route from GPS */
       start_lat?: number;
       /** @description First longitude recorded in route from GPS */
       start_lng?: number;
       /** @description Unix timestamp at beginning of route */
-      start_time?: number;
+      start_time: number;
       /** @description Last latitude recorded in route from GPS */
       end_lat?: number;
       /** @description Last longitude recorded in route from GPS */
       end_lng?: number;
       /** @description Unix timestamp at end of last segment in route */
-      end_time?: number;
+      end_time: number;
       passive?: boolean;
       version?: string;
       git_commit?: string;
@@ -537,11 +537,11 @@ export interface components {
     };
     RouteSegment: components["schemas"]["Route"] & {
       /** @description Segment numbers in route */
-      segment_numbers?: (number)[];
+      segment_numbers: (number)[];
       /** @description Segment start times in milliseconds since epoch */
-      segment_start_times?: (number)[];
+      segment_start_times: (number)[];
       /** @description Segment end times in milliseconds since epoch */
-      segment_end_times?: (number)[];
+      segment_end_times: (number)[];
     };
     /**
      * @description Device type 
@@ -709,7 +709,7 @@ export interface components {
       content: {
         "application/json": {
           /** @constant */
-          success?: 1;
+          success: 1;
         };
       };
     };
@@ -718,7 +718,7 @@ export interface components {
       content: {
         "application/json": {
           /** @constant */
-          success?: true;
+          success: true;
         };
       };
     };
@@ -915,7 +915,7 @@ export interface operations {
     requestBody?: {
       content: {
         "application/json": {
-          email?: string;
+          email: string;
         };
       };
     };
@@ -1265,9 +1265,9 @@ export interface operations {
         content: {
           "application/json": {
             /** @description Unix timestamp of expiration */
-            exp?: string;
+            exp: string;
             /** @description Signature */
-            sig?: string;
+            sig: string;
           };
         };
       };
