@@ -575,6 +575,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+    patch:
+      operationId: updateRoute
+      summary: Update route
+      description: Update route metadata. Authenticated user must have ownership of the device from which the route was uploaded.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  description: Route rating
+                  deprecated: true
+                  example: 4
+                is_public:
+                  type: boolean
+                  description: Whether the route is publicly accessible
+                  example: true
+      responses:
+        '200':
+          description: JSON object containing updated route information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
   /v1/route/{routeName}/segments:
     parameters:
       - $ref: '#/components/parameters/routeName'

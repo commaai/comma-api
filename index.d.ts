@@ -195,6 +195,11 @@ export interface paths {
      * @description Returns information about the specified route. Authenticated user must have ownership of, or read access to, the device from which the route was uploaded.
      */
     get: operations["getRoute"];
+    /**
+     * Update route 
+     * @description Update route metadata. Authenticated user must have ownership of the device from which the route was uploaded.
+     */
+    patch: operations["updateRoute"];
     
   };
   "/v1/route/{routeName}/segments": {
@@ -1192,6 +1197,37 @@ export interface operations {
      */
     responses: {
       /** @description JSON object containing route information */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Route"];
+        };
+      };
+    };
+  };
+  updateRoute: {
+    /**
+     * Update route 
+     * @description Update route metadata. Authenticated user must have ownership of the device from which the route was uploaded.
+     */
+    requestBody?: {
+      content: {
+        "application/json": {
+          /**
+           * @deprecated 
+           * @description Route rating 
+           * @example 4
+           */
+          rating?: number;
+          /**
+           * @description Whether the route is publicly accessible 
+           * @example true
+           */
+          is_public?: boolean;
+        };
+      };
+    };
+    responses: {
+      /** @description JSON object containing updated route information */
       200: {
         content: {
           "application/json": components["schemas"]["Route"];
