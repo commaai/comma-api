@@ -311,7 +311,7 @@ paths:
       summary: Device driving statistics
       description: Returns aggregate driving statistics for a device over the past 7 days and all time.
       tags:
-        - routes
+        - devices
       security:
         - AuthUser: []
         - AuthDevice: []
