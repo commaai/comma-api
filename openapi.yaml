@@ -981,6 +981,7 @@ components:
         email:
           type: string
           format: email
+          description: Email address
           example: "commaphone3@gmail.com"
         id:
           type: string
@@ -997,9 +998,11 @@ components:
           example: 1465103707
         superuser:
           type: boolean
+          description: <a href="https://comma.ai/jobs">Apply for superuser here</a>
           example: false
         username:
           type: string
+          description: Username
           deprecated: true
           nullable: true
           example: "joeyjoejoe"
@@ -1018,7 +1021,7 @@ components:
       type: object
       properties:
         dongle_id:
-          type: string
+          $ref: '#/components/schemas/DongleID'
         alias:
           type: string
           description: Device nickname
