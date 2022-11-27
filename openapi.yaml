@@ -1,8 +1,13 @@
 openapi: 3.1.0
 info:
   title: comma API
-  description: comma API
   version: 3.1.0
+  termsOfService: https://comma.ai/terms
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  x-logo:
+    url: https://api.comma.ai/images/logo-806c3186.png
 servers:
   - url: 'https://api.comma.ai'
     description: Production server
@@ -976,25 +981,32 @@ components:
         email:
           type: string
           format: email
+          example: "commaphone3@gmail.com"
         id:
           type: string
           description: Dongle ID
+          example: "2e9eeac96ea4e6a6"
         points:
           type: integer
           description: comma points
           deprecated: true
+          example: 34933
         regdate:
           type: integer
           description: Unix timestamp at time of registration
+          example: 1465103707
         superuser:
           type: boolean
+          example: false
         username:
           type: string
           deprecated: true
           nullable: true
+          example: "joeyjoejoe"
         user_id:
           type: string
           description: OAuth2 user ID
+          example: google_111803823964622526972
       required:
         - email
         - id
