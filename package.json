@@ -11,7 +11,8 @@
     "generate": "openapi-typescript ./openapi.yaml --output ./index.d.ts",
     "build": "babel --out-dir ./dist ./src",
     "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src"
+    "lint:fix": "eslint --fix ./src",
+    "serve": "redocly preview-docs ./openapi.yaml"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.0",
@@ -22,6 +23,7 @@
     "@babel/core": "^7.19.6",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.19.4",
+    "@redocly/cli": "^1.0.0-beta.114",
     "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
