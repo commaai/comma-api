@@ -1177,10 +1177,9 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            /** @description Dongle ID */
-            dongle_id?: string;
+            dongle_id: components["schemas"]["DongleID"];
             /** @description JWT */
-            access_token?: string;
+            access_token: string;
           };
         };
       };

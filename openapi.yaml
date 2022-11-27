@@ -552,11 +552,13 @@ paths:
                 type: object
                 properties:
                   dongle_id:
-                    type: string
-                    description: Dongle ID
+                    $ref: '#/components/schemas/DongleID'
                   access_token:
                     type: string
                     description: JWT
+                required:
+                  - dongle_id
+                  - access_token
   /v1/route/{routeName}:
     parameters:
       - $ref: '#/components/parameters/routeName'
