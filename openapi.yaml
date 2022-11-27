@@ -13,6 +13,37 @@ servers:
   - url: 'https://api.comma.ai'
     description: Production server
 tags:
+  - name: definitions
+    description: |
+      ### Dongle ID
+      A dongle ID is a 16-character alphanumeric identifier. Each comma device has a unique dongle ID. Authenticated
+      users also have a dongle ID associated with their profile. For example, `1a2b3c4d5e6f7a8b`.
+
+      ### Segment
+      A segment is one minute of driving. openpilot rotates log and camera files at this interval. Segments are
+      numbered in a 0-indexed fashion.
+      Segment names are of the form `dongle_id|YYYY-MM-DD--HH-MM-SS--N`, where `N` is the segment number. For example,
+      `1a2b3c4d5e6f7a8b|2019-01-01--00-00-00--0`.
+
+      ### Route
+      A route is a sequence of segments recorded while the device is "onroad" (between car ignition and off). Route
+      names are of the form `dongle_id|YYYY-MM-DD--HH-MM-SS`. For example, `1a2b3c4d5e6f7a8b|2019-01-01--00-00-00`.
+  - name: authentication
+    description: |
+      ### Public access
+      Some endpoints do not require authentication, or provide access to resources which may be marked as public. These
+      are listed with the `AuthPublic` security scheme.
+
+      ### User auth
+      Authenticated resources require a header comprised of a JWT and are listed with the `AuthUser` security scheme. A
+      token can be generated at https://jwt.comma.ai. Include a header formatted like the following in your requests:
+      ```
+      curl -H 'Authorization: JWT {{token}}' https://api.comma.ai/v1/me
+      ```
+
+      ### Device auth
+      Some resources are only accessible to openpilot devices. These endpoints are listed with the `AuthDevice` security
+      scheme. A device running openpilot may authenticate using the `/v2/pilotauth` endpoint.
   - name: account
     description: Get information about your account, including the devices you have access to.
   - name: devices
