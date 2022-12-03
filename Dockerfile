@@ -9,7 +9,7 @@ COPY . /app/
 RUN yarn docs
 
 
-FROM nginx:1.21
+FROM nginx:1.22
 
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/index.html /app/spec/openapi.yaml /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf

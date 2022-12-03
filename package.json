@@ -12,7 +12,8 @@
     "build": "babel --out-dir ./dist ./src",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
-    "serve": "redocly preview-docs ./openapi.yaml"
+    "serve": "redocly preview-docs ./spec/openapi.yaml",
+    "docs": "redocly build-docs --cdn ./spec/openapi.yaml"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.0",
