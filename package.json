@@ -1,5 +1,5 @@
 {
-  "name": "@commaai/api",
+  "name": "@comma/api",
   "version": "3.1.0",
   "main": "src/index.js",
   "browser": "dist/index.js",

@@ -1,5 +1,6 @@
 Version 3.1.0
 =============
+* rename package to @comma/api
 * create OpenAPI spec for the API
 * generate types using openapi-typescript
 
