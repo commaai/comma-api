@@ -1,0 +1,14 @@
+.github
+dist
+node_modules
+
+.vscode
+.idea
+*.iml
+*.swp
+
+.DS_Store
+
+.gitignore
+*.html
+*.log
