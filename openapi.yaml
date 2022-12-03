@@ -193,8 +193,8 @@ paths:
                     properties:
                       error:
                         type: string
-                        oneOf:
-                          - const: '"Location unavailable"'
+                        enum:
+                          - "Location unavailable"
                     required:
                       - error
   /v1/devices/{dongleId}/pair:
@@ -216,6 +216,8 @@ paths:
               properties:
                 user_id:
                   $ref: '#/components/schemas/DongleID'
+              required:
+                - user_id
       responses:
         '200':
           $ref: '#/components/responses/SuccessInteger'
@@ -1171,9 +1173,8 @@ paths:
                       error:
                         type: string
                         description: Error code
-                        oneOf:
-                          - const: '"too_many_pending"'
-                            description: Too many pending clips
+                        enum:
+                          - "too_many_pending"
                     required:
                       - error
   /v1/clips/list:
@@ -1365,38 +1366,55 @@ components:
       properties:
         dongle_id:
           $ref: '#/components/schemas/DongleID'
+          readOnly: true
         alias:
           type: string
+          readOnly: true
           description: Device nickname
         serial:
           type: string
+          readOnly: true
           description: Device serial number
         athena_host:
           type: string
-          description: Last connected athena server hostname
           nullable: true
+          readOnly: true
+          description: Last connected athena server hostname
         last_athena_ping:
           type: integer
+          readOnly: true
           description: Unix timestamp of last athena ping
         ignore_uploads:
           type: boolean
-          description: Uploads are ignored from this device
           nullable: true
+          readOnly: true
+          description: Uploads are ignored from this device
         is_paired:
           type: boolean
+          readOnly: true
           description: Device has an owner
         is_owner:
           type: boolean
+          readOnly: true
           description: Authenticated user has write-access to the device
         public_key:
           type: string
-          description: 2048-bit public RSA key
           nullable: true
+          readOnly: true
+          description: 2048-bit public RSA key
         prime:
           type: boolean
+          readOnly: true
           description: Device has a prime subscription
         prime_type:
           type: number
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          readOnly: true
           description: |
             Prime subscription type
             - 0 = None
@@ -1404,19 +1422,13 @@ components:
             - 2 = Lite
             - 3 = Blue
             - 4 = Magenta New
-          enum:
-            - 0
-            - 1
-            - 2
-            - 3
-            - 4
         trial_claimed:
           type: boolean
-          description: Device prime trial is claimed
           nullable: true
+          description: Device prime trial is claimed
+          readOnly: true
         device_type:
           type: string
-          description: Device type
           enum:
             - app
             - neo
@@ -1425,37 +1437,47 @@ components:
             - freon
             - pc
             - three
+          readOnly: true
+          description: Device type
         last_gps_time:
           type: integer
           nullable: true
+          readOnly: true
           description: Unix timestamp, in milliseconds
         last_gps_lat:
           type: number
           nullable: true
+          readOnly: true
           description: Latitude, in decimal degrees
         last_gps_lng:
           type: number
           nullable: true
+          readOnly: true
           description: Longitude, in decimal degrees
         last_gps_accuracy:
           type: number
           nullable: true
+          readOnly: true
           description: Accuracy, in metres
         last_gps_speed:
           type: number
           nullable: true
+          readOnly: true
           description: Speed, in metres per second
         last_gps_bearing:
           type: number
           nullable: true
+          readOnly: true
           description: Direction angle, in degrees from north
         openpilot_version:
           type: string
           nullable: true
+          readOnly: true
           description: openpilot version
         sim_id:
           type: string
           nullable: true
+          readOnly: true
           description: Last known SIM ID of the device
       required:
         - dongle_id
@@ -1555,10 +1577,10 @@ components:
           description: Unix timestamp at which upload_url was first called for file in segment
         start_time_utc_millis:
           type: integer
-          description: Milliseconds since epoch of segment start time
+          description: Segment start time, milliseconds since epoch
         end_time_utc_millis:
           type: integer
-          description: Milliseconds since epoch of segment end time
+          description: Segment end time, milliseconds since epoch
         url:
           type: string
           description: Signed URL from which route.coords and JPEGs can be downloaded
@@ -1844,8 +1866,8 @@ components:
       description: A unique 16-character hexadecimal string. Can represent a device or a user.
       type: string
       pattern: '^[0-9a-f]{16}$'
-      example: "1a2b3c4d5e6f7a8b"
       readOnly: true
+      example: "1a2b3c4d5e6f7a8b"
     RouteName:
       title: Canonical route name
       description: Contains a dongle ID and timestamp of the beginning of the route
@@ -1893,7 +1915,6 @@ components:
       title: Navigation saved location ID
       description: Identifier for a saved location
       type: number
-      readOnly: true
     NavigationSavedLocation:
       title: Navigation saved location
       type: object
@@ -1902,8 +1923,10 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/NavigationSavedLocationID'
+              readOnly: true
             dongle_id:
               $ref: '#/components/schemas/DongleID'
+              readOnly: true
             save_type:
               $ref: '#/components/schemas/NavigationLocationType'
             label:
@@ -1939,8 +1962,10 @@ components:
         id:
           $ref: '#/components/schemas/ClipID'
         create_time:
+          description: Unix timestamp when clip was created, in milliseconds
           type: integer
           readOnly: true
+          example: 1670109391000
         dongle_id:
           $ref: '#/components/schemas/DongleID'
         route_name:
@@ -1949,27 +1974,24 @@ components:
           type: integer
         end_time:
           type: integer
+        title:
+          type: string
+          description: Optional title for clip
+          nullable: true
+          maxLength: 128
         video_type:
           $ref: '#/components/schemas/ClipVideoType'
         status:
           type: string
           description: Clip status
           readOnly: true
-          oneOf:
-            - const: '"pending"'
-              title: Pending
-            - const: '"done"'
-              title: Done
-            - const: '"failed"'
-              title: Failed
+          enum:
+            - pending
+            - done
+            - failed
         is_public:
           type: boolean
           description: Clip is publicly accessible
-        title:
-          type: string
-          description: Optional title for clip
-          nullable: true
-          maxLength: 128
       required:
         - id
         - create_time
@@ -1981,19 +2003,20 @@ components:
         - status
         - is_public
     ClipVideoType:
-      description: Clip video type
+      title: Clip video type
+      description: |
+        - `q` = QCamera
+        - `f` = Road camera
+        - `e` = Wide road camera
+        - `d` = Driver camera
+        - `360` = 360 video
       type: string
-      oneOf:
-        - const: '"q"'
-          title: QCamera
-        - const: '"f"'
-          title: Road camera
-        - const: '"e"'
-          title: Wide road camera
-        - const: '"d"'
-          title: Driver camera
-        - const: '"360"'
-          title: '360'
+      enum:
+        - q
+        - f
+        - e
+        - d
+        - "360"
     PendingClip:
       title: Pending Clip
       type: object
@@ -2003,7 +2026,8 @@ components:
           properties:
             status:
               type: string
-              const: '"pending"'
+              enum:
+                - pending
             pending_status:
               type: string
               description: Pending clip status
@@ -2021,7 +2045,8 @@ components:
           properties:
             status:
               type: string
-              const: '"done"'
+              enum:
+                - done
             url:
               type: string
               description: URL to clip
@@ -2039,11 +2064,13 @@ components:
           properties:
             status:
               type: string
-              const: '"failed"'
+              enum:
+                - failed
             error_status:
               type: string
               description: Error message
               readOnly: true
+              example: upload_failed
     ClipDetails:
       title: Clip Details
       type: object

@@ -457,9 +457,9 @@ export interface components {
       dongle_id: components["schemas"]["DongleID"];
       /** @description Unix timestamp at which upload_url was first called for file in segment */
       create_time: number;
-      /** @description Milliseconds since epoch of segment start time */
+      /** @description Segment start time, milliseconds since epoch */
       start_time_utc_millis: number;
-      /** @description Milliseconds since epoch of segment end time */
+      /** @description Segment end time, milliseconds since epoch */
       end_time_utc_millis: number;
       /** @description Signed URL from which route.coords and JPEGs can be downloaded */
       url: string;
@@ -660,7 +660,7 @@ export interface components {
      * Navigation saved location ID 
      * @description Identifier for a saved location
      */
-    readonly NavigationSavedLocationID: number;
+    NavigationSavedLocationID: number;
     /** Navigation saved location */
     NavigationSavedLocation: ({
       id: components["schemas"]["NavigationSavedLocationID"];
@@ -687,24 +687,40 @@ export interface components {
      */
     Clip: {
       id: components["schemas"]["ClipID"];
+      /**
+       * @description Unix timestamp when clip was created, in milliseconds 
+       * @example 1670109391000
+       */
       create_time: number;
       dongle_id: components["schemas"]["DongleID"];
       route_name: components["schemas"]["RouteName"];
       start_time: number;
       end_time: number;
+      /** @description Optional title for clip */
+      title?: string | null;
       video_type: components["schemas"]["ClipVideoType"];
-      /** @description Clip status */
+      /**
+       * @description Clip status 
+       * @enum {string}
+       */
       status: "pending" | "done" | "failed";
       /** @description Clip is publicly accessible */
       is_public: boolean;
-      /** @description Optional title for clip */
-      title?: string | null;
     };
-    /** @description Clip video type */
+    /**
+     * Clip video type 
+     * @description - `q` = QCamera
+     * - `f` = Road camera
+     * - `e` = Wide road camera
+     * - `d` = Driver camera
+     * - `360` = 360 video
+     *  
+     * @enum {string}
+     */
     ClipVideoType: "q" | "f" | "e" | "d" | "360";
     /** Pending Clip */
     PendingClip: components["schemas"]["Clip"] & {
-      /** @constant */
+      /** @enum {string} */
       status?: "pending";
       /** @description Pending clip status */
       pending_status?: string;
@@ -713,7 +729,7 @@ export interface components {
     };
     /** Done Clip */
     DoneClip: components["schemas"]["Clip"] & {
-      /** @constant */
+      /** @enum {string} */
       status?: "done";
       /** @description URL to clip */
       url?: string;
@@ -722,9 +738,12 @@ export interface components {
     };
     /** Failed Clip */
     FailedClip: components["schemas"]["Clip"] & {
-      /** @constant */
+      /** @enum {string} */
       status?: "failed";
-      /** @description Error message */
+      /**
+       * @description Error message 
+       * @example upload_failed
+       */
       error_status?: string;
     };
     /** Clip Details */
@@ -848,6 +867,7 @@ export interface operations {
           "application/json": OneOf<[components["schemas"]["DeviceLocation"] & {
             dongle_id: components["schemas"]["DongleID"];
           }, {
+            /** @enum {string} */
             error: "Location unavailable";
           }]>;
         };
@@ -862,7 +882,7 @@ export interface operations {
     requestBody?: {
       content: {
         "application/json": {
-          user_id?: components["schemas"]["DongleID"];
+          user_id: components["schemas"]["DongleID"];
         };
       };
     };
@@ -1492,7 +1512,10 @@ export interface operations {
             success: true;
             clip_id: components["schemas"]["ClipID"];
           }, {
-            /** @description Error code */
+            /**
+             * @description Error code 
+             * @enum {string}
+             */
             error: "too_many_pending";
           }]>;
         };
