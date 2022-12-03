@@ -11,5 +11,5 @@ RUN yarn docs
 
 FROM nginx:1.22
 
-COPY --from=build /app/index.html /app/spec/openapi.yaml /usr/share/nginx/html/
+COPY --from=build /app/index.html /app/openapi.yaml /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
