@@ -681,11 +681,7 @@ export interface components {
      * @description Unique identifier for a clip
      */
     readonly ClipID: number;
-    /**
-     * Clip 
-     * @description Video clip created from a route
-     */
-    Clip: {
+    ClipProperties: {
       id: components["schemas"]["ClipID"];
       /**
        * @description Unix timestamp when clip was created, in milliseconds 
@@ -694,41 +690,43 @@ export interface components {
       create_time: number;
       dongle_id: components["schemas"]["DongleID"];
       route_name: components["schemas"]["RouteName"];
+      /** @description Unix timestamp when clip starts, in milliseconds */
       start_time: number;
+      /** @description Unix timestamp when clip ends, in milliseconds */
       end_time: number;
       /** @description Optional title for clip */
       title?: string | null;
-      video_type: components["schemas"]["ClipVideoType"];
       /**
-       * @description Clip status 
+       * @description - `q` = QCamera
+       * - `f` = Road camera
+       * - `e` = Wide road camera
+       * - `d` = Driver camera
+       * - `360` = 360 video
+       *  
        * @enum {string}
        */
-      status: "pending" | "done" | "failed";
+      video_type: "q" | "f" | "e" | "d" | "360";
       /** @description Clip is publicly accessible */
-      is_public: boolean;
+      is_public?: boolean;
     };
-    /**
-     * Clip video type 
-     * @description - `q` = QCamera
-     * - `f` = Road camera
-     * - `e` = Wide road camera
-     * - `d` = Driver camera
-     * - `360` = 360 video
-     *  
-     * @enum {string}
-     */
-    ClipVideoType: "q" | "f" | "e" | "d" | "360";
     /** Pending Clip */
-    PendingClip: components["schemas"]["Clip"] & {
+    PendingClip: components["schemas"]["ClipProperties"] & ({
       /** @enum {string} */
       status?: "pending";
-      /** @description Pending clip status */
-      pending_status?: string;
-      /** @description Pending clip progress */
-      pending_progress?: string;
-    };
+      /**
+       * @description Pending clip status 
+       * @example processing 
+       * @enum {string}
+       */
+      pending_status?: "waiting_jobs" | "processing";
+      /**
+       * @description Processing progress, from 0 to 1 
+       * @example 0.5
+       */
+      pending_progress?: number;
+    });
     /** Done Clip */
-    DoneClip: components["schemas"]["Clip"] & {
+    DoneClip: components["schemas"]["ClipProperties"] & {
       /** @enum {string} */
       status?: "done";
       /** @description URL to clip */
@@ -737,17 +735,18 @@ export interface components {
       thumbnail?: string;
     };
     /** Failed Clip */
-    FailedClip: components["schemas"]["Clip"] & {
+    FailedClip: components["schemas"]["ClipProperties"] & ({
       /** @enum {string} */
       status?: "failed";
       /**
        * @description Error message 
-       * @example upload_failed
+       * @example upload_failed 
+       * @enum {string}
        */
-      error_status?: string;
-    };
-    /** Clip Details */
-    ClipDetails: components["schemas"]["PendingClip"] | components["schemas"]["DoneClip"] | components["schemas"]["FailedClip"];
+      error_status?: "upload_failed_request" | "upload_failed" | "upload_failed_dcam" | "upload_timed_out" | "export_failed";
+    });
+    /** @description Video clip created from part of a route */
+    Clip: components["schemas"]["PendingClip"] | components["schemas"]["DoneClip"] | components["schemas"]["FailedClip"];
   };
   responses: {
     /** @description Operation successful */
@@ -1500,7 +1499,7 @@ export interface operations {
      */
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Clip"];
+        "application/json": components["schemas"]["ClipProperties"];
       };
     };
     responses: {
@@ -1538,7 +1537,7 @@ export interface operations {
       /** @description JSON array of clip objects */
       200: {
         content: {
-          "application/json": components["schemas"]["ClipDetails"];
+          "application/json": components["schemas"]["PendingClip"] | components["schemas"]["DoneClip"] | components["schemas"]["FailedClip"];
         };
       };
     };
@@ -1557,7 +1556,7 @@ export interface operations {
       /** @description JSON object containing clip details */
       200: {
         content: {
-          "application/json": components["schemas"]["ClipDetails"];
+          "application/json": components["schemas"]["PendingClip"] | components["schemas"]["DoneClip"] | components["schemas"]["FailedClip"];
         };
       };
     };

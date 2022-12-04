@@ -1166,7 +1166,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Clip'
+              $ref: '#/components/schemas/ClipProperties'
       responses:
         '200':
           description: JSON object containing clip ID, or an error message
@@ -1216,7 +1216,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClipDetails'
+                type: object
+                oneOf:
+                  - $ref: '#/components/schemas/PendingClip'
+                  - $ref: '#/components/schemas/DoneClip'
+                  - $ref: '#/components/schemas/FailedClip'
   /v1/clips/details:
     get:
       operationId: getClip
@@ -1245,7 +1249,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClipDetails'
+                type: object
+                oneOf:
+                  - $ref: '#/components/schemas/PendingClip'
+                  - $ref: '#/components/schemas/DoneClip'
+                  - $ref: '#/components/schemas/FailedClip'
   /v1/clips/update:
     patch:
       operationId: updateClip
@@ -1970,9 +1978,7 @@ components:
       description: Unique identifier for a clip
       type: integer
       readOnly: true
-    Clip:
-      title: Clip
-      description: Video clip created from a route
+    ClipProperties:
       type: object
       properties:
         id:
@@ -1988,23 +1994,29 @@ components:
           $ref: '#/components/schemas/RouteName'
         start_time:
           type: integer
+          description: Unix timestamp when clip starts, in milliseconds
         end_time:
           type: integer
+          description: Unix timestamp when clip ends, in milliseconds
         title:
           type: string
           description: Optional title for clip
           nullable: true
           maxLength: 128
         video_type:
-          $ref: '#/components/schemas/ClipVideoType'
-        status:
+          description: |
+            - `q` = QCamera
+            - `f` = Road camera
+            - `e` = Wide road camera
+            - `d` = Driver camera
+            - `360` = 360 video
           type: string
-          description: Clip status
-          readOnly: true
           enum:
-            - pending
-            - done
-            - failed
+            - q
+            - f
+            - e
+            - d
+            - "360"
         is_public:
           type: boolean
           description: Clip is publicly accessible
@@ -2016,28 +2028,11 @@ components:
         - start_time
         - end_time
         - video_type
-        - status
-        - is_public
-    ClipVideoType:
-      title: Clip video type
-      description: |
-        - `q` = QCamera
-        - `f` = Road camera
-        - `e` = Wide road camera
-        - `d` = Driver camera
-        - `360` = 360 video
-      type: string
-      enum:
-        - q
-        - f
-        - e
-        - d
-        - "360"
     PendingClip:
       title: Pending Clip
       type: object
       allOf:
-        - $ref: '#/components/schemas/Clip'
+        - $ref: '#/components/schemas/ClipProperties'
         - type: object
           properties:
             status:
@@ -2045,18 +2040,29 @@ components:
               enum:
                 - pending
             pending_status:
-              type: string
               description: Pending clip status
-              readOnly: true
-            pending_progress:
               type: string
-              description: Pending clip progress
+              enum:
+                - waiting_jobs
+                - processing
               readOnly: true
+              example: processing
+            pending_progress:
+              description: Processing progress, from 0 to 1
+              type: number
+              minimum: 0
+              maximum: 1
+              readOnly: true
+              example: 0.5
+      required:
+        - status
+        - is_public
+        - title
     DoneClip:
       title: Done Clip
       type: object
       allOf:
-        - $ref: '#/components/schemas/Clip'
+        - $ref: '#/components/schemas/ClipProperties'
         - type: object
           properties:
             status:
@@ -2071,11 +2077,15 @@ components:
               type: string
               description: URL to clip thumbnail
               readOnly: true
+      required:
+        - status
+        - is_public
+        - title
     FailedClip:
       title: Failed Clip
       type: object
       allOf:
-        - $ref: '#/components/schemas/Clip'
+        - $ref: '#/components/schemas/ClipProperties'
         - type: object
           properties:
             status:
@@ -2083,23 +2093,27 @@ components:
               enum:
                 - failed
             error_status:
-              type: string
               description: Error message
+              type: string
+              enum:
+                - upload_failed_request
+                - upload_failed
+                - upload_failed_dcam
+                - upload_timed_out
+                - export_failed
               readOnly: true
               example: upload_failed
-    ClipDetails:
-      title: Clip Details
+      required:
+        - status
+        - is_public
+        - title
+    Clip:
+      description: Video clip created from part of a route
       type: object
       oneOf:
         - $ref: '#/components/schemas/PendingClip'
         - $ref: '#/components/schemas/DoneClip'
         - $ref: '#/components/schemas/FailedClip'
-      discriminator:
-        propertyName: status
-        mapping:
-          pending: '#/components/schemas/PendingClip'
-          done: '#/components/schemas/DoneClip'
-          failed: '#/components/schemas/FailedClip'
   parameters:
     dongleId:
       name: dongleId
