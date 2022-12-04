@@ -586,13 +586,13 @@ export interface components {
     SegmentDataSource: 3 | 6 | 7;
     /**
      * @description Log file status
-     * -1 = Not received
-     * 0 = Upload URL sent
-     * 10 = Received
-     * 20 = Enqueued
-     * 30 = Processing
-     * 40 = Processed
-     * 50 = Errored
+     * - -1 = Not received
+     * - 0 = Upload URL sent
+     * - 10 = Received
+     * - 20 = Enqueued
+     * - 30 = Processing
+     * - 40 = Processed
+     * - 50 = Errored
      *  
      * @enum {integer}
      */
