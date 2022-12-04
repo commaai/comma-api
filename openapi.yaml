@@ -53,7 +53,23 @@ tags:
   - name: routes
     description: List drives uploaded from your coma device.
   - name: logs
-    description: Retrieve files uploaded from your devices.
+    description: |
+      Retrieve files uploaded from your devices.
+
+      ### Log types
+      For each segment of an openpilot drive, the following files are created:
+      | Type | Description |
+      | ---- | ----------- |
+      | `qcamera.ts` | Compressed road camera |
+      | `fcamera.hevc` | Road camera uncompressed |
+      | `dcamera.hevc` | Driver camera uncompressed |
+      | `ecamera.hevc` | Wide road camera uncompressed |
+      | `rlog.bz2` | Full openpilot logs - all messages published by every service |
+      | `qlog.bz2` | Decimated openpilot logs |
+
+      `dcamera.hevc` is not logged unless the "Record and upload driver camera" toggle is enabled. `qcamera.ts` and
+      `qlog.bz2` files are uploaded automatically when the device is connected to the internet. Other files must be
+      manually requested from the device - this is managed by the athena service.
   - name: athena
     description: Communicate with your device in real time.
   - name: navigation
