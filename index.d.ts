@@ -599,9 +599,9 @@ export interface components {
     FileProcStatus: -1 | 0 | 10 | 20 | 30 | 40 | 50;
     /**
      * @description File type
-     * 1. Road camera (camera)
-     * 2. Front camera (driver, dcamera)
-     * 3. Log (raw, rlog)
+     * 1. Road camera (fcamera)
+     * 2. Driver camera (dcamera)
+     * 3. Raw log (rlog)
      * 4. Qlog
      * 5. QCamera
      * 6. Wide road camera (extended, ecamera)
