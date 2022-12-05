@@ -538,6 +538,37 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Segment'
+  /{dongleId}:
+    servers:
+      - url: https://athena.comma.ai
+    parameters:
+      - $ref: '#/components/parameters/dongleId'
+    post:
+      operationId: submitAthenaPayload
+      summary: Submit Athena payload
+      description: |
+        Send JSON-RPC requests to the active websocket connection for a given device, identified by its dongle ID.
+
+        Some method types support offline queueing of messages until the device comes online (see `expiry`). The
+        response will indicate whether the message was queued or not.
+      tags:
+        - athena
+      security:
+        - AuthUser: []
+      requestBody:
+        description: JSON-RPC payload containing athena method name and parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AthenaPayload'
+      responses:
+        '200':
+          description: JSON-RPC response containing the result of the method call
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AthenaResponse'
   /v1/devices/{dongleId}/athena_offline_queue:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -2114,6 +2145,242 @@ components:
         - $ref: '#/components/schemas/PendingClip'
         - $ref: '#/components/schemas/DoneClip'
         - $ref: '#/components/schemas/FailedClip'
+    JSONRPCPayload:
+      type: object
+      properties:
+        method:
+          type: string
+          description: JSON-RPC method name
+        jsonrpc:
+          type: string
+          description: JSON-RPC version
+          enum:
+            - "2.0"
+        id:
+          type: integer
+          description: JSON-RPC request ID
+          enum:
+            - 0
+      required:
+        - method
+        - jsonrpc
+        - id
+    JSONRPCResponse:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+          description: JSON-RPC version
+          enum:
+            - "2.0"
+        id:
+          type: integer
+          description: JSON-RPC request ID
+          enum:
+            - 0
+        result:
+          description: Method-specific result
+      required:
+        - jsonrpc
+        - id
+    GetMessageMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getMessage
+            params:
+              type: object
+              properties:
+                service:
+                  type: string
+                  description: service name
+                  example: peripheralState
+                timeout:
+                  type: integer
+                  description: time to wait for a message in milliseconds
+                  example: 5000
+              required:
+                - service
+          required:
+            - params
+    GetVersionMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getVersion
+    SetNavDestinationMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - setNavDestination
+            params:
+              $ref: '#/components/schemas/NavigationDestination'
+          required:
+            - params
+    RebootMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - reboot
+    UploadFilesToUrlsMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - uploadFilesToUrls
+            params:
+              type: array
+              items:
+                type: object
+                properties:
+                  fn:
+                    type: string
+                  url:
+                    type: string
+                  headers:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    default: {}
+                    example:
+                      x-ms-blob-type: BlockBlob
+                  allow_cellular:
+                    type: boolean
+                    default: false
+                required:
+                  - fn
+                  - url
+          required:
+            - params
+    ListUploadQueueMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - listUploadQueue
+    GetPublicKeyMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getPublicKey
+    GetSshAuthorizedKeysMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getSshAuthorizedKeys
+    GetSimInfoMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getSimInfo
+    GetNetworkTypeMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getNetworkType
+    GetNetworkMeteredMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                  - getNetworkMetered
+    GetNetworksMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - getNetworks
+    TakeSnapshotMethod:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCPayload'
+        - type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - takeSnapshot
+    AthenaPayload:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/GetMessageMethod'
+        - $ref: '#/components/schemas/GetVersionMethod'
+        - $ref: '#/components/schemas/SetNavDestinationMethod'
+        - $ref: '#/components/schemas/RebootMethod'
+        - $ref: '#/components/schemas/UploadFilesToUrlsMethod'
+        - $ref: '#/components/schemas/ListUploadQueueMethod'
+        - $ref: '#/components/schemas/GetPublicKeyMethod'
+        - $ref: '#/components/schemas/GetSshAuthorizedKeysMethod'
+        - $ref: '#/components/schemas/GetSimInfoMethod'
+        - $ref: '#/components/schemas/GetNetworkTypeMethod'
+        - $ref: '#/components/schemas/GetNetworkMeteredMethod'
+        - $ref: '#/components/schemas/GetNetworksMethod'
+        - $ref: '#/components/schemas/TakeSnapshotMethod'
+    AthenaResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JSONRPCResponse'
+      example:
+        jsonrpc: "2.0"
+        id: 0
+        result:
+          success: 1
   parameters:
     dongleId:
       name: dongleId

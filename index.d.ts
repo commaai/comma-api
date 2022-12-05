@@ -154,6 +154,17 @@ export interface paths {
     get: operations["getDeviceSegments"];
     
   };
+  "/{dongleId}": {
+    /**
+     * Submit Athena payload 
+     * @description Send JSON-RPC requests to the active websocket connection for a given device, identified by its dongle ID.
+     * 
+     * Some method types support offline queueing of messages until the device comes online (see `expiry`). The
+     * response will indicate whether the message was queued or not.
+     */
+    post: operations["submitAthenaPayload"];
+    
+  };
   "/v1/devices/{dongleId}/athena_offline_queue": {
     /**
      * Athena offline queue 
@@ -747,6 +758,116 @@ export interface components {
     });
     /** @description Video clip created from part of a route */
     Clip: components["schemas"]["PendingClip"] | components["schemas"]["DoneClip"] | components["schemas"]["FailedClip"];
+    JSONRPCPayload: {
+      /** @description JSON-RPC method name */
+      method: string;
+      /**
+       * @description JSON-RPC version 
+       * @enum {string}
+       */
+      jsonrpc: "2.0";
+      /**
+       * @description JSON-RPC request ID 
+       * @enum {integer}
+       */
+      id: 0;
+    };
+    JSONRPCResponse: {
+      /**
+       * @description JSON-RPC version 
+       * @enum {string}
+       */
+      jsonrpc: "2.0";
+      /**
+       * @description JSON-RPC request ID 
+       * @enum {integer}
+       */
+      id: 0;
+      /** @description Method-specific result */
+      result?: Record<string, never>;
+    };
+    GetMessageMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getMessage";
+      params: {
+        /**
+         * @description service name 
+         * @example peripheralState
+         */
+        service: string;
+        /**
+         * @description time to wait for a message in milliseconds 
+         * @example 5000
+         */
+        timeout?: number;
+      };
+    };
+    GetVersionMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getVersion";
+    };
+    SetNavDestinationMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "setNavDestination";
+      params: components["schemas"]["NavigationDestination"];
+    };
+    RebootMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "reboot";
+    };
+    UploadFilesToUrlsMethod: components["schemas"]["JSONRPCPayload"] & ({
+      /** @enum {string} */
+      method?: "uploadFilesToUrls";
+      params: ({
+          fn: string;
+          url: string;
+          /**
+           * @default {} 
+           * @example {
+           *   "x-ms-blob-type": "BlockBlob"
+           * }
+           */
+          headers?: {
+            [key: string]: string | undefined;
+          };
+          /** @default false */
+          allow_cellular?: boolean;
+        })[];
+    });
+    ListUploadQueueMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "listUploadQueue";
+    };
+    GetPublicKeyMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getPublicKey";
+    };
+    GetSshAuthorizedKeysMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getSshAuthorizedKeys";
+    };
+    GetSimInfoMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getSimInfo";
+    };
+    GetNetworkTypeMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getNetworkType";
+    };
+    GetNetworkMeteredMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getNetworkMetered";
+    };
+    GetNetworksMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "getNetworks";
+    };
+    TakeSnapshotMethod: components["schemas"]["JSONRPCPayload"] & {
+      /** @enum {string} */
+      method?: "takeSnapshot";
+    };
+    AthenaPayload: components["schemas"]["GetMessageMethod"] | components["schemas"]["GetVersionMethod"] | components["schemas"]["SetNavDestinationMethod"] | components["schemas"]["RebootMethod"] | components["schemas"]["UploadFilesToUrlsMethod"] | components["schemas"]["ListUploadQueueMethod"] | components["schemas"]["GetPublicKeyMethod"] | components["schemas"]["GetSshAuthorizedKeysMethod"] | components["schemas"]["GetSimInfoMethod"] | components["schemas"]["GetNetworkTypeMethod"] | components["schemas"]["GetNetworkMeteredMethod"] | components["schemas"]["GetNetworksMethod"] | components["schemas"]["TakeSnapshotMethod"];
+    AthenaResponse: components["schemas"]["JSONRPCResponse"];
   };
   responses: {
     /** @description Operation successful */
@@ -1090,6 +1211,29 @@ export interface operations {
       200: {
         content: {
           "application/json": (components["schemas"]["Segment"])[];
+        };
+      };
+    };
+  };
+  submitAthenaPayload: {
+    /**
+     * Submit Athena payload 
+     * @description Send JSON-RPC requests to the active websocket connection for a given device, identified by its dongle ID.
+     * 
+     * Some method types support offline queueing of messages until the device comes online (see `expiry`). The
+     * response will indicate whether the message was queued or not.
+     */
+    /** @description JSON-RPC payload containing athena method name and parameters */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AthenaPayload"];
+      };
+    };
+    responses: {
+      /** @description JSON-RPC response containing the result of the method call */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AthenaResponse"];
         };
       };
     };
