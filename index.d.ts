@@ -1574,7 +1574,7 @@ export interface operations {
       /** @description JSON object containing next destination, or null if no destination is set */
       200: {
         content: {
-          "application/json": components["schemas"]["NavigationDestination"];
+          "application/json": components["schemas"]["NavigationDestination"] | "null";
         };
       };
     };
