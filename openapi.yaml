@@ -588,11 +588,8 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    expiry:
-                      type: integer
-                  additionalProperties: true
+                  oneOf:
+                    - $ref: '#/components/schemas/UploadFilesToUrlsMethod'
   /v1.4/{dongleId}/upload_url:
     parameters:
       - $ref: '#/components/parameters/dongleId'
@@ -2274,6 +2271,12 @@ components:
                 required:
                   - fn
                   - url
+            expiry:
+              type: integer
+              description: |
+                Unix timestamp at which this message will be removed from the offline queue, after
+                which it will no longer be sent to the device if it comes online. If not specified,
+                this message will not be added to the offline queue.
           required:
             - params
     ListUploadQueueMethod:

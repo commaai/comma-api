@@ -833,6 +833,12 @@ export interface components {
           /** @default false */
           allow_cellular?: boolean;
         })[];
+      /**
+       * @description Unix timestamp at which this message will be removed from the offline queue, after
+       * which it will no longer be sent to the device if it comes online. If not specified,
+       * this message will not be added to the offline queue.
+       */
+      expiry?: number;
     });
     ListUploadQueueMethod: components["schemas"]["JSONRPCPayload"] & {
       /** @enum {string} */
@@ -867,6 +873,15 @@ export interface components {
       method?: "takeSnapshot";
     };
     AthenaPayload: components["schemas"]["GetMessageMethod"] | components["schemas"]["GetVersionMethod"] | components["schemas"]["SetNavDestinationMethod"] | components["schemas"]["RebootMethod"] | components["schemas"]["UploadFilesToUrlsMethod"] | components["schemas"]["ListUploadQueueMethod"] | components["schemas"]["GetPublicKeyMethod"] | components["schemas"]["GetSshAuthorizedKeysMethod"] | components["schemas"]["GetSimInfoMethod"] | components["schemas"]["GetNetworkTypeMethod"] | components["schemas"]["GetNetworkMeteredMethod"] | components["schemas"]["GetNetworksMethod"] | components["schemas"]["TakeSnapshotMethod"];
+    /**
+     * @example {
+     *   "jsonrpc": "2.0",
+     *   "id": 0,
+     *   "result": {
+     *     "success": 1
+     *   }
+     * }
+     */
     AthenaResponse: components["schemas"]["JSONRPCResponse"];
   };
   responses: {
@@ -1247,10 +1262,7 @@ export interface operations {
       /** @description JSON array of queued payloads */
       200: {
         content: {
-          "application/json": ({
-              expiry?: number;
-              [key: string]: unknown | undefined;
-            })[];
+          "application/json": (components["schemas"]["UploadFilesToUrlsMethod"])[];
         };
       };
     };
