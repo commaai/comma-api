@@ -13,10 +13,10 @@
     "start": "npm run build -- --watch"
   },
   "exports": {
-    "default": "./dist/index.cjs",
     "require": "./dist/index.cjs",
     "import": "./dist/index.mjs",
-    "node": "./dist/index.cjs"
+    "node": "./dist/index.cjs",
+    "default": "./dist/index.cjs"
   },
   "devDependencies": {
     "rimraf": "^4.1.2",
