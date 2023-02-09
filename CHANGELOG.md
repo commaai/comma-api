@@ -1,3 +1,8 @@
+Version 3.2.0
+=============
+* rewrite in typescript
+* bundle using tsup
+
 Version 3.1.0
 =============
 * rename package to @comma/api
