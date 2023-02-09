@@ -7,9 +7,11 @@ export class RequestError extends Error {
   }
 }
 
+export type HTTPHeader = 'Authorization' | 'Content-Type'
+
 export default class ConfigRequest {
   baseUrl: string
-  defaultHeaders: Record<string, string>
+  defaultHeaders: { [name in HTTPHeader]?: string }
 
   constructor(baseUrl: string) {
     this.defaultHeaders = {
@@ -18,8 +20,12 @@ export default class ConfigRequest {
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '')
   }
 
-  configure(accessToken: string): void {
-    this.defaultHeaders['Authorization'] = `JWT ${accessToken}`
+  setDefaultHeader(name: HTTPHeader, value: string): void {
+    this.defaultHeaders[name] = value
+  }
+
+  removeDefaultHeader(name: HTTPHeader): void {
+    delete this.defaultHeaders[name]
   }
 
   async request(method: string, endpoint: string, params?: Record<string, any>, dataJson = true, respJson = true) {

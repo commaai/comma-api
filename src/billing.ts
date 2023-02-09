@@ -4,7 +4,7 @@ import ConfigRequest from './instance'
 const request = new ConfigRequest(Config.BILLING_API_URL)
 
 export function configure(accessToken: string) {
-  request.configure(accessToken)
+  request.setDefaultHeader('Authorization', accessToken)
 }
 
 export async function getSubscription(dongle_id: string) {

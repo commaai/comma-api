@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "moduleResolution": "node",
+    "strict": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

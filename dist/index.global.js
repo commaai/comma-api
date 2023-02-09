@@ -1,3 +1,4 @@
+"use strict";
 (() => {
   var __defProp = Object.defineProperty;
   var __defProps = Object.defineProperties;
@@ -52,8 +53,11 @@
       };
       this.baseUrl = baseUrl + (!baseUrl.endsWith("/") ? "/" : "");
     }
-    configure(accessToken) {
-      this.defaultHeaders["Authorization"] = `JWT ${accessToken}`;
+    setDefaultHeader(name, value) {
+      this.defaultHeaders[name] = value;
+    }
+    removeDefaultHeader(name) {
+      delete this.defaultHeaders[name];
     }
     async request(method, endpoint, params, dataJson = true, respJson = true) {
       const headers = __spreadValues({}, this.defaultHeaders);
@@ -120,21 +124,83 @@
   });
   var request = new ConfigRequest(config_default.ATHENA_API_URL);
   function configure(accessToken) {
-    request.configure(accessToken);
+    request.setDefaultHeader("Authorization", accessToken);
   }
   async function postJsonRpcPayload(dongleId, payload) {
     return request.post(dongleId, payload);
   }
 
-  // src/auth.ts
+  // src/auth/index.ts
   var auth_exports = {};
   __export(auth_exports, {
-    refreshAccessToken: () => refreshAccessToken
+    config: () => config_exports,
+    getAccessToken: () => getAccessToken2,
+    isSignedIn: () => isSignedIn,
+    refreshAccessToken: () => refreshAccessToken,
+    signOut: () => signOut
   });
+
+  // src/auth/config.ts
+  var config_exports = {};
+  __export(config_exports, {
+    APPLE_REDIRECT_LINK: () => APPLE_REDIRECT_LINK,
+    GITHUB_REDIRECT_LINK: () => GITHUB_REDIRECT_LINK,
+    GOOGLE_REDIRECT_LINK: () => GOOGLE_REDIRECT_LINK
+  });
+  var service = "localhost:3000";
+  if (typeof window !== "undefined") {
+    service = window.location.host;
+  }
+  function stringify(obj) {
+    return new URLSearchParams(obj).toString();
+  }
+  var GOOGLE_OAUTH_PARAMS = {
+    type: "web_server",
+    client_id: "45471411055-ornt4svd2miog6dnopve7qtmh5mnu6id.apps.googleusercontent.com",
+    redirect_uri: "https://api.comma.ai/v2/auth/g/redirect/",
+    response_type: "code",
+    scope: "https://www.googleapis.com/auth/userinfo.email",
+    state: "service," + service,
+    prompt: "select_account"
+  };
+  var GOOGLE_REDIRECT_LINK = "https://accounts.google.com/o/oauth2/auth?" + stringify(GOOGLE_OAUTH_PARAMS);
+  var APPLE_OAUTH_PARAMS = {
+    client_id: "ai.comma.login",
+    redirect_uri: "https://api.comma.ai/v2/auth/a/redirect/",
+    response_type: "code",
+    response_mode: "form_post",
+    scope: "name email",
+    state: "service," + service
+  };
+  var APPLE_REDIRECT_LINK = "https://appleid.apple.com/auth/authorize?" + stringify(APPLE_OAUTH_PARAMS);
+  var GITHUB_OAUTH_PARAMS = {
+    client_id: "28c4ecb54bb7272cb5a4",
+    redirect_uri: "https://api.comma.ai/v2/auth/h/redirect/",
+    scope: "read:user",
+    state: "service," + service
+  };
+  var GITHUB_REDIRECT_LINK = "https://github.com/login/oauth/authorize?" + stringify(GITHUB_OAUTH_PARAMS);
+
+  // src/auth/storage.ts
+  var AUTH_KEY = "ai.comma.api.authoriazation";
+  function getAccessToken() {
+    if (typeof window === "undefined") {
+      return null;
+    }
+    return window.localStorage.getItem(AUTH_KEY);
+  }
+  function clearAccessToken() {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.removeItem(AUTH_KEY);
+  }
+
+  // src/auth/index.ts
   async function refreshAccessToken(code, provider) {
     const resp = await request_default.postForm("v2/auth/", { code, provider });
     if (resp.access_token != null) {
-      request_default.configure(resp.access_token);
+      request_default.setDefaultHeader("Authorization", resp.access_token);
       return resp.access_token;
     }
     if (resp.response !== void 0) {
@@ -144,6 +210,16 @@
     } else {
       throw new Error(`Could not exchange oauth code for access token: ${resp}`);
     }
+  }
+  function isSignedIn() {
+    return getAccessToken() != null;
+  }
+  function getAccessToken2() {
+    return getAccessToken();
+  }
+  function signOut() {
+    clearAccessToken();
+    request_default.removeDefaultHeader("Authorization");
   }
 
   // src/billing.ts
@@ -160,7 +236,7 @@
   });
   var request2 = new ConfigRequest(config_default.BILLING_API_URL);
   function configure2(accessToken) {
-    request2.configure(accessToken);
+    request2.setDefaultHeader("Authorization", accessToken);
   }
   async function getSubscription(dongle_id) {
     return request2.get("v1/prime/subscription", { dongle_id });

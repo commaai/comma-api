@@ -18,12 +18,38 @@ declare namespace athena {
   };
 }
 
-declare function refreshAccessToken(code: string, provider: string): Promise<string>;
+declare const GOOGLE_REDIRECT_LINK: string;
+declare const APPLE_REDIRECT_LINK: string;
+declare const GITHUB_REDIRECT_LINK: string;
 
-declare const auth_refreshAccessToken: typeof refreshAccessToken;
-declare namespace auth {
+declare const config_APPLE_REDIRECT_LINK: typeof APPLE_REDIRECT_LINK;
+declare const config_GITHUB_REDIRECT_LINK: typeof GITHUB_REDIRECT_LINK;
+declare const config_GOOGLE_REDIRECT_LINK: typeof GOOGLE_REDIRECT_LINK;
+declare namespace config {
   export {
-    auth_refreshAccessToken as refreshAccessToken,
+    config_APPLE_REDIRECT_LINK as APPLE_REDIRECT_LINK,
+    config_GITHUB_REDIRECT_LINK as GITHUB_REDIRECT_LINK,
+    config_GOOGLE_REDIRECT_LINK as GOOGLE_REDIRECT_LINK,
+  };
+}
+
+declare function refreshAccessToken(code: string, provider: string): Promise<string>;
+declare function isSignedIn(): boolean;
+declare function getAccessToken(): string | null;
+declare function signOut(): void;
+
+declare const index_config: typeof config;
+declare const index_getAccessToken: typeof getAccessToken;
+declare const index_isSignedIn: typeof isSignedIn;
+declare const index_refreshAccessToken: typeof refreshAccessToken;
+declare const index_signOut: typeof signOut;
+declare namespace index {
+  export {
+    index_config as config,
+    index_getAccessToken as getAccessToken,
+    index_isSignedIn as isSignedIn,
+    index_refreshAccessToken as refreshAccessToken,
+    index_signOut as signOut,
   };
 }
 
@@ -158,7 +184,7 @@ declare namespace drives {
   };
 }
 
-declare function getRouteFiles(routeName: string, nocache?: boolean, params?: any): Promise<any>;
+declare function getRouteFiles(routeName: string, nocache?: boolean, params?: undefined): Promise<any>;
 declare function getUploadUrl(dongleId: string, path: string, expiry_days?: number): Promise<any>;
 declare function getUploadUrls(dongleId: string, paths: string[], expiry_days?: number): Promise<any>;
 
@@ -173,11 +199,15 @@ declare namespace raw {
   };
 }
 
+type HTTPHeader = 'Authorization' | 'Content-Type';
 declare class ConfigRequest {
     baseUrl: string;
-    defaultHeaders: Record<string, string>;
+    defaultHeaders: {
+        [name in HTTPHeader]?: string;
+    };
     constructor(baseUrl: string);
-    configure(accessToken: string): void;
+    setDefaultHeader(name: HTTPHeader, value: string): void;
+    removeDefaultHeader(name: HTTPHeader): void;
     request(method: string, endpoint: string, params?: Record<string, any>, dataJson?: boolean, respJson?: boolean): Promise<any>;
     get(endpoint: string, params?: Record<string, any>, dataJson?: boolean, respJson?: boolean): Promise<any>;
     head(endpoint: string, params?: Record<string, any>, dataJson?: boolean, respJson?: boolean): Promise<any>;
@@ -223,4 +253,4 @@ declare namespace video {
   };
 }
 
-export { account, athena, auth, billing, clips, routeApi as derived, devices, drives, navigation, raw, _default as request, video };
+export { account, athena, index as auth, billing, clips, routeApi as derived, devices, drives, navigation, raw, _default as request, video };
