@@ -1,8 +1,38 @@
 var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  account: () => account_exports,
+  athena: () => athena_exports,
+  auth: () => auth_exports,
+  billing: () => billing_exports,
+  clips: () => clips_exports,
+  derived: () => routeApi,
+  devices: () => devices_exports,
+  drives: () => drives_exports,
+  navigation: () => navigation_exports,
+  raw: () => raw_exports,
+  request: () => request_default,
+  video: () => video_exports
+});
+module.exports = __toCommonJS(src_exports);
 
 // src/account.ts
 var account_exports = {};
@@ -501,18 +531,19 @@ var request3 = new ConfigRequest(config_default.COMMA_API_URL);
 function getQcameraStreamUrl(routeStr, exp, sig) {
   return `${request3.baseUrl}v1/route/${routeStr}/qcamera.m3u8?${new URLSearchParams({ exp, sig })}`;
 }
-export {
-  account_exports as account,
-  athena_exports as athena,
-  auth_exports as auth,
-  billing_exports as billing,
-  clips_exports as clips,
-  routeApi as derived,
-  devices_exports as devices,
-  drives_exports as drives,
-  navigation_exports as navigation,
-  raw_exports as raw,
-  request_default as request,
-  video_exports as video
-};
-//# sourceMappingURL=index.js.map
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  account,
+  athena,
+  auth,
+  billing,
+  clips,
+  derived,
+  devices,
+  drives,
+  navigation,
+  raw,
+  request,
+  video
+});
+//# sourceMappingURL=index.cjs.map
