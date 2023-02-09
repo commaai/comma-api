@@ -1,7 +1,7 @@
 export class RequestError extends Error {
   resp: Response
 
-  constructor(resp, ...params) {
+  constructor(resp: Response, ...params) {
     super(...params)
     this.resp = resp
   }
@@ -11,7 +11,7 @@ export default class ConfigRequest {
   baseUrl: string
   defaultHeaders: Record<string, string>
 
-  constructor(baseUrl) {
+  constructor(baseUrl: string) {
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     }
