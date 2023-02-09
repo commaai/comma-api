@@ -18,18 +18,18 @@ declare namespace athena {
   };
 }
 
-declare const GOOGLE_REDIRECT_LINK: string;
-declare const APPLE_REDIRECT_LINK: string;
-declare const GITHUB_REDIRECT_LINK: string;
+declare const GOOGLE_AUTH_URL: string;
+declare const APPLE_AUTH_URL: string;
+declare const GITHUB_AUTH_URL: string;
 
-declare const config_APPLE_REDIRECT_LINK: typeof APPLE_REDIRECT_LINK;
-declare const config_GITHUB_REDIRECT_LINK: typeof GITHUB_REDIRECT_LINK;
-declare const config_GOOGLE_REDIRECT_LINK: typeof GOOGLE_REDIRECT_LINK;
+declare const config_APPLE_AUTH_URL: typeof APPLE_AUTH_URL;
+declare const config_GITHUB_AUTH_URL: typeof GITHUB_AUTH_URL;
+declare const config_GOOGLE_AUTH_URL: typeof GOOGLE_AUTH_URL;
 declare namespace config {
   export {
-    config_APPLE_REDIRECT_LINK as APPLE_REDIRECT_LINK,
-    config_GITHUB_REDIRECT_LINK as GITHUB_REDIRECT_LINK,
-    config_GOOGLE_REDIRECT_LINK as GOOGLE_REDIRECT_LINK,
+    config_APPLE_AUTH_URL as APPLE_AUTH_URL,
+    config_GITHUB_AUTH_URL as GITHUB_AUTH_URL,
+    config_GOOGLE_AUTH_URL as GOOGLE_AUTH_URL,
   };
 }
 

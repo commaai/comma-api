@@ -17,7 +17,7 @@ const GOOGLE_OAUTH_PARAMS = {
   state: 'service,' + service,
   prompt: 'select_account',
 }
-export const GOOGLE_REDIRECT_LINK =
+export const GOOGLE_AUTH_URL =
   'https://accounts.google.com/o/oauth2/auth?' + stringify(GOOGLE_OAUTH_PARAMS)
 
 const APPLE_OAUTH_PARAMS = {
@@ -28,7 +28,7 @@ const APPLE_OAUTH_PARAMS = {
   scope: 'name email',
   state: 'service,' + service,
 }
-export const APPLE_REDIRECT_LINK =
+export const APPLE_AUTH_URL =
   'https://appleid.apple.com/auth/authorize?' + stringify(APPLE_OAUTH_PARAMS)
 
 const GITHUB_OAUTH_PARAMS = {
@@ -37,5 +37,5 @@ const GITHUB_OAUTH_PARAMS = {
   scope: 'read:user',
   state: 'service,' + service,
 }
-export const GITHUB_REDIRECT_LINK =
+export const GITHUB_AUTH_URL =
   'https://github.com/login/oauth/authorize?' + stringify(GITHUB_OAUTH_PARAMS)

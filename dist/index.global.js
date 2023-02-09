@@ -143,9 +143,9 @@
   // src/auth/config.ts
   var config_exports = {};
   __export(config_exports, {
-    APPLE_REDIRECT_LINK: () => APPLE_REDIRECT_LINK,
-    GITHUB_REDIRECT_LINK: () => GITHUB_REDIRECT_LINK,
-    GOOGLE_REDIRECT_LINK: () => GOOGLE_REDIRECT_LINK
+    APPLE_AUTH_URL: () => APPLE_AUTH_URL,
+    GITHUB_AUTH_URL: () => GITHUB_AUTH_URL,
+    GOOGLE_AUTH_URL: () => GOOGLE_AUTH_URL
   });
   var service = "localhost:3000";
   if (typeof window !== "undefined") {
@@ -163,7 +163,7 @@
     state: "service," + service,
     prompt: "select_account"
   };
-  var GOOGLE_REDIRECT_LINK = "https://accounts.google.com/o/oauth2/auth?" + stringify(GOOGLE_OAUTH_PARAMS);
+  var GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth?" + stringify(GOOGLE_OAUTH_PARAMS);
   var APPLE_OAUTH_PARAMS = {
     client_id: "ai.comma.login",
     redirect_uri: "https://api.comma.ai/v2/auth/a/redirect/",
@@ -172,14 +172,14 @@
     scope: "name email",
     state: "service," + service
   };
-  var APPLE_REDIRECT_LINK = "https://appleid.apple.com/auth/authorize?" + stringify(APPLE_OAUTH_PARAMS);
+  var APPLE_AUTH_URL = "https://appleid.apple.com/auth/authorize?" + stringify(APPLE_OAUTH_PARAMS);
   var GITHUB_OAUTH_PARAMS = {
     client_id: "28c4ecb54bb7272cb5a4",
     redirect_uri: "https://api.comma.ai/v2/auth/h/redirect/",
     scope: "read:user",
     state: "service," + service
   };
-  var GITHUB_REDIRECT_LINK = "https://github.com/login/oauth/authorize?" + stringify(GITHUB_OAUTH_PARAMS);
+  var GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize?" + stringify(GITHUB_OAUTH_PARAMS);
 
   // src/auth/storage.ts
   var AUTH_KEY = "ai.comma.api.authoriazation";
