@@ -28,10 +28,6 @@ export function getRouteFiles(routeName: string, nocache = false, params = undef
   return getCached(`v1/route/${routeName}/files`, params, nocache)
 }
 
-export function getLogUrls(routeName: string, params) {
-  return getCached(`v1/route/${routeName}/log_urls`, params)
-}
-
 export function getUploadUrl(dongleId: string, path: string, expiry_days?: number) {
   return getCached(`v1.4/${dongleId}/upload_url/`, { path, expiry_days })
 }

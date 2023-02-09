@@ -1,5 +1,23 @@
 (() => {
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
@@ -12,16 +30,18 @@
   });
 
   // src/config.ts
-  var config_default = {
-    COMMA_API_URL: (window == null ? void 0 : window.Comma.COMMA_API_URL) || "https://api.comma.ai/",
-    ATHENA_API_URL: (window == null ? void 0 : window.Comma.ATHENA_API_URL) || "https://athena.comma.ai/",
-    BILLING_API_URL: (window == null ? void 0 : window.Comma.BILLING_API_URL) || "https://billing.comma.ai/"
+  var _a, _b, _c;
+  var config = {
+    COMMA_API_URL: typeof window !== "undefined" && ((_a = window.Comma) == null ? void 0 : _a.COMMA_API_URL) || "https://api.comma.ai/",
+    ATHENA_API_URL: typeof window !== "undefined" && ((_b = window.Comma) == null ? void 0 : _b.ATHENA_API_URL) || "https://athena.comma.ai/",
+    BILLING_API_URL: typeof window !== "undefined" && ((_c = window.Comma) == null ? void 0 : _c.BILLING_API_URL) || "https://billing.comma.ai/"
   };
+  var config_default = config;
 
   // src/instance.ts
   var RequestError = class extends Error {
-    constructor(resp, ...params) {
-      super(...params);
+    constructor(resp, message) {
+      super(message);
       this.resp = resp;
     }
   };
@@ -36,7 +56,7 @@
       this.defaultHeaders["Authorization"] = `JWT ${accessToken}`;
     }
     async request(method, endpoint, params, dataJson = true, respJson = true) {
-      const headers = { ...this.defaultHeaders };
+      const headers = __spreadValues({}, this.defaultHeaders);
       if (!dataJson) {
         headers["Content-Type"] = "application/x-www-form-urlencoded";
       }
@@ -308,11 +328,10 @@
   function parseSegmentMetadata(start, end, segments) {
     const routeStartTimes = {};
     return segments.map((s) => {
-      const segment = {
-        ...s,
+      const segment = __spreadProps(__spreadValues({}, s), {
         duration: Math.round(s.end_time_utc_millis - s.start_time_utc_millis),
         offset: Math.round(s.start_time_utc_millis) - start
-      };
+      });
       if (!routeStartTimes[s.canonical_route_name]) {
         segment.segment = Number(s.canonical_name.split("--")[2]);
         routeStartTimes[s.canonical_route_name] = segment.offset - SEGMENT_LENGTH * segment.segment;
@@ -415,7 +434,6 @@
   // src/raw.ts
   var raw_exports = {};
   __export(raw_exports, {
-    getLogUrls: () => getLogUrls,
     getRouteFiles: () => getRouteFiles,
     getUploadUrl: () => getUploadUrl,
     getUploadUrls: () => getUploadUrls
@@ -437,9 +455,6 @@
   }
   function getRouteFiles(routeName, nocache = false, params = void 0) {
     return getCached(`v1/route/${routeName}/files`, params, nocache);
-  }
-  function getLogUrls(routeName, params) {
-    return getCached(`v1/route/${routeName}/log_urls`, params);
   }
   function getUploadUrl(dongleId, path, expiry_days) {
     return getCached(`v1.4/${dongleId}/upload_url/`, { path, expiry_days });

@@ -8,7 +8,7 @@ declare namespace account {
 }
 
 declare function configure$1(accessToken: string): void;
-declare function postJsonRpcPayload(dongleId: string, payload: any): Promise<any>;
+declare function postJsonRpcPayload(dongleId: string, payload: Record<string, any>): Promise<any>;
 
 declare const athena_postJsonRpcPayload: typeof postJsonRpcPayload;
 declare namespace athena {
@@ -159,17 +159,14 @@ declare namespace drives {
 }
 
 declare function getRouteFiles(routeName: string, nocache?: boolean, params?: any): Promise<any>;
-declare function getLogUrls(routeName: string, params: any): Promise<any>;
 declare function getUploadUrl(dongleId: string, path: string, expiry_days?: number): Promise<any>;
 declare function getUploadUrls(dongleId: string, paths: string[], expiry_days?: number): Promise<any>;
 
-declare const raw_getLogUrls: typeof getLogUrls;
 declare const raw_getRouteFiles: typeof getRouteFiles;
 declare const raw_getUploadUrl: typeof getUploadUrl;
 declare const raw_getUploadUrls: typeof getUploadUrls;
 declare namespace raw {
   export {
-    raw_getLogUrls as getLogUrls,
     raw_getRouteFiles as getRouteFiles,
     raw_getUploadUrl as getUploadUrl,
     raw_getUploadUrls as getUploadUrls,
@@ -179,7 +176,7 @@ declare namespace raw {
 declare class ConfigRequest {
     baseUrl: string;
     defaultHeaders: Record<string, string>;
-    constructor(baseUrl: any);
+    constructor(baseUrl: string);
     configure(accessToken: string): void;
     request(method: string, endpoint: string, params?: Record<string, any>, dataJson?: boolean, respJson?: boolean): Promise<any>;
     get(endpoint: string, params?: Record<string, any>, dataJson?: boolean, respJson?: boolean): Promise<any>;
@@ -193,7 +190,7 @@ declare class ConfigRequest {
 
 declare const _default: ConfigRequest;
 
-declare function setDestination(dongleId: string, latitude: any, longitude: any, place_name: string, place_details: string): Promise<any>;
+declare function setDestination(dongleId: string, latitude: number, longitude: number, place_name: string, place_details: string): Promise<any>;
 declare function getLocationsData(dongleId: string): Promise<any>;
 declare function putLocationSave(dongleId: string, latitude: number, longitude: number, place_name: string, place_details: string, save_type?: 'favorite' | 'recent', label?: string): Promise<any>;
 declare function patchLocationSave(dongleId: string, navLocationId: number, saveType: 'favorite' | 'recent', label?: string): Promise<any>;

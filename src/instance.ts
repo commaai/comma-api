@@ -1,8 +1,8 @@
 export class RequestError extends Error {
   resp: Response
 
-  constructor(resp: Response, ...params) {
-    super(...params)
+  constructor(resp: Response, message?: string) {
+    super(message)
     this.resp = resp
   }
 }

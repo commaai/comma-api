@@ -41,8 +41,8 @@ export function listRoutes(dongleId: string, limit: number, createdAfter?: numbe
   return request.get(`v1/devices/${dongleId}/routes`, { limit, createdAfter })
 }
 
-function parseSegmentMetadata(start: number, end: number, segments) {
-  const routeStartTimes = {};
+function parseSegmentMetadata(start: number, end: number, segments: any[]) {
+  const routeStartTimes: Record<string, number> = {};
 
   return segments.map((s) => {
     const segment = {
@@ -62,8 +62,8 @@ function parseSegmentMetadata(start: number, end: number, segments) {
 }
 
 // TODO: understand this and write tests
-function segmentsFromMetadata(segmentsData) {
-  function finishSegment(segment) {
+function segmentsFromMetadata(segmentsData: any[]) {
+  function finishSegment(segment: any) {
     if (!segment.hasVideo) {
       return;
     }
@@ -82,9 +82,9 @@ function segmentsFromMetadata(segmentsData) {
     ];
   }
 
-  let segment = null;
-  let videoStartOffset = null;
-  const segments = [];
+  let segment: any = null;
+  let videoStartOffset: number | null = null;
+  const segments: any[] = [];
   segmentsData.forEach((s) => {
     if (!s.url) {
       return;

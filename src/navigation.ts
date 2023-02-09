@@ -1,6 +1,6 @@
 import request from './request'
 
-export function setDestination(dongleId: string, latitude, longitude, place_name: string, place_details: string) {
+export function setDestination(dongleId: string, latitude: number, longitude: number, place_name: string, place_details: string) {
   return request.post(`v1/navigation/${dongleId}/set_destination`, {
     latitude,
     longitude,

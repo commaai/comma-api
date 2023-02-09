@@ -7,6 +7,6 @@ export function configure(accessToken: string) {
   request.configure(accessToken)
 }
 
-export async function postJsonRpcPayload(dongleId: string, payload) {
+export async function postJsonRpcPayload(dongleId: string, payload: Record<string, any>) {
   return request.post(dongleId, payload)
 }
