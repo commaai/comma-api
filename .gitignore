@@ -6,4 +6,4 @@ node_modules/
 .vscode
 *.swp
 
-index.html
+dist

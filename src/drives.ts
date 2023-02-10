@@ -1,57 +1,48 @@
-import request from './request';
+import request from './request'
 
+const SEGMENT_LENGTH = 1000 * 60
 
-const SEGMENT_LENGTH = 1000 * 60;
-
-export function getSegmentMetadata(start, end, dongleId) {
+export function getSegmentMetadata(start: number, end: number, dongleId: string) {
   return request.get(`v1/devices/${dongleId}/segments`, {
     from: start,
     to: end,
-  });
+  })
 }
 
-export function getRoutesSegments(dongleId, start, end) {
-  return request.get(`v1/devices/${dongleId}/routes_segments`, { start, end });
+export function getRoutesSegments(dongleId: string, start: number, end: number) {
+  return request.get(`v1/devices/${dongleId}/routes_segments`, { start, end })
 }
 
-export function getRouteInfo(routeName) {
-  return request.get(`v1/route/${routeName}/`);
+export function getRouteInfo(routeName: string) {
+  return request.get(`v1/route/${routeName}/`)
 }
 
-export function setRouteRating(routeName, rating) {
-  return request.patch(`v1/route/${routeName}/`, { rating });
+export function setRoutePublic(routeName: string, is_public: boolean) {
+  return request.patch(`v1/route/${routeName}/`, { is_public })
 }
 
-export function setRoutePublic(routeName, is_public) {
-  return request.patch(`v1/route/${routeName}/`, { is_public });
+export function setRoutePreserved(routeName: string, preserved: boolean) {
+  return request.request(preserved ? 'POST' : 'DELETE', `v1/route/${routeName}/preserve`)
 }
 
-export function setRoutePreserved(routeName, preserved) {
-  return request.request(preserved ? 'POST' : 'DELETE', `v1/route/${routeName}/preserve`);
+export function getPreservedRoutes(dongleId: string) {
+  return request.get(`v1/devices/${dongleId}/routes/preserved`)
 }
 
-export function getPreservedRoutes(dongleId) {
-  return request.get(`v1/devices/${dongleId}/routes/preserved`);
+export function getShareSignature(routeName: string) {
+  return request.get(`v1/route/${routeName}/share_signature`)
 }
 
-export function getShareSignature(routeName) {
-  return request.get(`v1/route/${routeName}/share_signature`);
+export function getRouteSegments(routeName: string) {
+  return request.get(`v1/route/${routeName}/segments`)
 }
 
-export function getRouteSegments(routeName) {
-  return request.get(`v1/route/${routeName}/segments`);
+export function listRoutes(dongleId: string, limit: number, createdAfter?: number) {
+  return request.get(`v1/devices/${dongleId}/routes`, { limit, createdAfter })
 }
 
-export function listRoutes(dongleId, limit, createdAfter) {
-  const params = { limit };
-  if (typeof createdAfter !== 'undefined') {
-    params.createdAfter = createdAfter;
-  }
-  return request.get(`v1/devices/${dongleId}/routes`, params);
-}
-
-function parseSegmentMetadata(start, end, segments) {
-  const routeStartTimes = {};
+function parseSegmentMetadata(start: number, segments: any[]) {
+  const routeStartTimes: Record<string, number> = {};
 
   return segments.map((s) => {
     const segment = {
@@ -71,8 +62,8 @@ function parseSegmentMetadata(start, end, segments) {
 }
 
 // TODO: understand this and write tests
-function segmentsFromMetadata(segmentsData) {
-  function finishSegment(segment) {
+function segmentsFromMetadata(segmentsData: any[]) {
+  function finishSegment(segment: any) {
     if (!segment.hasVideo) {
       return;
     }
@@ -91,9 +82,9 @@ function segmentsFromMetadata(segmentsData) {
     ];
   }
 
-  let segment = null;
-  let videoStartOffset = null;
-  const segments = [];
+  let segment: any = null;
+  let videoStartOffset: number | null = null;
+  const segments: any[] = [];
   segmentsData.forEach((s) => {
     if (!s.url) {
       return;
@@ -156,8 +147,8 @@ function segmentsFromMetadata(segmentsData) {
     segment.events = segment.events.concat(s.events);
     segment.endCoord = [s.end_lng, s.end_lat];
     segment.distanceMiles += s.length;
-    segment.cameraStreamSegCount += Math.floor(segmentHasVideo);
-    segment.driverCameraStreamSegCount += Math.floor(segmentHasDriverCameraStream);
+    segment.cameraStreamSegCount += segmentHasVideo;
+    segment.driverCameraStreamSegCount += segmentHasDriverCameraStream;
   });
 
   if (segment) {
@@ -167,8 +158,8 @@ function segmentsFromMetadata(segmentsData) {
   return segments;
 }
 
-export async function fetchRoutes(dongleId, start, end) {
+export async function fetchRoutes(dongleId: string, start: number, end: number) {
   let segments = await getSegmentMetadata(start, end, dongleId);
-  segments = parseSegmentMetadata(start, end, segments);
+  segments = parseSegmentMetadata(start, segments);
   return segmentsFromMetadata(segments).reverse();
 }
