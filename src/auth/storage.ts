@@ -1,4 +1,4 @@
-const AUTH_KEY = 'ai.comma.api.authoriazation'
+const AUTH_KEY = 'ai.comma.api.authorization'
 
 export function getAccessToken(): string | null {
   if (typeof window === 'undefined') {
