@@ -30,4 +30,5 @@ export function signOut(): void {
 
 export {
   config,
+  getAccessToken,
 }
