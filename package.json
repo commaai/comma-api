@@ -1,25 +1,18 @@
 {
   "name": "@comma/api",
   "version": "3.2.0",
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
-  "types": "./dist/index.d.ts",
   "repository": "https://github.com/commaai/comma-api.git",
   "homepage": "https://api.comma.ai",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist/ && tsup ./src/index.ts",
+    "build": "tsup",
     "start": "npm run build -- --watch"
   },
-  "exports": {
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.mjs",
-    "node": "./dist/index.cjs",
-    "default": "./dist/index.cjs"
-  },
   "devDependencies": {
-    "rimraf": "^4.1.2",
     "tsup": "^6.6.0",
     "typescript": "^4.9.5"
   }
