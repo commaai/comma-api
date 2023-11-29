@@ -34,17 +34,17 @@ var ConfigRequest = /*#__PURE__*/function () {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
-    this.errorResponseHandler = null;
+    this.errorResponseCallback = null;
   }
   _createClass(ConfigRequest, [{
     key: "configure",
     value: function configure(accessToken) {
-      var errorResponseHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var errorResponseCallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       if (accessToken) {
         this.defaultHeaders.Authorization = "JWT ".concat(accessToken);
       }
-      if (errorResponseHandler) {
-        this.errorResponseHandler = errorResponseHandler;
+      if (errorResponseCallback) {
+        this.errorResponseCallback = errorResponseCallback;
       }
     }
   }, {
@@ -91,12 +91,12 @@ var ConfigRequest = /*#__PURE__*/function () {
                   _context.next = 18;
                   break;
                 }
-                if (!this.errorResponseHandler) {
+                if (!this.errorResponseCallback) {
                   _context.next = 14;
                   break;
                 }
                 _context.next = 13;
-                return this.errorResponseHandler(resp);
+                return this.errorResponseCallback(resp);
               case 13:
                 return _context.abrupt("return", null);
               case 14:

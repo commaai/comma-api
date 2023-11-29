@@ -4,8 +4,8 @@ import Config from './config';
 import ConfigRequest from './instance';
 var request = new ConfigRequest(Config.BILLING_URL_ROOT);
 export function configure(accessToken) {
-  var errorResponseHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  request.configure(accessToken, errorResponseHandler);
+  var errorResponseCallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  request.configure(accessToken, errorResponseCallback);
 }
 export function getSubscription(_x) {
   return _getSubscription.apply(this, arguments);

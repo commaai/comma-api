@@ -1,6 +1,6 @@
 Version 3.1.1
 =============
-* add 401 (unauthorized) handler
+* add error response callback
 * revert package name to @commaai/api
 
 Version 3.1.0
