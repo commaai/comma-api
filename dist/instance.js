@@ -29,11 +29,13 @@ export var RequestError = /*#__PURE__*/function (_Error) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 var ConfigRequest = /*#__PURE__*/function () {
   function ConfigRequest(baseUrl) {
+    var unauthorizedHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     _classCallCheck(this, ConfigRequest);
     this.defaultHeaders = {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
+    this.unauthorizedHandler = unauthorizedHandler;
   }
   _createClass(ConfigRequest, [{
     key: "configure",
@@ -83,23 +85,30 @@ var ConfigRequest = /*#__PURE__*/function () {
               case 8:
                 resp = _context.sent;
                 if (resp.ok) {
-                  _context.next = 14;
+                  _context.next = 17;
                   break;
                 }
-                _context.next = 12;
+                if (!(resp.status === 401 && this.unauthorizedHandler)) {
+                  _context.next = 13;
+                  break;
+                }
+                _context.next = 13;
+                return this.unauthorizedHandler();
+              case 13:
+                _context.next = 15;
                 return resp.text();
-              case 12:
+              case 15:
                 error = _context.sent;
                 throw new RequestError(resp, "".concat(resp.status, ": ").concat(error));
-              case 14:
+              case 17:
                 if (respJson) {
-                  _context.next = 16;
+                  _context.next = 19;
                   break;
                 }
                 return _context.abrupt("return", resp);
-              case 16:
+              case 19:
                 return _context.abrupt("return", resp.json());
-              case 17:
+              case 20:
               case "end":
                 return _context.stop();
             }

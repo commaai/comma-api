@@ -4,7 +4,8 @@ import Config from './config';
 import ConfigRequest from './instance';
 var request = new ConfigRequest(Config.ATHENA_URL_ROOT);
 export function configure(accessToken) {
-  request.configure(accessToken);
+  var unauthorizedHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  request.configure(accessToken, unauthorizedHandler);
 }
 export function postJsonRpcPayload(_x, _x2) {
   return _postJsonRpcPayload.apply(this, arguments);
