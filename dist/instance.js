@@ -29,19 +29,22 @@ export var RequestError = /*#__PURE__*/function (_Error) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 var ConfigRequest = /*#__PURE__*/function () {
   function ConfigRequest(baseUrl) {
-    var unauthorizedHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     _classCallCheck(this, ConfigRequest);
     this.defaultHeaders = {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
-    this.unauthorizedHandler = unauthorizedHandler;
+    this.unauthorizedHandler = null;
   }
   _createClass(ConfigRequest, [{
     key: "configure",
     value: function configure(accessToken) {
+      var unauthorizedHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       if (accessToken) {
         this.defaultHeaders.Authorization = "JWT ".concat(accessToken);
+      }
+      if (unauthorizedHandler) {
+        this.unauthorizedHandler = unauthorizedHandler;
       }
     }
   }, {

@@ -9,17 +9,20 @@ export class RequestError extends Error {
 }
 
 export default class ConfigRequest {
-  constructor(baseUrl, unauthorizedHandler = null) {
+  constructor(baseUrl) {
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
-    this.unauthorizedHandler = unauthorizedHandler;
+    this.unauthorizedHandler = null;
   }
 
-  configure(accessToken) {
+  configure(accessToken, unauthorizedHandler = null) {
     if (accessToken) {
       this.defaultHeaders.Authorization = `JWT ${accessToken}`;
+    }
+    if (unauthorizedHandler) {
+      this.unauthorizedHandler = unauthorizedHandler;
     }
   }
 
