@@ -14,15 +14,15 @@ export default class ConfigRequest {
       'Content-Type': 'application/json',
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
-    this.unauthorizedHandler = null;
+    this.errorResponseHandler = null;
   }
 
-  configure(accessToken, unauthorizedHandler = null) {
+  configure(accessToken, errorResponseHandler = null) {
     if (accessToken) {
       this.defaultHeaders.Authorization = `JWT ${accessToken}`;
     }
-    if (unauthorizedHandler) {
-      this.unauthorizedHandler = unauthorizedHandler;
+    if (errorResponseHandler) {
+      this.errorResponseHandler = errorResponseHandler;
     }
   }
 
@@ -46,8 +46,9 @@ export default class ConfigRequest {
 
     const resp = await fetch(requestUrl, { method, headers, body });
     if (!resp.ok) {
-      if (resp.status === 401 && this.unauthorizedHandler) {
-        await this.unauthorizedHandler();
+      if (this.errorResponseHandler) {
+        await this.errorResponseHandler(resp);
+        return null;
       }
       const error = await resp.text();
       throw new RequestError(resp, `${resp.status}: ${error}`);

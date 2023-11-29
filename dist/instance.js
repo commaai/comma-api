@@ -34,17 +34,17 @@ var ConfigRequest = /*#__PURE__*/function () {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
-    this.unauthorizedHandler = null;
+    this.errorResponseHandler = null;
   }
   _createClass(ConfigRequest, [{
     key: "configure",
     value: function configure(accessToken) {
-      var unauthorizedHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var errorResponseHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       if (accessToken) {
         this.defaultHeaders.Authorization = "JWT ".concat(accessToken);
       }
-      if (unauthorizedHandler) {
-        this.unauthorizedHandler = unauthorizedHandler;
+      if (errorResponseHandler) {
+        this.errorResponseHandler = errorResponseHandler;
       }
     }
   }, {
@@ -88,30 +88,32 @@ var ConfigRequest = /*#__PURE__*/function () {
               case 8:
                 resp = _context.sent;
                 if (resp.ok) {
-                  _context.next = 17;
+                  _context.next = 18;
                   break;
                 }
-                if (!(resp.status === 401 && this.unauthorizedHandler)) {
-                  _context.next = 13;
+                if (!this.errorResponseHandler) {
+                  _context.next = 14;
                   break;
                 }
                 _context.next = 13;
-                return this.unauthorizedHandler();
+                return this.errorResponseHandler(resp);
               case 13:
-                _context.next = 15;
+                return _context.abrupt("return", null);
+              case 14:
+                _context.next = 16;
                 return resp.text();
-              case 15:
+              case 16:
                 error = _context.sent;
                 throw new RequestError(resp, "".concat(resp.status, ": ").concat(error));
-              case 17:
+              case 18:
                 if (respJson) {
-                  _context.next = 19;
+                  _context.next = 20;
                   break;
                 }
                 return _context.abrupt("return", resp);
-              case 19:
-                return _context.abrupt("return", resp.json());
               case 20:
+                return _context.abrupt("return", resp.json());
+              case 21:
               case "end":
                 return _context.stop();
             }
