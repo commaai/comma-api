@@ -9,11 +9,12 @@ export class RequestError extends Error {
 }
 
 export default class ConfigRequest {
-  constructor(baseUrl) {
+  constructor(baseUrl, unauthorizedHandler = null) {
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
+    this.unauthorizedHandler = unauthorizedHandler;
   }
 
   configure(accessToken) {
@@ -42,6 +43,9 @@ export default class ConfigRequest {
 
     const resp = await fetch(requestUrl, { method, headers, body });
     if (!resp.ok) {
+      if (resp.status === 401 && this.unauthorizedHandler) {
+        await this.unauthorizedHandler();
+      }
       const error = await resp.text();
       throw new RequestError(resp, `${resp.status}: ${error}`);
     }
