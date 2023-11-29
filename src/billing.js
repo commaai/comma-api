@@ -4,8 +4,8 @@ import ConfigRequest from './instance';
 
 const request = new ConfigRequest(Config.BILLING_URL_ROOT);
 
-export function configure(accessToken) {
-  request.configure(accessToken);
+export function configure(accessToken, errorResponseCallback = null) {
+  request.configure(accessToken, errorResponseCallback);
 }
 
 export async function getSubscription(dongle_id) {

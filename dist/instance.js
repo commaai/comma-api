@@ -34,12 +34,17 @@ var ConfigRequest = /*#__PURE__*/function () {
       'Content-Type': 'application/json'
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
+    this.errorResponseCallback = null;
   }
   _createClass(ConfigRequest, [{
     key: "configure",
     value: function configure(accessToken) {
+      var errorResponseCallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       if (accessToken) {
         this.defaultHeaders.Authorization = "JWT ".concat(accessToken);
+      }
+      if (errorResponseCallback) {
+        this.errorResponseCallback = errorResponseCallback;
       }
     }
   }, {
@@ -83,23 +88,32 @@ var ConfigRequest = /*#__PURE__*/function () {
               case 8:
                 resp = _context.sent;
                 if (resp.ok) {
+                  _context.next = 18;
+                  break;
+                }
+                if (!this.errorResponseCallback) {
                   _context.next = 14;
                   break;
                 }
-                _context.next = 12;
+                _context.next = 13;
+                return this.errorResponseCallback(resp);
+              case 13:
+                return _context.abrupt("return", null);
+              case 14:
+                _context.next = 16;
                 return resp.text();
-              case 12:
+              case 16:
                 error = _context.sent;
                 throw new RequestError(resp, "".concat(resp.status, ": ").concat(error));
-              case 14:
+              case 18:
                 if (respJson) {
-                  _context.next = 16;
+                  _context.next = 20;
                   break;
                 }
                 return _context.abrupt("return", resp);
-              case 16:
+              case 20:
                 return _context.abrupt("return", resp.json());
-              case 17:
+              case 21:
               case "end":
                 return _context.stop();
             }

@@ -14,11 +14,15 @@ export default class ConfigRequest {
       'Content-Type': 'application/json',
     };
     this.baseUrl = baseUrl + (!baseUrl.endsWith('/') ? '/' : '');
+    this.errorResponseCallback = null;
   }
 
-  configure(accessToken) {
+  configure(accessToken, errorResponseCallback = null) {
     if (accessToken) {
       this.defaultHeaders.Authorization = `JWT ${accessToken}`;
+    }
+    if (errorResponseCallback) {
+      this.errorResponseCallback = errorResponseCallback;
     }
   }
 
@@ -42,6 +46,10 @@ export default class ConfigRequest {
 
     const resp = await fetch(requestUrl, { method, headers, body });
     if (!resp.ok) {
+      if (this.errorResponseCallback) {
+        await this.errorResponseCallback(resp);
+        return null;
+      }
       const error = await resp.text();
       throw new RequestError(resp, `${resp.status}: ${error}`);
     }

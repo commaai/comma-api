@@ -1,3 +1,8 @@
+Version 3.1.1
+=============
+* add error response callback
+* revert package name to @commaai/api
+
 Version 3.1.0
 =============
 * rename package to @comma/api
