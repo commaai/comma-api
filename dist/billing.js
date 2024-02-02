@@ -70,18 +70,19 @@ function _cancelPrime() {
   }));
   return _cancelPrime.apply(this, arguments);
 }
-export function getSimValid(_x4, _x5) {
-  return _getSimValid.apply(this, arguments);
+export function getStripeCheckout(_x4, _x5, _x6) {
+  return _getStripeCheckout.apply(this, arguments);
 }
-function _getSimValid() {
-  _getSimValid = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(dongle_id, sim_id) {
+function _getStripeCheckout() {
+  _getStripeCheckout = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(dongle_id, sim_id, plan) {
     return _regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            return _context4.abrupt("return", request.get('v1/prime/sim_valid', {
+            return _context4.abrupt("return", request.post('v1/prime/stripe_checkout', {
               dongle_id: dongle_id,
-              sim_id: sim_id
+              sim_id: sim_id,
+              plan: plan
             }));
           case 1:
           case "end":
@@ -90,21 +91,19 @@ function _getSimValid() {
       }
     }, _callee4);
   }));
-  return _getSimValid.apply(this, arguments);
-}
-export function getStripeCheckout(_x6, _x7, _x8) {
   return _getStripeCheckout.apply(this, arguments);
 }
-function _getStripeCheckout() {
-  _getStripeCheckout = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(dongle_id, sim_id, plan) {
+export function getStripePortal(_x7) {
+  return _getStripePortal.apply(this, arguments);
+}
+function _getStripePortal() {
+  _getStripePortal = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(dongle_id) {
     return _regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            return _context5.abrupt("return", request.post('v1/prime/stripe_checkout', {
-              dongle_id: dongle_id,
-              sim_id: sim_id,
-              plan: plan
+            return _context5.abrupt("return", request.get('v1/prime/stripe_portal', {
+              dongle_id: dongle_id
             }));
           case 1:
           case "end":
@@ -113,19 +112,20 @@ function _getStripeCheckout() {
       }
     }, _callee5);
   }));
-  return _getStripeCheckout.apply(this, arguments);
-}
-export function getStripePortal(_x9) {
   return _getStripePortal.apply(this, arguments);
 }
-function _getStripePortal() {
-  _getStripePortal = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee6(dongle_id) {
+export function getStripeSession(_x8, _x9) {
+  return _getStripeSession.apply(this, arguments);
+}
+function _getStripeSession() {
+  _getStripeSession = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee6(dongle_id, session_id) {
     return _regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            return _context6.abrupt("return", request.get('v1/prime/stripe_portal', {
-              dongle_id: dongle_id
+            return _context6.abrupt("return", request.get('v1/prime/stripe_session', {
+              dongle_id: dongle_id,
+              session_id: session_id
             }));
           case 1:
           case "end":
@@ -133,28 +133,6 @@ function _getStripePortal() {
         }
       }
     }, _callee6);
-  }));
-  return _getStripePortal.apply(this, arguments);
-}
-export function getStripeSession(_x10, _x11) {
-  return _getStripeSession.apply(this, arguments);
-}
-function _getStripeSession() {
-  _getStripeSession = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee7(dongle_id, session_id) {
-    return _regeneratorRuntime.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            return _context7.abrupt("return", request.get('v1/prime/stripe_session', {
-              dongle_id: dongle_id,
-              session_id: session_id
-            }));
-          case 1:
-          case "end":
-            return _context7.stop();
-        }
-      }
-    }, _callee7);
   }));
   return _getStripeSession.apply(this, arguments);
 }
