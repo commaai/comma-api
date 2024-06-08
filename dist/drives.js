@@ -1,64 +1,60 @@
-import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
-import _toConsumableArray from "@babel/runtime/helpers/toConsumableArray";
-import _defineProperty from "@babel/runtime/helpers/defineProperty";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 import request from './request';
-var SEGMENT_LENGTH = 1000 * 60;
+const SEGMENT_LENGTH = 1000 * 60;
 export function getSegmentMetadata(start, end, dongleId) {
-  return request.get("v1/devices/".concat(dongleId, "/segments"), {
+  return request.get(`v1/devices/${dongleId}/segments`, {
     from: start,
     to: end
   });
 }
-export function getRoutesSegments(dongleId, start, end) {
-  return request.get("v1/devices/".concat(dongleId, "/routes_segments"), {
-    start: start,
-    end: end
+export function getRoutesSegments(dongleId, start, end, limit) {
+  return request.get(`v1/devices/${dongleId}/routes_segments`, {
+    start,
+    end,
+    limit
   });
 }
 export function getRouteInfo(routeName) {
-  return request.get("v1/route/".concat(routeName, "/"));
+  return request.get(`v1/route/${routeName}/`);
 }
 export function setRouteRating(routeName, rating) {
-  return request.patch("v1/route/".concat(routeName, "/"), {
-    rating: rating
+  return request.patch(`v1/route/${routeName}/`, {
+    rating
   });
 }
 export function setRoutePublic(routeName, is_public) {
-  return request.patch("v1/route/".concat(routeName, "/"), {
-    is_public: is_public
+  return request.patch(`v1/route/${routeName}/`, {
+    is_public
   });
 }
 export function setRoutePreserved(routeName, preserved) {
-  return request.request(preserved ? 'POST' : 'DELETE', "v1/route/".concat(routeName, "/preserve"));
+  return request.request(preserved ? 'POST' : 'DELETE', `v1/route/${routeName}/preserve`);
 }
 export function getPreservedRoutes(dongleId) {
-  return request.get("v1/devices/".concat(dongleId, "/routes/preserved"));
+  return request.get(`v1/devices/${dongleId}/routes/preserved`);
 }
 export function getShareSignature(routeName) {
-  return request.get("v1/route/".concat(routeName, "/share_signature"));
+  return request.get(`v1/route/${routeName}/share_signature`);
 }
 export function getRouteSegments(routeName) {
-  return request.get("v1/route/".concat(routeName, "/segments"));
+  return request.get(`v1/route/${routeName}/segments`);
 }
 export function listRoutes(dongleId, limit, createdAfter) {
-  var params = {
-    limit: limit
+  const params = {
+    limit
   };
   if (typeof createdAfter !== 'undefined') {
     params.createdAfter = createdAfter;
   }
-  return request.get("v1/devices/".concat(dongleId, "/routes"), params);
+  return request.get(`v1/devices/${dongleId}/routes`, params);
 }
 function parseSegmentMetadata(start, end, segments) {
-  var routeStartTimes = {};
-  return segments.map(function (s) {
-    var segment = _objectSpread(_objectSpread({}, s), {}, {
+  const routeStartTimes = {};
+  return segments.map(s => {
+    const segment = {
+      ...s,
       duration: Math.round(s.end_time_utc_millis - s.start_time_utc_millis),
       offset: Math.round(s.start_time_utc_millis) - start
-    });
+    };
     if (!routeStartTimes[s.canonical_route_name]) {
       segment.segment = Number(s.canonical_name.split('--')[2]);
       routeStartTimes[s.canonical_route_name] = segment.offset - SEGMENT_LENGTH * segment.segment;
@@ -74,29 +70,31 @@ function segmentsFromMetadata(segmentsData) {
     if (!segment.hasVideo) {
       return;
     }
-    var videoAvailableBetweenOffsets = segment.videoAvailableBetweenOffsets;
-    var lastVideoRange = videoAvailableBetweenOffsets[videoAvailableBetweenOffsets.length - 1];
+    const {
+      videoAvailableBetweenOffsets
+    } = segment;
+    let lastVideoRange = videoAvailableBetweenOffsets[videoAvailableBetweenOffsets.length - 1];
     if (!lastVideoRange) {
       lastVideoRange = [segment.offset, segment.offset + segment.duration];
     }
 
     // TODO: refactor
     // eslint-disable-next-line no-param-reassign
-    segment.videoAvailableBetweenOffsets = [].concat(_toConsumableArray(videoAvailableBetweenOffsets.slice(0, videoAvailableBetweenOffsets.length - 1)), [[lastVideoRange[0], segment.offset + segment.duration]]);
+    segment.videoAvailableBetweenOffsets = [...videoAvailableBetweenOffsets.slice(0, videoAvailableBetweenOffsets.length - 1), [lastVideoRange[0], segment.offset + segment.duration]];
   }
-  var segment = null;
-  var videoStartOffset = null;
-  var segments = [];
-  segmentsData.forEach(function (s) {
+  let segment = null;
+  let videoStartOffset = null;
+  const segments = [];
+  segmentsData.forEach(s => {
     if (!s.url) {
       return;
     }
     if (!(s.proc_log === 40 || s.proc_qlog === 40)) {
       return;
     }
-    var segmentHasDriverCamera = s.proc_dcamera >= 0;
-    var segmentHasDriverCameraStream = s.proc_dcamera === 40;
-    var segmentHasVideo = s.proc_camera === 40;
+    const segmentHasDriverCamera = s.proc_dcamera >= 0;
+    const segmentHasDriverCameraStream = s.proc_dcamera === 40;
+    const segmentHasVideo = s.proc_camera === 40;
     if (segmentHasVideo && videoStartOffset === null) {
       videoStartOffset = s.offset;
     }
@@ -104,8 +102,10 @@ function segmentsFromMetadata(segmentsData) {
       if (segment) {
         finishSegment(segment);
       }
-      var url = s.url;
-      var parts = url.split('/');
+      let {
+        url
+      } = s;
+      const parts = url.split('/');
       if (Number.isFinite(Number(parts.pop()))) {
         // url has a number at the end
         url = parts.join('/');
@@ -155,28 +155,8 @@ function segmentsFromMetadata(segmentsData) {
   }
   return segments;
 }
-export function fetchRoutes(_x, _x2, _x3) {
-  return _fetchRoutes.apply(this, arguments);
-}
-function _fetchRoutes() {
-  _fetchRoutes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(dongleId, start, end) {
-    var segments;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return getSegmentMetadata(start, end, dongleId);
-          case 2:
-            segments = _context.sent;
-            segments = parseSegmentMetadata(start, end, segments);
-            return _context.abrupt("return", segmentsFromMetadata(segments).reverse());
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _fetchRoutes.apply(this, arguments);
+export async function fetchRoutes(dongleId, start, end) {
+  let segments = await getSegmentMetadata(start, end, dongleId);
+  segments = parseSegmentMetadata(start, end, segments);
+  return segmentsFromMetadata(segments).reverse();
 }
