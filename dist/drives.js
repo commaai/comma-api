@@ -1,4 +1,4 @@
-import request from './request';
+import request, { StagingRequest } from './request';
 const SEGMENT_LENGTH = 1000 * 60;
 export function getSegmentMetadata(start, end, dongleId) {
   return request.get(`v1/devices/${dongleId}/segments`, {
@@ -12,6 +12,9 @@ export function getRoutesSegments(dongleId, start, end, limit) {
     end,
     limit
   });
+}
+export function getRouteSegmentsById(dongleId, routeId) {
+  return StagingRequest.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`);
 }
 export function getRouteInfo(routeName) {
   return request.get(`v1/route/${routeName}/`);
