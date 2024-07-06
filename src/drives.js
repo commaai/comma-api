@@ -14,7 +14,7 @@ export function getRoutesSegments(dongleId, start, end, limit) {
 }
 
 export function getRouteSegmentsById(dongleId, routeId) {
-  return new StagingRequest.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`)
+  return StagingRequest.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`);
 }
 
 export function getRouteInfo(routeName) {
