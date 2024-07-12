@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "@commaai/api",
   "version": "3.1.2",
   "main": "src/index.js",
