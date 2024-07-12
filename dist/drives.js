@@ -6,15 +6,13 @@ export function getSegmentMetadata(start, end, dongleId) {
     to: end
   });
 }
-export function getRoutesSegments(dongleId, start, end, limit) {
+export function getRoutesSegments(dongleId, start, end, limit, routeStr) {
   return request.get(`v1/devices/${dongleId}/routes_segments`, {
     start,
     end,
-    limit
+    limit,
+    route_str: routeStr
   });
-}
-export function getRouteSegmentsById(dongleId, routeId) {
-  return request.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`);
 }
 export function getRouteInfo(routeName) {
   return request.get(`v1/route/${routeName}/`);
