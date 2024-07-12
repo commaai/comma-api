@@ -6,12 +6,12 @@ export function getSegmentMetadata(start, end, dongleId) {
     to: end
   });
 }
-export function getRoutesSegments(dongleId, start, end, limit, routeStr) {
+export function getRoutesSegments(dongleId, start, end, limit, route_str) {
   return request.get(`v1/devices/${dongleId}/routes_segments`, {
     start,
     end,
     limit,
-    route_str: routeStr
+    route_str
   });
 }
 export function getRouteInfo(routeName) {
