@@ -1,4 +1,4 @@
-import qs from 'query-string';
+import qs from 'https://cdn.skypack.dev/query-string';
 
 
 export class RequestError extends Error {
@@ -32,17 +32,23 @@ export default class ConfigRequest {
       headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
+    console.log('params', params)
+
     let requestUrl = this.baseUrl + endpoint;
     let body;
     if (params && Object.keys(params).length !== 0) {
+      console.log('method', method)
       if (method === 'GET' || method === 'HEAD') {
         requestUrl += `?${qs.stringify(params)}`;
+        console.log(params, qs.stringify(params), "done")
       } else if (dataJson) {
         body = JSON.stringify(params);
       } else {
         body = qs.stringify(params);
       }
     }
+    console.log('body', body)
+    console.log('requestUrl', requestUrl)
 
     const resp = await fetch(requestUrl, { method, headers, body });
     if (!resp.ok) {

@@ -1,4 +1,4 @@
-import request from './request';
+import request from './request.js';
 
 
 const SEGMENT_LENGTH = 1000 * 60;
@@ -10,12 +10,17 @@ export function getSegmentMetadata(start, end, dongleId) {
   });
 }
 
-export function getRoutesSegments(dongleId, start, end, limit) {
-  return request.get(`v1/devices/${dongleId}/routes_segments`, { start, end, limit });
+export function getRoutesSegments(dongleId, start, end, limit, route_str) {
+  return request.get(`v1/devices/${dongleId}/routes_segments`, {
+    start, end, limit, route_str,
+  });
 }
 
 export function getRouteSegmentsById(dongleId, routeId) {
-  return request.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`);
+  // return request.get(`v1/devices/${dongleId}/routes_segments?route_str=${`${dongleId}|${routeId}`.replace(/%7C/g, '|')}`);
+  return request.get(`v1/devices/${dongleId}/routes_segments`, {
+    route_str: `${dongleId}|${routeId}`,
+  });
 }
 
 export function getRouteInfo(routeName) {
