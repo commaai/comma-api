@@ -1,3 +1,7 @@
+Version 3.1.3
+=============
+* add `route_str` parameter to `/v1/devices/<dongle>/routes_segments`
+
 Version 3.1.2
 =============
 * add `limit` parameter to `/v1/devices/<dongle>/routes_segments`
