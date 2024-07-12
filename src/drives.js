@@ -1,5 +1,6 @@
 import request from './request';
 
+
 const SEGMENT_LENGTH = 1000 * 60;
 
 export function getSegmentMetadata(start, end, dongleId) {
