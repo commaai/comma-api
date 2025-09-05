@@ -1,3 +1,7 @@
+Version 3.2.0
+=============
+* breaking: remove deprecated fetchRoutes
+
 Version 3.1.3
 =============
 * add `route_str` parameter to `/v1/devices/<dongle>/routes_segments`
