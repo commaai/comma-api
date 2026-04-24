@@ -1,3 +1,7 @@
+Version 3.3.0
+=============
+* add `getCommacare` for commacare extended-warranty status
+
 Version 3.2.0
 =============
 * breaking: remove deprecated fetchRoutes
