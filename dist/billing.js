@@ -20,6 +20,11 @@ export async function cancelPrime(dongle_id) {
     dongle_id
   });
 }
+export async function getCommacare(dongle_id) {
+  return request.get('v1/prime/commacare', {
+    dongle_id
+  });
+}
 export async function getStripeCheckout(dongle_id, sim_id, plan) {
   return request.post('v1/prime/stripe_checkout', {
     dongle_id,

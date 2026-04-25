@@ -1,3 +1,7 @@
+Version 3.3.1
+=============
+* rebuild `dist/`
+
 Version 3.3.0
 =============
 * add `getCommacare` for commacare extended-warranty status
