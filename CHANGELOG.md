@@ -1,3 +1,7 @@
+Version 3.3.2
+=============
+* remove `getCommacare`
+
 Version 3.3.1
 =============
 * rebuild `dist/`
