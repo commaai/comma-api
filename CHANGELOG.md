@@ -1,3 +1,7 @@
+Version 3.3.3
+=============
+* add `switchPrimePlan` for swapping between prime and prime-lite plans
+
 Version 3.3.2
 =============
 * remove `getCommacare`
