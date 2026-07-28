@@ -31,3 +31,7 @@ export async function getStripePortal(dongle_id) {
 export async function getStripeSession(dongle_id, session_id) {
   return request.get('v1/prime/stripe_session', { dongle_id, session_id });
 }
+
+export async function switchPrimePlan(dongle_id, plan, sim_id = null) {
+  return request.post('v1/prime/switch_plan', { dongle_id, plan, sim_id });
+}
