@@ -38,11 +38,3 @@ export async function getStripeSession(dongle_id, session_id) {
     session_id
   });
 }
-export async function switchPrimePlan(dongle_id, plan) {
-  let sim_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  return request.post('v1/prime/switch_plan', {
-    dongle_id,
-    plan,
-    sim_id
-  });
-}
